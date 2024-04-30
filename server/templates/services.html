@@ -1,0 +1,36 @@
+<!-- Path: templates/services.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+{% for group in services %}
+<!-- Show group as table with dropdown for services -->
+<div class="bg-gray-100 p-4 rounded shadow mb-4" style="width: 100%;">
+    <table class="table-auto" style="width: 100%; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th class="px-4 py-2" style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Group name</th>
+            <th class="px-4 py-2" style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Services</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="border px-4 py-2" style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ group.name }}</td>
+            <td class="border px-4 py-2" style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    {% for service in group.services  %}
+                    <tr>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ service.id }}:{{service.port}} </td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ service.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% endblock %}
+
+

@@ -1,0 +1,26 @@
+[package]
+name = "scoutquest-server"
+description = "Discovery Server written in Rust"
+license = "MIT"
+version = "0.1.0"
+edition = "2021"
+authors = ["Romain De Coster <romain.decoster@pm.me>"]
+keywords = ["scoutquest", "discovery"]
+homepage = "https://github.com/RomainDECOSTER/scoutquest"
+repository = "https://github.com/RomainDECOSTER/scoutquest"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.7.5"
+config = "0.14.0"
+serde = { version = "1.0.197", features = ["derive"] }
+tokio = { version = "1.37.0", features = ["rt", "rt-multi-thread", "macros"] }
+tracing-subscriber = "0.3.18"
+tracing = "0.1.40"
+tower = { version = "0.4.13", features = ["timeout", "load-shed", "limit"] }
+tower-http = { version = "0.5.2", features = ["add-extension", "compression-full", "trace", "fs"] }
+askama = "0.12.1"
+askama_axum = "0.4.0"
+uuid = { version = "1.8.0", features = ["v4", "serde"] }
