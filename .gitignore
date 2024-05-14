@@ -19,7 +19,7 @@ Cargo.lock
 # IntelliJ IDEA files
 .idea/
 
-server/config/*.toml
+**/config/*.toml
 
 # ui
 server/node_modules

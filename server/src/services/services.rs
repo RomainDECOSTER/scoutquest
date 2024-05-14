@@ -51,10 +51,6 @@ impl Service {
             id: Uuid::new_v4(),
         }
     }
-
-    pub fn set_status(&mut self, status: ServiceStatus) {
-        self.status = status;
-    }
 }
 
 impl PartialEq for Service{
