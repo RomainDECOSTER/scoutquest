@@ -1,0 +1,15 @@
+[package]
+name = "client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+local-ip-address = "0.6.1"
+gethostname = "0.4.3"
+serde = { version = "1.0.199", features = ["derive"] }
+config = "0.14.0"
+reqwest = { version = "0.12.4", features = ["json"] }
+serde_json = "1.0.116"
+tokio-cron-scheduler = "*"
