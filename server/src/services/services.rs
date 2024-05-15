@@ -149,4 +149,18 @@ mod tests {
         assert_eq!(service_state.service_groups.len(), 0);
     }
 
+    #[test]
+    fn test_service_eq() {
+        let service = Service::new("service".to_string(), "0.0.0.0".to_string(), "hostname".to_string(), 8080);
+        let service2 = Service::new("service".to_string(), "0.0.0.0".to_string(), "hostname".to_string(), 8080);
+        assert_eq!(service, service2);
+    }
+
+    #[test]
+    fn test_service_not_eq() {
+        let service = Service::new("service".to_string(), "0.0.0.0".to_string(), "hostname".to_string(), 8080);
+        let service2 = Service::new("service".to_string(), "0.0.0.0".to_string(), "hostname".to_string(), 8081);
+        assert_ne!(service, service2);
+    }
 }
+

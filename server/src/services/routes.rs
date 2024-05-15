@@ -42,10 +42,13 @@ struct ServicesTemplate {
 
 // Register a service
 async fn register(Extension(state): Extension<State>, json_body: Json<RouteService>) ->Json<ServiceResponse> {
-    let mut state = state.write().unwrap();
-    let service = Service::new(json_body.name.clone().replace(" ", "_").to_uppercase(), json_body.ip_addr.clone(), json_body.hostname.clone(), json_body.port);
+    let mut state = match state.write() {
+        Ok(state) => state,
+        Err(e) => panic!("Error getting state: {}", e)        
+    };
+    let service = Service::new(json_body.name.clone().replace(" ", "_").to_uppercase(), json_body.ip_addr.clone(), json_body.hostname.clone(), json_body.port.clone());
     match state.services_state.service_groups.iter().position(|x| x.name == service.name.clone()) {
-        Some(index) => match state.services_state.service_groups[index].services.iter().position(|x| *x == service) {
+        Some(index) => match state.services_state.service_groups[index].services.iter().position(|x| x.clone() == service) {
             Some(i) => Json(ServiceResponse::new(state.services_state.service_groups[index].services[i].id)),
             None => {
                 state.services_state.service_groups[index].services.push(service.clone());
@@ -61,7 +64,10 @@ async fn register(Extension(state): Extension<State>, json_body: Json<RouteServi
 }
 
 async fn update_service_status(Extension(state): Extension<State>, Path(uuid): Path<Uuid>, query: Query<RouteQuery>) -> Json<OkResponse>{
-    let mut app_state = state.write().unwrap();
+    let mut app_state = match state.write() {
+        Ok(state) => state,
+        Err(e) => panic!("Error getting state: {}", e)
+    };
     for service_group in app_state.services_state.service_groups.iter_mut(){
         for service in service_group.services.iter_mut(){
             if service.id == uuid{
@@ -73,7 +79,10 @@ async fn update_service_status(Extension(state): Extension<State>, Path(uuid): P
 }
 
 async fn delete_service(Extension(state): Extension<State>, Path(uuid): Path<Uuid>) -> Json<OkResponse>{
-    let mut app_state = state.write().unwrap();
+    let mut app_state = match state.write() {
+        Ok(state) => state,
+        Err(e) => panic!("Error getting state: {}", e)
+    };
     for service_group in app_state.services_state.service_groups.iter_mut(){
         service_group.services.retain(|x| x.id != uuid);
     }
@@ -86,7 +95,10 @@ pub fn services_routes() -> axum::Router {
 
 async fn services_ui(Extension(state): Extension<State>) -> ServicesTemplate {
     ServicesTemplate {
-        services: state.read().unwrap().services_state.service_groups.clone(),
+        services: match state.read() {
+            Ok(state) => state.services_state.service_groups.clone(),
+            Err(e) => panic!("Error getting state: {}", e)
+        },
     }
 }
 

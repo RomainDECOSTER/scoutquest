@@ -26,7 +26,10 @@ pub mod discovery_client {
             Ok(ip_addr) => ip_addr,
             Err(e) => panic!("Error getting local ip address: {}", e)
         };
-        let hostname = gethostname().into_string().unwrap();
+        let hostname = match gethostname().into_string() {
+            Ok(hostname) => hostname,
+            Err(e) => panic!("Error getting hostname: {:?}", e)
+        };
         println!("{:?}", settings);
 
         let client = reqwest::Client::new();
@@ -34,7 +37,7 @@ pub mod discovery_client {
             "name": settings.scout_quest_config.service_name.replace(" ", "_").to_uppercase(),
             "ip_addr": ip_addr,
             "hostname": hostname,
-            "port": 3001
+            "port": settings.server.port
         });
         let url = format!("{}/api/services", settings.scout_quest_config.uri);
         match client.post(url)
@@ -43,10 +46,14 @@ pub mod discovery_client {
             .await {
             Ok(resp) => {
                 if resp.status().is_success() {
-                    let resp = resp.json::<ServiceResponse>().await.unwrap();
-                    unsafe {
-                        UUID = Some(resp.uuid);
-                    }
+                    match resp.json::<ServiceResponse>().await {
+                        Ok(resp) => {
+                            unsafe {
+                                UUID = Some(resp.uuid.clone());
+                            };
+                        },
+                        Err(e) => panic!("Error parsing response: {}", e)
+                    };
                     update_status().await;
                 } else {
                     panic!("Error registering service: {}", resp.status());
