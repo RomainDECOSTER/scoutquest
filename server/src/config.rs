@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, path::Path};
 use config::{Config, ConfigError, File};
 use serde::Deserialize;
 
@@ -69,9 +69,12 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let env = std::env::var("RUN_ENV").unwrap_or_else(|_| "dev".into());
         let s = Config::builder()
-            .add_source(File::with_name(CONFIG_FILE_PATH))
-            .add_source(File::with_name(&format!("{}{}", CONFIG_FILE_PREFIX, env)))
-            .build()?;
+            .add_source(File::with_name(CONFIG_FILE_PATH));
+        let s = match Path::new(&format!("{}{}", CONFIG_FILE_PREFIX, env)).exists() {
+            true => s.add_source(File::with_name(&format!("{}{}", CONFIG_FILE_PREFIX, env))),
+            false => s,
+        };
+        let s = s.build()?;
         s.try_deserialize()
     }
 }
