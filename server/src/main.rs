@@ -3,7 +3,7 @@ use std::str::FromStr;
 use std::time::Duration;
 use axum::error_handling::HandleErrorLayer;
 use axum::http::StatusCode;
-use axum::response::{IntoResponse};
+use axum::response::IntoResponse;
 use axum::Router;
 use tower::{BoxError, ServiceBuilder};
 use tracing::Level;

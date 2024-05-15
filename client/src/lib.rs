@@ -1,18 +1,31 @@
+use serde::{Deserialize, Serialize};
 mod settings;
 
 
+#[derive(Deserialize, Serialize, Debug)]
+struct ServiceResponse {
+    uuid: String,
+}
+
+
 pub mod discovery_client {
+    use crate::ServiceResponse;
     use gethostname::gethostname;
     use local_ip_address::local_ip;
     use tokio_cron_scheduler::{Job, JobScheduler};
     use crate::settings;
+
+    static mut UUID : Option<String> = None;
 
     pub async fn init() {
         let settings = match settings::ScoutQuestConfig::new() {
             Ok(settings) => settings,
             Err(e) => panic!("Error loading settings: {}", e)
         };
-        let ip_addr = local_ip().unwrap();
+        let ip_addr = match local_ip() {
+            Ok(ip_addr) => ip_addr,
+            Err(e) => panic!("Error getting local ip address: {}", e)
+        };
         let hostname = gethostname().into_string().unwrap();
         println!("{:?}", settings);
 
@@ -28,7 +41,18 @@ pub mod discovery_client {
             .json(&map)
             .send()
             .await {
-            Ok(_) => (),
+            Ok(resp) => {
+                if resp.status().is_success() {
+                    let resp = resp.json::<ServiceResponse>().await.unwrap();
+                    unsafe {
+                        UUID = Some(resp.uuid);
+                    }
+                    update_status().await;
+                } else {
+                    panic!("Error registering service: {}", resp.status());
+                }
+            
+            },
             Err(e) => {
                 panic!("Error registering service: {}", e);
             }
@@ -56,9 +80,12 @@ pub mod discovery_client {
             Ok(settings) => settings,
             Err(e) => panic!("Error loading settings: {}", e)
         };
-        let hostname = gethostname().into_string().unwrap();
         let client = reqwest::Client::new();
-        let url = format!("{}/api/services/{}/{}:{}:{}?status=Up", settings.scout_quest_config.uri, settings.scout_quest_config.service_name.replace(" ", "_").to_uppercase(), hostname, settings.scout_quest_config.service_name.replace(" ", "_").to_uppercase(), settings.server.port);
+        let uuid = match unsafe { UUID.clone() } {
+            Some(uuid) => uuid,
+            None => panic!("UUID not set")
+        };
+        let url = format!("{}/api/services/{}?status=Up", settings.scout_quest_config.uri, uuid);
         match client.put(url)
             .send()
             .await {
