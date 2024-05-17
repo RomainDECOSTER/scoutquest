@@ -1,4 +1,4 @@
 [workspace]
 resolver = "2"
-members = [ "client","server"]
+members = [ "scoutquest-client","scoutquest-server"]
 package = { authors = ["Romain De Coster <romain.decoster@pm.me>"], keywords = ["scoutquest", "discovery"], homepage = "https://github.com/RomainDECOSTER/scoutquest", repository = "https://github.com/RomainDECOSTER/scoutquest", readme = "README.md", license = "MIT" }
