@@ -7,7 +7,27 @@ struct ServiceResponse {
     uuid: String,
 }
 
-
+/// discovery_client module
+/// 
+/// This module is responsible for registering the service to the server and updating the service status.
+/// 
+/// # Example
+/// ```
+/// use scoutquest_client::discovery_client::init;
+/// 
+/// #[tokio::main]
+/// async fn main() {
+///     init().await;
+/// }
+/// ```
+/// # Note
+/// This module uses the settings module to load the settings.
+/// 
+/// This module will start a scheduler to update the service status every 30 seconds.
+/// 
+/// # Panics
+/// 
+/// This module will panic if the settings can not be loaded, the local ip address can not be retrieved, the hostname can not be retrieved, the service can not be registered, the service status can not be updated, the scheduler can not be initialized, the job can not be created.
 pub mod discovery_client {
     use crate::ServiceResponse;
     use gethostname::gethostname;
@@ -17,6 +37,13 @@ pub mod discovery_client {
 
     static mut UUID : Option<String> = None;
 
+    /// Initialize the discovery client
+    /// 
+    /// # Panics
+    /// This function will panic if the settings can not be loaded, the local ip address can not be retrieved, the hostname can not be retrieved, the service can not be registered, the service status can not be updated, the scheduler can not be initialized, the job can not be created.
+    /// 
+    /// # Note
+    /// This function will start a scheduler to update the service status every 30 seconds.
     pub async fn init() {
         let settings = match settings::ScoutQuestConfig::new() {
             Ok(settings) => settings,
@@ -82,6 +109,10 @@ pub mod discovery_client {
         sched.start().await.expect("Start scheduler failed");
     }
 
+    /// Update the service status
+    /// 
+    /// # Panics
+    /// This function will panic if the settings can not be loaded, the UUID can not be retrieved, the service status can not be updated.
     async fn update_status() {
         let settings = match settings::ScoutQuestConfig::new() {
             Ok(settings) => settings,
