@@ -1,4 +1,5 @@
-use askama_axum::Template;
+use askama_axum::{IntoResponse, Template};
+use axum::http::StatusCode;
 use axum::{Extension, Json};
 use axum::extract::{Path, Query};
 use axum::routing::{get, post, put};
@@ -89,8 +90,23 @@ async fn delete_service(Extension(state): Extension<State>, Path(uuid): Path<Uui
     Json(OkResponse::new())
 }
 
+async fn get_service_by_uuid(Extension(state): Extension<State>, Path(uuid): Path<Uuid>) -> impl IntoResponse {
+    let app_state = match state.read() {
+        Ok(state) => state,
+        Err(e) => panic!("Error getting state: {}", e)
+    };
+    for service_group in app_state.services_state.service_groups.iter(){
+        for service in service_group.services.iter(){
+            if service.id == uuid{
+                return (StatusCode::OK, Json(ServiceResponse::new(service.id))).into_response();
+            }
+        }
+    }
+    (StatusCode::NOT_FOUND, Json(OkResponse::new())).into_response()
+}
+
 pub fn services_routes() -> axum::Router {
-    axum::Router::new().route("/", post(register)).route("/:uuid", put(update_service_status).delete(delete_service))
+    axum::Router::new().route("/", post(register)).route("/:uuid", put(update_service_status).delete(delete_service).get(get_service_by_uuid))
 }
 
 async fn services_ui(Extension(state): Extension<State>) -> ServicesTemplate {
