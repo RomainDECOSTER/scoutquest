@@ -35,6 +35,24 @@ impl ServiceResponse {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+struct ServiceSearchUrl{
+    name: String,
+}
+
+#[derive(Serialize)]
+struct ServiceUrlResponse {
+    url: String
+}
+
+impl ServiceUrlResponse {
+    pub fn new(serivce: Service) -> Self{
+        Self {
+            url: format!("http://{}:{}", serivce.ip_addr, serivce.port),
+        }
+    }
+}
+
 #[derive(Template)]
 #[template(path = "services.html")]
 struct ServicesTemplate {
@@ -105,8 +123,28 @@ async fn get_service_by_uuid(Extension(state): Extension<State>, Path(uuid): Pat
     (StatusCode::NOT_FOUND, Json(OkResponse::new())).into_response()
 }
 
+async fn get_service_url(Extension(state): Extension<State>, json_body: Json<ServiceSearchUrl>) -> impl IntoResponse {
+    let app_state = match state.read() {
+        Ok(state) => state,
+        Err(e) => panic!("Error getting state: {}", e)
+    };
+    match app_state.services_state.service_groups.iter().position(|x| x.name == json_body.name.clone()) {
+        Some(index) => {
+            for service in app_state.services_state.service_groups[index].services.iter(){
+                if service.status == ServiceStatus::Up{
+                    return (StatusCode::OK, Json(ServiceUrlResponse::new(service.clone()))).into_response();
+                }
+            }
+        },
+        None => {
+            return (StatusCode::NOT_FOUND, Json(OkResponse::new())).into_response();
+        }
+    }
+    (StatusCode::NOT_FOUND, Json(OkResponse::new())).into_response()
+}
+
 pub fn services_routes() -> axum::Router {
-    axum::Router::new().route("/", post(register)).route("/:uuid", put(update_service_status).delete(delete_service).get(get_service_by_uuid))
+    axum::Router::new().route("/", post(register)).route("/:uuid", put(update_service_status).delete(delete_service).get(get_service_by_uuid)).route("/url", post(get_service_url))
 }
 
 async fn services_ui(Extension(state): Extension<State>) -> ServicesTemplate {

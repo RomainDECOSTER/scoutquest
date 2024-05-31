@@ -7,6 +7,11 @@ struct ServiceResponse {
     uuid: String,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+struct ServiceUrlResponse {
+    url: String,
+}
+
 mod status {
     pub const UP: &str = "Up";
 }
@@ -92,10 +97,7 @@ pub mod discovery_client {
             Err(e) => panic!("Error loading settings: {}", e)
         };
         let client = reqwest::blocking::Client::new();
-        let uuid = match unsafe { UUID.clone() } {
-            Some(uuid) => uuid,
-            None => panic!("UUID not set")
-        };
+        let uuid = get_uuid();
         let url = format!("{}/api/services/{}", settings.scout_quest_config.uri, uuid);
         match client.delete(url)
             .send() {
@@ -120,10 +122,7 @@ pub mod discovery_client {
         };
         
         let client = reqwest::blocking::Client::new();
-        let uuid = match unsafe { UUID.clone() } {
-            Some(uuid) => uuid,
-            None => panic!("UUID not set")
-        };
+        let uuid = get_uuid();
         let url = format!("{}/api/services/{}?status={}", settings.scout_quest_config.uri, uuid, status);
         match client.put(url)
             .send() {
@@ -145,10 +144,7 @@ pub mod discovery_client {
             Err(e) => panic!("Error loading settings: {}", e)
         };
         let client = reqwest::blocking::Client::new();
-        let uuid = match unsafe { UUID.clone() } {
-            Some(uuid) => uuid,
-            None => panic!("UUID not set")
-        };
+        let uuid = get_uuid();
         let url = format!("{}/api/services/{}", settings.scout_quest_config.uri, uuid);
         match client.get(url)
             .send() {
@@ -224,6 +220,101 @@ pub mod discovery_client {
             },
             Err(e) => {
                 panic!("Error registering service: {}", e);
+            }
+        }
+    }
+
+    /// Get the UUID
+    /// 
+    /// # Panics
+    /// 
+    /// This function will panic if the UUID is not set.
+    fn get_uuid () -> String {
+        match unsafe { UUID.clone() } {
+            Some(uuid) => uuid,
+            None => panic!("UUID not set")
+        }
+    }
+
+    /// Discovery service
+    /// 
+    /// This function will call the service discovery service to get the service url.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use scoutquest_client::discovery_client::discovery_service;
+    /// 
+    /// fn main() {
+    ///    discovery_service::call_service();
+    /// }
+    /// ```
+    /// 
+    /// # Note
+    /// 
+    /// This function must be call to get the service url before excuting an action on it.
+    pub mod discovery_service {
+        use crate::{settings, ServiceUrlResponse};
+        use std::error::Error;
+
+        /// Call the service
+        /// 
+        /// This function will retrieve the service name from the settings and call the service discovery service to get the service url.
+        /// 
+        /// # Panics
+        /// 
+        /// This function will panic if the settings can not be loaded, the service name can not be retrieved, the service url can not be retrieved.
+        pub fn call_service() {
+            let settings = match settings::ScoutQuestConfig::new() {
+                Ok(settings) => settings,
+                Err(e) => panic!("Error loading settings: {}", e)
+            };
+            println!("Calling service: {}", &settings.scout_quest_config.service_name.replace(" ", "_").to_uppercase());
+            let url = match get_service_url(settings.scout_quest_config.service_name.replace(" ", "_").to_uppercase()) {
+                Ok(url) => url,
+                Err(e) => panic!("Error getting service url: {}", e)
+            };
+            println!("Service url: {}", url);
+        }
+
+        /// Get the service url
+        /// 
+        /// # Parameters
+        /// - service_name: String
+        /// 
+        /// # Returns
+        /// String - The service url
+        /// 
+        /// # Panics
+        /// 
+        /// This function will panic if the service url can not be retrieved.
+        fn get_service_url(service_name: String) -> Result<String, Box<dyn Error>> {
+            let settings = match crate::settings::ScoutQuestConfig::new() {
+                Ok(settings) => settings,
+                Err(e) => panic!("Error loading settings: {}", e)
+            };
+            let client = reqwest::blocking::Client::new();
+            let map = serde_json::json!({
+                "name": service_name
+            });
+            let url = format!("{}/api/services/url", settings.scout_quest_config.uri);
+            match client.post(url)
+                .json(&map)
+                .send() {
+                Ok(resp) => {
+                    if resp.status().is_success() {
+                        match resp.json::<ServiceUrlResponse>() {
+                            Ok(resp) => Ok(resp.url.into()),
+                            Err(e) => panic!("Error parsing response: {}", e)
+                        }
+                    } else {
+                        panic!("Error getting service url: {}", resp.status());
+                    }
+                
+                },
+                Err(e) => {
+                    panic!("Error getting service url: {}", e);
+                }
             }
         }
     }
