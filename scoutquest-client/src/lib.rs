@@ -28,6 +28,8 @@ mod status {
 /// 
 /// This module will start a schedul task to update the service status every 30 seconds.
 /// 
+/// This module will also register a signal handler to delete the service when the program is terminated.
+/// 
 /// # Panics
 /// 
 /// This module will panic if the settings can not be loaded, the local ip address can not be retrieved, the hostname can not be retrieved, the service can not be registered, the service status can not be updated, the scheduler can not be initialized, the job can not be created.
@@ -68,7 +70,40 @@ pub mod discovery_client {
             }
         });
         register_service()?;
+        let mut signals = signal_hook::iterator::Signals::new(&[signal_hook::consts::SIGTERM, signal_hook::consts::SIGINT])?;
+
+        thread::spawn(move || {
+            for _ in signals.forever() {
+                let _ = delete_service();
+                std::process::exit(0);
+            }
+        });
         Ok(())
+    }
+
+    /// Delete the service
+    /// 
+    /// # Panics
+    /// 
+    /// This function will panic if the settings can not be loaded, the UUID can not be retrieved, the service can not be deleted.
+    fn delete_service() -> Result<(), Box<dyn Error>> {
+        let settings = match settings::ScoutQuestConfig::new() {
+            Ok(settings) => settings,
+            Err(e) => panic!("Error loading settings: {}", e)
+        };
+        let client = reqwest::blocking::Client::new();
+        let uuid = match unsafe { UUID.clone() } {
+            Some(uuid) => uuid,
+            None => panic!("UUID not set")
+        };
+        let url = format!("{}/api/services/{}", settings.scout_quest_config.uri, uuid);
+        match client.delete(url)
+            .send() {
+            Ok(_) => Ok(()),
+            Err(e) => {
+                panic!("Error deleting service: {}", e);
+            }
+        }
     }
 
     /// Update the service status
