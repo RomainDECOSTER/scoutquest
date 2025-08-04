@@ -1,0 +1,36 @@
+[package]
+name = "scoutquest-rust"
+version = "1.0.0"
+edition = "2021"
+description = "Rust SDK for SquoutQuest Service Discovery - Universal service discovery for microservices architectures"
+license = "MIT"
+repository = "https://github.com/scoutquest/scoutquest"
+homepage = "https://scoutquest.dev"
+documentation = "https://docs.rs/scoutquest-rust"
+authors = ["SquoutQuest Team <team@scoutquest.dev>"]
+keywords = ["microservices", "service-discovery", "load-balancing", "scoutquest", "distributed-systems"]
+categories = ["network-programming", "web-programming", "asynchronous"]
+readme = "README.md"
+rust-version = "1.70"
+
+[dependencies]
+reqwest = { version = "0.12.22", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+anyhow = "1.0"
+thiserror = "2.0.12"
+fastrand = "2.0"
+url = "2.4"
+
+[dev-dependencies]
+wiremock = "0.6.4"
+criterion = "0.7.0"
+
+
+
+[[bench]]
+name = "client_benchmark"
+harness = false
