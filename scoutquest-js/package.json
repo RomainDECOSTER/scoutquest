@@ -1,0 +1,83 @@
+{
+  "name": "@scoutquest/sdk",
+  "version": "1.0.0",
+  "description": "ScoutQuest Service Discovery SDK for Node.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rimraf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:build": "pnpm run build && node test-cjs.js && node test-esm.mjs",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "lint:check": "eslint --print-config src/index.ts",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "typecheck": "tsc --noEmit",
+    "quality": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm test",
+    "prepublishOnly": "pnpm run quality && pnpm run build",
+    "dev": "tsx watch examples/basic.ts"
+  },
+  "keywords": [
+    "service-discovery",
+    "microservices",
+    "load-balancing",
+    "scoutquest",
+    "typescript",
+    "node"
+  ],
+  "author": "ScoutQuest Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RomainDECOSTER/scoutquest.git",
+    "directory": "scoutquest-js"
+  },
+  "bugs": {
+    "url": "https://github.com/RomainDECOSTER/scoutquest/issues"
+  },
+  "homepage": "https://github.com/RomainDECOSTER/scoutquest#readme",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "globals": "^15.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.1.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
+}
