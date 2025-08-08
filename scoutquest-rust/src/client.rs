@@ -10,6 +10,30 @@ use tokio::time::{interval, sleep};
 use tracing::{info, warn, error, debug};
 use url::Url;
 
+/// The main client for interacting with ScoutQuest Service Discovery.
+/// 
+/// This client provides methods for service registration, discovery, load balancing,
+/// and making HTTP calls to discovered services. It handles automatic heartbeats
+/// for registered services and includes retry logic for failed requests.
+/// 
+/// # Examples
+/// 
+/// ```rust,no_run
+/// use scoutquest_rust::*;
+/// 
+/// #[tokio::main]
+/// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+///     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+///     
+///     // Register a service
+///     client.register_service("my-service", "localhost", 3000, None).await?;
+///     
+///     // Discover services
+///     let instances = client.discover_service("other-service", None).await?;
+///     
+///     Ok(())
+/// }
+/// ```
 #[derive(Clone)]
 pub struct ServiceDiscoveryClient {
     discovery_url: String,
@@ -22,10 +46,40 @@ pub struct ServiceDiscoveryClient {
 }
 
 impl ServiceDiscoveryClient {
+    /// Creates a new ServiceDiscoveryClient with default configuration.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `discovery_url` - The base URL of the ScoutQuest discovery server
+    /// 
+    /// # Returns
+    /// 
+    /// Returns a Result containing the client or an error if the URL is invalid.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// use scoutquest_rust::ServiceDiscoveryClient;
+    /// 
+    /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn new(discovery_url: &str) -> Result<Self> {
         Self::with_config(discovery_url, Duration::from_secs(30), 3, Duration::from_secs(1))
     }
 
+    /// Creates a new ServiceDiscoveryClient with custom configuration.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `discovery_url` - The base URL of the ScoutQuest discovery server
+    /// * `timeout` - HTTP request timeout
+    /// * `retry_attempts` - Number of retry attempts for failed requests
+    /// * `retry_delay` - Base delay between retry attempts
+    /// 
+    /// # Returns
+    /// 
+    /// Returns a Result containing the client or an error if the URL is invalid.
     pub fn with_config(
         discovery_url: &str,
         timeout: Duration,
@@ -52,6 +106,39 @@ impl ServiceDiscoveryClient {
         })
     }
 
+    /// Registers a service with the ScoutQuest discovery server.
+    /// 
+    /// This method registers a service instance and starts automatic heartbeat
+    /// to maintain the registration. Only one service can be registered per client.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to register
+    /// * `host` - The hostname or IP address where the service is running
+    /// * `port` - The port number where the service is listening
+    /// * `options` - Optional registration options (metadata, tags, health check, etc.)
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the registered ServiceInstance or an error if registration fails.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// use scoutquest_rust::*;
+    /// 
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    /// 
+    /// let options = ServiceRegistrationOptions::new()
+    ///     .with_tags(vec!["api".to_string(), "v1".to_string()]);
+    /// 
+    /// let instance = client.register_service("user-service", "localhost", 3000, Some(options)).await?;
+    /// println!("Registered with ID: {}", instance.id);
+    /// # Ok(())
+    /// # }
+    /// ```
     pub async fn register_service(
         &self,
         service_name: &str,
@@ -99,6 +186,33 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Discovers instances of a specific service.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to discover
+    /// * `options` - Optional discovery options (healthy only, tags filter, limit)
+    /// 
+    /// # Returns
+    /// 
+    /// Returns a vector of ServiceInstance objects, or an empty vector if no instances are found.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// use scoutquest_rust::*;
+    /// 
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    /// 
+    /// let instances = client.discover_service("user-service", None).await?;
+    /// for instance in instances {
+    ///     println!("Found instance: {}:{}", instance.host, instance.port);
+    /// }
+    /// # Ok(())
+    /// # }
+    /// ```
     pub async fn discover_service(
         &self,
         service_name: &str,
@@ -135,6 +249,16 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Selects a service instance using the specified load balancing strategy.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service
+    /// * `strategy` - The load balancing strategy to use
+    /// 
+    /// # Returns
+    /// 
+    /// Returns a selected ServiceInstance or an error if no instances are available.
     pub async fn load_balance_service(
         &self,
         service_name: &str,
@@ -152,6 +276,15 @@ impl ServiceDiscoveryClient {
         Ok(selected)
     }
 
+    /// Finds all services that have the specified tag.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `tag` - The tag to search for
+    /// 
+    /// # Returns
+    /// 
+    /// Returns a vector of Service objects that have the specified tag.
     pub async fn get_services_by_tag(&self, tag: &str) -> Result<Vec<Service>> {
         let url = format!("{}/api/v1/tags/{}/services", self.discovery_url, tag);
 
@@ -166,6 +299,17 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Calls a REST API endpoint on a discovered service.
+    ///
+    /// # Arguments
+    ///
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// * `method` - The HTTP method to use
+    ///
+    /// # Returns
+    ///
+    /// Returns the deserialized response of type T.
     pub async fn call_service<T>(
         &self,
         service_name: &str,
@@ -201,6 +345,19 @@ impl ServiceDiscoveryClient {
         unreachable!()
     }
 
+    /// Tries to call a service endpoint with the specified parameters.
+    /// 
+    /// # Arguments
+    ///
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// * `method` - The HTTP method to use
+    /// * `body` - The request body
+    /// * `strategy` - The load balancing strategy to use
+    ///
+    /// # Returns
+    ///
+    /// Returns the deserialized response of type T.
     async fn try_call_service<T>(
         &self,
         service_name: &str,
@@ -235,6 +392,31 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Makes an HTTP GET request to a discovered service.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the deserialized response of type T.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// use scoutquest_rust::*;
+    /// use serde_json::Value;
+    /// 
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    /// 
+    /// let response: Value = client.get("user-service", "/api/users").await?;
+    /// # Ok(())
+    /// # }
+    /// ```
     pub async fn get<T>(&self, service_name: &str, path: &str) -> Result<T>
     where
         T: serde::de::DeserializeOwned,
@@ -243,6 +425,17 @@ impl ServiceDiscoveryClient {
             .await
     }
 
+    /// Makes an HTTP POST request to a discovered service.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// * `body` - The JSON body to send
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the deserialized response of type T.
     pub async fn post<T>(&self, service_name: &str, path: &str, body: Value) -> Result<T>
     where
         T: serde::de::DeserializeOwned,
@@ -251,6 +444,17 @@ impl ServiceDiscoveryClient {
             .await
     }
 
+    /// Makes an HTTP PUT request to a discovered service.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// * `body` - The JSON body to send
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the deserialized response of type T.
     pub async fn put<T>(&self, service_name: &str, path: &str, body: Value) -> Result<T>
     where
         T: serde::de::DeserializeOwned,
@@ -259,12 +463,48 @@ impl ServiceDiscoveryClient {
             .await
     }
 
+    /// Makes an HTTP DELETE request to a discovered service.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `service_name` - The name of the service to call
+    /// * `path` - The API path to call
+    /// 
+    /// # Returns
+    /// 
+    /// Returns an empty result on success.
     pub async fn delete(&self, service_name: &str, path: &str) -> Result<()> {
         let _: Value = self.call_service(service_name, path, Method::DELETE, None, LoadBalancingStrategy::Random)
             .await?;
         Ok(())
     }
 
+    /// Deregisters the currently registered service from the discovery server.
+    /// 
+    /// This stops the automatic heartbeat and removes the service registration.
+    /// It's important to call this method before dropping the client to ensure
+    /// clean shutdown.
+    /// 
+    /// # Returns
+    /// 
+    /// Returns an empty result on success.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// use scoutquest_rust::*;
+    /// 
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    /// client.register_service("my-service", "localhost", 3000, None).await?;
+    /// 
+    /// // ... do work ...
+    /// 
+    /// client.deregister().await?;
+    /// # Ok(())
+    /// # }
+    /// ```
     pub async fn deregister(&self) -> Result<()> {
         let instance = {
             let registered = self.registered_instance.read().await;
@@ -296,6 +536,10 @@ impl ServiceDiscoveryClient {
         Ok(())
     }
 
+    /// Starts the heartbeat mechanism for the registered service instance.
+    ///
+    /// This method initiates a periodic heartbeat signal to the service discovery
+    /// server, indicating that the service instance is still alive and healthy.
     async fn start_heartbeat(&self) {
         self.stop_heartbeat().await;
 
@@ -342,6 +586,10 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Stops the heartbeat mechanism for the registered service instance.
+    ///
+    /// This method stops the periodic heartbeat signal to the service discovery
+    /// server, indicating that the service instance is no longer alive or healthy.
     async fn stop_heartbeat(&self) {
         let mut heartbeat_handle = self.heartbeat_handle.lock().await;
         if let Some(handle) = heartbeat_handle.take() {
@@ -349,17 +597,25 @@ impl ServiceDiscoveryClient {
         }
     }
 
+    /// Retrieves the currently registered service instance.
+    ///
+    /// This method returns a clone of the registered service instance, if it exists.
     pub async fn get_registered_instance(&self) -> Option<ServiceInstance> {
         let registered = self.registered_instance.read().await;
         registered.clone()
     }
 
+    /// Retrieves the discovery URL for the service.
+    ///
+    /// This method returns the discovery URL for the service.
     pub fn get_discovery_url(&self) -> &str {
         &self.discovery_url
     }
 }
 
+/// Service discovery client for interacting with the ScoutQuest server.
 impl Drop for ServiceDiscoveryClient {
+    /// This method is called when the ServiceDiscoveryClient is dropped.
     fn drop(&mut self) {
         if Arc::strong_count(&self.registered_instance) > 1 {
             warn!("ServiceDiscoveryClient dropped without calling deregister(). Call deregister() before dropping.");
