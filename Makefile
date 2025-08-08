@@ -19,12 +19,12 @@ test: ## Run tests
 clean: ## Clean artifacts
 	cd scoutquest-server && cargo clean
 	cd scoutquest-rust && cargo clean
+	cd examples/rust && cargo clean
+	cd examples/rust/axum_example && cargo clean
+	cd examples/rust/notification_example && cargo clean
 
 run-server: ## Start server
 	cd scoutquest-server && cargo run
-
-run-example: ## Run Axum example
-	cd scoutquest-rust && cargo run --example axum_service
 
 install: ## Install server
 	cd scoutquest-server && cargo install --path .

@@ -1,21 +1,27 @@
-use criterion::{criterion_group, criterion_main, Criterion, BenchmarkId};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use scoutquest_rust::*;
 use std::collections::HashMap;
 
 fn benchmark_load_balancing(c: &mut Criterion) {
-    let instances = (0..100).map(|i| ServiceInstance {
-        id: format!("instance-{}", i),
-        service_name: "benchmark-service".to_string(),
-        host: format!("host-{}", i),
-        port: 3000 + i as u16,
-        secure: false,
-        status: if i % 10 == 0 { InstanceStatus::Down } else { InstanceStatus::Up },
-        metadata: HashMap::new(),
-        tags: vec!["benchmark".to_string()],
-        registered_at: chrono::Utc::now(),
-        last_heartbeat: chrono::Utc::now(),
-        last_status_change: chrono::Utc::now(),
-    }).collect::<Vec<_>>();
+    let instances = (0..100)
+        .map(|i| ServiceInstance {
+            id: format!("instance-{}", i),
+            service_name: "benchmark-service".to_string(),
+            host: format!("host-{}", i),
+            port: 3000 + i as u16,
+            secure: false,
+            status: if i % 10 == 0 {
+                InstanceStatus::Down
+            } else {
+                InstanceStatus::Up
+            },
+            metadata: HashMap::new(),
+            tags: vec!["benchmark".to_string()],
+            registered_at: chrono::Utc::now(),
+            last_heartbeat: chrono::Utc::now(),
+            last_status_change: chrono::Utc::now(),
+        })
+        .collect::<Vec<_>>();
 
     let load_balancer = LoadBalancer::new();
 
@@ -34,10 +40,12 @@ fn benchmark_load_balancing(c: &mut Criterion) {
             &strategy,
             |b, strategy| {
                 b.iter(|| {
-                    load_balancer.select_instance(
-                        std::hint::black_box(&instances),
-                        std::hint::black_box(strategy)
-                    ).unwrap()
+                    load_balancer
+                        .select_instance(
+                            std::hint::black_box(&instances),
+                            std::hint::black_box(strategy),
+                        )
+                        .unwrap()
                 })
             },
         );
@@ -65,45 +73,45 @@ fn benchmark_service_instance_operations(c: &mut Criterion) {
     };
 
     c.bench_function("is_healthy", |b| {
-        b.iter(|| {
-            std::hint::black_box(&instance).is_healthy()
-        })
+        b.iter(|| std::hint::black_box(&instance).is_healthy())
     });
 
     c.bench_function("get_url", |b| {
-        b.iter(|| {
-            std::hint::black_box(&instance).get_url("/api/v1/users")
-        })
+        b.iter(|| std::hint::black_box(&instance).get_url("/api/v1/users"))
     });
 }
 
 fn benchmark_instance_pool_sizes(c: &mut Criterion) {
     let load_balancer = LoadBalancer::new();
-    
+
     for pool_size in [1, 5, 10, 50, 100, 500, 1000].iter() {
-        let instances = (0..*pool_size).map(|i| ServiceInstance {
-            id: format!("instance-{}", i),
-            service_name: "test-service".to_string(),
-            host: format!("host-{}", i),
-            port: 3000 + i as u16,
-            secure: false,
-            status: InstanceStatus::Up,
-            metadata: HashMap::new(),
-            tags: Vec::new(),
-            registered_at: chrono::Utc::now(),
-            last_heartbeat: chrono::Utc::now(),
-            last_status_change: chrono::Utc::now(),
-        }).collect::<Vec<_>>();
+        let instances = (0..*pool_size)
+            .map(|i| ServiceInstance {
+                id: format!("instance-{}", i),
+                service_name: "test-service".to_string(),
+                host: format!("host-{}", i),
+                port: 3000 + i as u16,
+                secure: false,
+                status: InstanceStatus::Up,
+                metadata: HashMap::new(),
+                tags: Vec::new(),
+                registered_at: chrono::Utc::now(),
+                last_heartbeat: chrono::Utc::now(),
+                last_status_change: chrono::Utc::now(),
+            })
+            .collect::<Vec<_>>();
 
         c.bench_with_input(
             BenchmarkId::new("random_selection_pool_size", pool_size),
             &instances,
             |b, instances| {
                 b.iter(|| {
-                    load_balancer.select_instance(
-                        std::hint::black_box(instances),
-                        std::hint::black_box(&LoadBalancingStrategy::Random)
-                    ).unwrap()
+                    load_balancer
+                        .select_instance(
+                            std::hint::black_box(instances),
+                            std::hint::black_box(&LoadBalancingStrategy::Random),
+                        )
+                        .unwrap()
                 })
             },
         );
@@ -113,10 +121,12 @@ fn benchmark_instance_pool_sizes(c: &mut Criterion) {
             &instances,
             |b, instances| {
                 b.iter(|| {
-                    load_balancer.select_instance(
-                        std::hint::black_box(instances),
-                        std::hint::black_box(&LoadBalancingStrategy::RoundRobin)
-                    ).unwrap()
+                    load_balancer
+                        .select_instance(
+                            std::hint::black_box(instances),
+                            std::hint::black_box(&LoadBalancingStrategy::RoundRobin),
+                        )
+                        .unwrap()
                 })
             },
         );
@@ -126,10 +136,12 @@ fn benchmark_instance_pool_sizes(c: &mut Criterion) {
             &instances,
             |b, instances| {
                 b.iter(|| {
-                    load_balancer.select_instance(
-                        std::hint::black_box(instances),
-                        std::hint::black_box(&LoadBalancingStrategy::HealthyOnly)
-                    ).unwrap()
+                    load_balancer
+                        .select_instance(
+                            std::hint::black_box(instances),
+                            std::hint::black_box(&LoadBalancingStrategy::HealthyOnly),
+                        )
+                        .unwrap()
                 })
             },
         );
@@ -158,9 +170,7 @@ fn benchmark_serialization(c: &mut Criterion) {
     };
 
     c.bench_function("serialize_service_instance", |b| {
-        b.iter(|| {
-            serde_json::to_string(std::hint::black_box(&instance)).unwrap()
-        })
+        b.iter(|| serde_json::to_string(std::hint::black_box(&instance)).unwrap())
     });
 
     let serialized = serde_json::to_string(&instance).unwrap();
@@ -170,30 +180,35 @@ fn benchmark_serialization(c: &mut Criterion) {
         })
     });
 
-    let instances_list: Vec<ServiceInstance> = (0..100).map(|i| ServiceInstance {
-        id: format!("instance-{}", i),
-        service_name: format!("service-{}", i % 10),
-        host: format!("host-{}.example.com", i),
-        port: 3000 + i as u16,
-        secure: i % 2 == 0,
-        status: if i % 5 == 0 { InstanceStatus::Down } else { InstanceStatus::Up },
-        metadata: HashMap::new(),
-        tags: vec!["benchmark".to_string()],
-        registered_at: chrono::Utc::now(),
-        last_heartbeat: chrono::Utc::now(),
-        last_status_change: chrono::Utc::now(),
-    }).collect();
+    let instances_list: Vec<ServiceInstance> = (0..100)
+        .map(|i| ServiceInstance {
+            id: format!("instance-{}", i),
+            service_name: format!("service-{}", i % 10),
+            host: format!("host-{}.example.com", i),
+            port: 3000 + i as u16,
+            secure: i % 2 == 0,
+            status: if i % 5 == 0 {
+                InstanceStatus::Down
+            } else {
+                InstanceStatus::Up
+            },
+            metadata: HashMap::new(),
+            tags: vec!["benchmark".to_string()],
+            registered_at: chrono::Utc::now(),
+            last_heartbeat: chrono::Utc::now(),
+            last_status_change: chrono::Utc::now(),
+        })
+        .collect();
 
     c.bench_function("serialize_instances_list", |b| {
-        b.iter(|| {
-            serde_json::to_string(std::hint::black_box(&instances_list)).unwrap()
-        })
+        b.iter(|| serde_json::to_string(std::hint::black_box(&instances_list)).unwrap())
     });
 
     let serialized_list = serde_json::to_string(&instances_list).unwrap();
     c.bench_function("deserialize_instances_list", |b| {
         b.iter(|| {
-            serde_json::from_str::<Vec<ServiceInstance>>(std::hint::black_box(&serialized_list)).unwrap()
+            serde_json::from_str::<Vec<ServiceInstance>>(std::hint::black_box(&serialized_list))
+                .unwrap()
         })
     });
 }

@@ -1,10 +1,10 @@
+use crate::error::{Result, ScoutQuestError};
 use crate::models::ServiceInstance;
-use crate::error::{ScoutQuestError, Result};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 
 /// Strategies for load balancing across service instances.
-/// 
+///
 /// Different strategies can be used depending on your requirements:
 /// - Random: Good for general purpose load distribution
 /// - RoundRobin: Ensures even distribution across all instances
@@ -26,7 +26,7 @@ pub enum LoadBalancingStrategy {
 }
 
 /// Load balancer for selecting service instances.
-/// 
+///
 /// The LoadBalancer implements various strategies for distributing requests
 /// across multiple instances of a service. It maintains state for round-robin
 /// selection and can filter instances based on health status.
@@ -44,23 +44,23 @@ impl LoadBalancer {
     }
 
     /// Selects a service instance using the specified strategy.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `instances` - Slice of available service instances
     /// * `strategy` - The load balancing strategy to use
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// Returns a selected ServiceInstance or an error if no suitable instance is available.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust
     /// use scoutquest_rust::*;
     /// use std::collections::HashMap;
     /// use chrono::Utc;
-    /// 
+    ///
     /// let instances = vec![
     ///     ServiceInstance {
     ///         id: "1".to_string(),
@@ -76,7 +76,7 @@ impl LoadBalancer {
     ///         last_status_change: Utc::now(),
     ///     }
     /// ];
-    /// 
+    ///
     /// let balancer = LoadBalancer::new();
     /// let selected = balancer.select_instance(&instances, &LoadBalancingStrategy::Random).unwrap();
     /// assert_eq!(selected.id, "1");
@@ -110,12 +110,11 @@ impl LoadBalancer {
                 Ok(target_instances[index].clone())
             }
             LoadBalancingStrategy::RoundRobin => {
-                let index = self.round_robin_counter.fetch_add(1, Ordering::Relaxed) % target_instances.len();
+                let index = self.round_robin_counter.fetch_add(1, Ordering::Relaxed)
+                    % target_instances.len();
                 Ok(target_instances[index].clone())
             }
-            LoadBalancingStrategy::LeastConnections => {
-                Ok(target_instances[0].clone())
-            }
+            LoadBalancingStrategy::LeastConnections => Ok(target_instances[0].clone()),
             LoadBalancingStrategy::WeightedRandom => {
                 let index = fastrand::usize(0..target_instances.len());
                 Ok(target_instances[index].clone())
@@ -141,9 +140,9 @@ impl Default for LoadBalancer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::models::{ServiceInstance, InstanceStatus};
-    use std::collections::HashMap;
+    use crate::models::{InstanceStatus, ServiceInstance};
     use chrono::Utc;
+    use std::collections::HashMap;
 
     fn create_test_instances() -> Vec<ServiceInstance> {
         vec![
@@ -202,7 +201,7 @@ mod tests {
 
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::Random);
         assert!(result.is_ok());
-        
+
         let selected = result.unwrap();
         assert!(instances.iter().any(|i| i.id == selected.id));
     }
@@ -212,10 +211,18 @@ mod tests {
         let balancer = LoadBalancer::new();
         let instances = create_test_instances();
 
-        let first = balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin).unwrap();
-        let second = balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin).unwrap();
-        let third = balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin).unwrap();
-        let fourth = balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin).unwrap();
+        let first = balancer
+            .select_instance(&instances, &LoadBalancingStrategy::RoundRobin)
+            .unwrap();
+        let second = balancer
+            .select_instance(&instances, &LoadBalancingStrategy::RoundRobin)
+            .unwrap();
+        let third = balancer
+            .select_instance(&instances, &LoadBalancingStrategy::RoundRobin)
+            .unwrap();
+        let fourth = balancer
+            .select_instance(&instances, &LoadBalancingStrategy::RoundRobin)
+            .unwrap();
 
         // Should cycle through healthy instances (first two)
         assert_ne!(first.id, second.id);
@@ -230,7 +237,7 @@ mod tests {
 
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::HealthyOnly);
         assert!(result.is_ok());
-        
+
         let selected = result.unwrap();
         assert!(selected.is_healthy());
         assert!(selected.id == "instance-1" || selected.id == "instance-2");
@@ -240,7 +247,7 @@ mod tests {
     fn test_healthy_only_strategy_no_healthy_instances() {
         let balancer = LoadBalancer::new();
         let mut instances = create_test_instances();
-        
+
         // Make all instances unhealthy
         for instance in &mut instances {
             instance.status = InstanceStatus::Down;
@@ -248,7 +255,7 @@ mod tests {
 
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::HealthyOnly);
         assert!(result.is_err());
-        
+
         if let Err(ScoutQuestError::NoHealthyInstances { service_name }) = result {
             assert_eq!(service_name, "test-service");
         } else {
@@ -263,7 +270,7 @@ mod tests {
 
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::Random);
         assert!(result.is_err());
-        
+
         if let Err(ScoutQuestError::InternalError(msg)) = result {
             assert!(msg.contains("Aucune instance disponible"));
         } else {
@@ -279,7 +286,7 @@ mod tests {
         // LeastConnections currently falls back to first instance
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::LeastConnections);
         assert!(result.is_ok());
-        
+
         let selected = result.unwrap();
         assert_eq!(selected.id, "instance-1");
     }
@@ -292,7 +299,7 @@ mod tests {
         // WeightedRandom currently falls back to random selection
         let result = balancer.select_instance(&instances, &LoadBalancingStrategy::WeightedRandom);
         assert!(result.is_ok());
-        
+
         let selected = result.unwrap();
         assert!(instances.iter().any(|i| i.id == selected.id));
     }

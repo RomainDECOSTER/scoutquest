@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
-    use serde_json::json;
     use scoutquest_rust::*;
-    use wiremock::{MockServer, Mock, ResponseTemplate};
+    use serde_json::json;
+    use std::collections::HashMap;
     use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
 
     #[tokio::test]
     async fn test_service_registration() {
@@ -32,12 +32,14 @@ mod tests {
 
         let client = ServiceDiscoveryClient::new(&mock_server.uri()).unwrap();
 
-        let result = client.register_service(
-            "test-service",
-            "localhost",
-            3000,
-            Some(ServiceRegistrationOptions::new())
-        ).await;
+        let result = client
+            .register_service(
+                "test-service",
+                "localhost",
+                3000,
+                Some(ServiceRegistrationOptions::new()),
+            )
+            .await;
 
         assert!(result.is_ok());
         let instance = result.unwrap();
@@ -163,23 +165,22 @@ mod tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap().id, "1");
 
-        let unhealthy_instances = vec![
-            ServiceInstance {
-                id: "1".to_string(),
-                service_name: "test".to_string(),
-                host: "host1".to_string(),
-                port: 3000,
-                secure: false,
-                status: InstanceStatus::Down,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            },
-        ];
+        let unhealthy_instances = vec![ServiceInstance {
+            id: "1".to_string(),
+            service_name: "test".to_string(),
+            host: "host1".to_string(),
+            port: 3000,
+            secure: false,
+            status: InstanceStatus::Down,
+            metadata: HashMap::new(),
+            tags: Vec::new(),
+            registered_at: chrono::Utc::now(),
+            last_heartbeat: chrono::Utc::now(),
+            last_status_change: chrono::Utc::now(),
+        }];
 
-        let result = load_balancer.select_instance(&unhealthy_instances, &LoadBalancingStrategy::HealthyOnly);
+        let result = load_balancer
+            .select_instance(&unhealthy_instances, &LoadBalancingStrategy::HealthyOnly);
         assert!(result.is_err());
     }
 
@@ -220,12 +221,17 @@ mod tests {
             .with_metadata(metadata.clone())
             .with_tags(vec!["api".to_string(), "v1".to_string()]);
 
-        let result = client.register_service("test-service", "localhost", 3000, Some(options)).await;
+        let result = client
+            .register_service("test-service", "localhost", 3000, Some(options))
+            .await;
 
         assert!(result.is_ok());
         let instance = result.unwrap();
         assert_eq!(instance.metadata.get("version"), Some(&"1.0.0".to_string()));
-        assert_eq!(instance.metadata.get("environment"), Some(&"test".to_string()));
+        assert_eq!(
+            instance.metadata.get("environment"),
+            Some(&"test".to_string())
+        );
         assert!(instance.tags.contains(&"api".to_string()));
         assert!(instance.tags.contains(&"v1".to_string()));
     }
@@ -261,7 +267,9 @@ mod tests {
             .with_tags(vec!["production".to_string()])
             .with_limit(5);
 
-        let result = client.discover_service("filtered-service", Some(options)).await;
+        let result = client
+            .discover_service("filtered-service", Some(options))
+            .await;
 
         assert!(result.is_ok());
         let instances = result.unwrap();
@@ -303,7 +311,9 @@ mod tests {
 
         let client = ServiceDiscoveryClient::new(&mock_server.uri()).unwrap();
 
-        let result = client.register_service("test-service", "localhost", 3000, None).await;
+        let result = client
+            .register_service("test-service", "localhost", 3000, None)
+            .await;
 
         assert!(result.is_err());
         if let Err(ScoutQuestError::RegistrationFailed { status, message }) = result {
@@ -370,7 +380,9 @@ mod tests {
 
         // Mock deregistration
         Mock::given(method("DELETE"))
-            .and(path("/api/v1/services/test-service/instances/test-deregister"))
+            .and(path(
+                "/api/v1/services/test-service/instances/test-deregister",
+            ))
             .respond_with(ResponseTemplate::new(200))
             .mount(&mock_server)
             .await;
@@ -378,7 +390,10 @@ mod tests {
         let client = ServiceDiscoveryClient::new(&mock_server.uri()).unwrap();
 
         // Register first
-        let _instance = client.register_service("test-service", "localhost", 3000, None).await.unwrap();
+        let _instance = client
+            .register_service("test-service", "localhost", 3000, None)
+            .await
+            .unwrap();
 
         // Then deregister
         let result = client.deregister().await;

@@ -1,9 +1,9 @@
-use std::sync::Arc;
-use tokio_cron_scheduler::{Job, JobScheduler};
 use reqwest::Client;
+use std::sync::Arc;
 use std::time::Duration;
+use tokio_cron_scheduler::{Job, JobScheduler};
 
-use crate::{registry::ServiceRegistry, models::InstanceStatus, HealthCheckConfig};
+use crate::{models::InstanceStatus, registry::ServiceRegistry, HealthCheckConfig};
 
 pub struct HealthChecker {
     registry: Arc<ServiceRegistry>,
@@ -71,8 +71,14 @@ impl HealthChecker {
                     InstanceStatus::Down
                 };
 
-                if !matches!((instance.status.clone(), &new_status), (InstanceStatus::Up, InstanceStatus::Up) | (InstanceStatus::Down, InstanceStatus::Down)) {
-                    registry.update_instance_status(&instance.id, new_status).await;
+                if !matches!(
+                    (instance.status.clone(), &new_status),
+                    (InstanceStatus::Up, InstanceStatus::Up)
+                        | (InstanceStatus::Down, InstanceStatus::Down)
+                ) {
+                    registry
+                        .update_instance_status(&instance.id, new_status)
+                        .await;
                 }
             }
         }
@@ -82,10 +88,10 @@ impl HealthChecker {
         let now = chrono::Utc::now();
         let stale_threshold = chrono::Duration::minutes(5);
 
-        let stale_instances: Vec<String> = registry.get_all_instances().iter()
-            .filter(|entry| {
-                now.signed_duration_since(entry.last_heartbeat) > stale_threshold
-            })
+        let stale_instances: Vec<String> = registry
+            .get_all_instances()
+            .iter()
+            .filter(|entry| now.signed_duration_since(entry.last_heartbeat) > stale_threshold)
             .map(|entry| entry.id.clone())
             .collect();
 
@@ -95,11 +101,15 @@ impl HealthChecker {
         }
     }
 
-    async fn check_instance_health(client: &Client, health_check: &crate::models::HealthCheck) -> bool {
-        let mut request = client.request(
-            health_check.method.parse().unwrap_or(reqwest::Method::GET),
-            &health_check.url
-        )
+    async fn check_instance_health(
+        client: &Client,
+        health_check: &crate::models::HealthCheck,
+    ) -> bool {
+        let mut request = client
+            .request(
+                health_check.method.parse().unwrap_or(reqwest::Method::GET),
+                &health_check.url,
+            )
             .timeout(Duration::from_secs(health_check.timeout_seconds));
 
         if let Some(headers) = &health_check.headers {

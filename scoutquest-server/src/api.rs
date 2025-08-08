@@ -4,7 +4,7 @@ use axum::{
     response::Json,
 };
 
-use crate::{AppState, models::*};
+use crate::{models::*, AppState};
 
 pub async fn list_services(State(state): State<AppState>) -> Json<Vec<Service>> {
     let services = state.registry.get_all_services().await;
@@ -33,12 +33,11 @@ pub async fn get_service(
     }
 }
 
-pub async fn delete_service(
-    State(state): State<AppState>,
-    Path(name): Path<String>,
-) -> StatusCode {
-
-    let instances: Vec<_> = state.registry.get_all_instances().iter()
+pub async fn delete_service(State(state): State<AppState>, Path(name): Path<String>) -> StatusCode {
+    let instances: Vec<_> = state
+        .registry
+        .get_all_instances()
+        .iter()
         .filter(|entry| entry.service_name == name)
         .map(|entry| entry.id.clone())
         .collect();
@@ -108,7 +107,11 @@ pub async fn update_status(
     Path((_, id)): Path<(String, String)>,
     Json(request): Json<UpdateStatusRequest>,
 ) -> StatusCode {
-    if state.registry.update_instance_status(&id, request.status).await {
+    if state
+        .registry
+        .update_instance_status(&id, request.status)
+        .await
+    {
         StatusCode::OK
     } else {
         StatusCode::NOT_FOUND
@@ -135,9 +138,7 @@ pub async fn get_services_by_tag(
     Json(services)
 }
 
-pub async fn get_events(
-    State(state): State<AppState>,
-) -> Json<serde_json::Value> {
+pub async fn get_events(State(state): State<AppState>) -> Json<serde_json::Value> {
     Json(serde_json::json!({
         "message": "Real-time events available via WebSocket at /ws"
     }))

@@ -1,9 +1,9 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use chrono::{DateTime, Utc};
 
 /// Represents a service instance in the ScoutQuest discovery system.
-/// 
+///
 /// A service instance contains all the information needed to connect to
 /// and identify a specific instance of a service, including its network
 /// location, health status, and metadata.
@@ -40,22 +40,22 @@ impl ServiceInstance {
     }
 
     /// Constructs the full URL for a given path on this service instance.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `path` - The API path to append to the base URL
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// A complete URL string ready to be used for HTTP requests.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust
     /// use scoutquest_rust::*;
     /// use std::collections::HashMap;
     /// use chrono::Utc;
-    /// 
+    ///
     /// let instance = ServiceInstance {
     ///     id: "test-1".to_string(),
     ///     service_name: "api".to_string(),
@@ -69,13 +69,17 @@ impl ServiceInstance {
     ///     last_heartbeat: Utc::now(),
     ///     last_status_change: Utc::now(),
     /// };
-    /// 
+    ///
     /// assert_eq!(instance.get_url("/users"), "http://localhost:3000/users");
     /// assert_eq!(instance.get_url("users"), "http://localhost:3000/users");
     /// ```
     pub fn get_url(&self, path: &str) -> String {
         let protocol = if self.secure { "https" } else { "http" };
-        let clean_path = if path.starts_with('/') { path } else { &format!("/{}", path) };
+        let clean_path = if path.starts_with('/') {
+            path
+        } else {
+            &format!("/{}", path)
+        };
         format!("{}://{}:{}{}", protocol, self.host, self.port, clean_path)
     }
 }
@@ -98,7 +102,7 @@ pub enum InstanceStatus {
 }
 
 /// Configuration for health check endpoints.
-/// 
+///
 /// Defines how the ScoutQuest server should check the health of a service instance.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HealthCheck {
@@ -131,7 +135,7 @@ impl Default for HealthCheck {
 }
 
 /// Optional configuration for service registration.
-/// 
+///
 /// This struct allows you to specify additional metadata, tags, health checks,
 /// and security settings when registering a service.
 #[derive(Debug, Clone, Default)]
@@ -231,8 +235,8 @@ pub struct Service {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::collections::HashMap;
     use chrono::Utc;
+    use std::collections::HashMap;
 
     fn create_test_instance() -> ServiceInstance {
         ServiceInstance {
@@ -253,7 +257,7 @@ mod tests {
     #[test]
     fn test_service_instance_is_healthy() {
         let mut instance = create_test_instance();
-        
+
         // Test healthy status
         instance.status = InstanceStatus::Up;
         assert!(instance.is_healthy());
@@ -279,8 +283,14 @@ mod tests {
     fn test_service_instance_get_url() {
         let instance = create_test_instance();
 
-        assert_eq!(instance.get_url("/api/users"), "http://localhost:3000/api/users");
-        assert_eq!(instance.get_url("api/users"), "http://localhost:3000/api/users");
+        assert_eq!(
+            instance.get_url("/api/users"),
+            "http://localhost:3000/api/users"
+        );
+        assert_eq!(
+            instance.get_url("api/users"),
+            "http://localhost:3000/api/users"
+        );
         assert_eq!(instance.get_url("/"), "http://localhost:3000/");
         assert_eq!(instance.get_url(""), "http://localhost:3000/");
     }
@@ -290,13 +300,16 @@ mod tests {
         let mut instance = create_test_instance();
         instance.secure = true;
 
-        assert_eq!(instance.get_url("/api/users"), "https://localhost:3000/api/users");
+        assert_eq!(
+            instance.get_url("/api/users"),
+            "https://localhost:3000/api/users"
+        );
     }
 
     #[test]
     fn test_health_check_default() {
         let health_check = HealthCheck::default();
-        
+
         assert_eq!(health_check.url, "");
         assert_eq!(health_check.interval_seconds, 30);
         assert_eq!(health_check.timeout_seconds, 10);

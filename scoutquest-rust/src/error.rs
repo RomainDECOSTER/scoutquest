@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 /// Errors that can occur when using the ScoutQuest Rust SDK.
-/// 
+///
 /// This enum covers all possible error conditions including network failures,
 /// service discovery issues, and protocol-level errors.
 #[derive(Error, Debug)]
@@ -70,12 +70,18 @@ mod tests {
             status: 500,
             message: "Internal server error".to_string(),
         };
-        assert_eq!(error.to_string(), "Registration failed: 500 - Internal server error");
+        assert_eq!(
+            error.to_string(),
+            "Registration failed: 500 - Internal server error"
+        );
 
         let error = ScoutQuestError::NoHealthyInstances {
             service_name: "api-service".to_string(),
         };
-        assert_eq!(error.to_string(), "No healthy instances available for service: api-service");
+        assert_eq!(
+            error.to_string(),
+            "No healthy instances available for service: api-service"
+        );
 
         let error = ScoutQuestError::InternalError("Something went wrong".to_string());
         assert_eq!(error.to_string(), "Internal error: Something went wrong");

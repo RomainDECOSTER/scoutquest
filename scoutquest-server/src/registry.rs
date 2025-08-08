@@ -1,9 +1,9 @@
+use chrono::Utc;
 use dashmap::DashMap;
+use rand::prelude::IndexedRandom;
 use std::sync::atomic::{AtomicI64, AtomicUsize, Ordering};
 use tokio::sync::broadcast;
 use uuid::Uuid;
-use chrono::Utc;
-use rand::prelude::IndexedRandom;
 
 use crate::models::*;
 
@@ -28,7 +28,10 @@ impl ServiceRegistry {
         }
     }
 
-    pub async fn register_instance(&self, request: RegisterServiceRequest) -> anyhow::Result<ServiceInstance> {
+    pub async fn register_instance(
+        &self,
+        request: RegisterServiceRequest,
+    ) -> anyhow::Result<ServiceInstance> {
         let instance_id = Uuid::new_v4().to_string();
         let now = Utc::now();
 
@@ -51,7 +54,8 @@ impl ServiceRegistry {
 
         let service_existed = self.services.contains_key(&request.service_name);
 
-        self.services.entry(request.service_name.clone())
+        self.services
+            .entry(request.service_name.clone())
             .and_modify(|service| {
                 service.instances.push(instance.clone());
                 service.updated_at = now;
@@ -65,7 +69,11 @@ impl ServiceRegistry {
             });
 
         let event = ServiceEvent {
-            event_type: if service_existed { EventType::InstanceRegistered } else { EventType::ServiceRegistered },
+            event_type: if service_existed {
+                EventType::InstanceRegistered
+            } else {
+                EventType::ServiceRegistered
+            },
             service_name: request.service_name.clone(),
             instance_id: Some(instance_id.clone()),
             timestamp: now,
@@ -78,7 +86,11 @@ impl ServiceRegistry {
 
         let _ = self.event_sender.send(event);
 
-        tracing::info!("Instance registered: {} for service {}", instance_id, request.service_name);
+        tracing::info!(
+            "Instance registered: {} for service {}",
+            instance_id,
+            request.service_name
+        );
         Ok(instance)
     }
 
@@ -98,7 +110,11 @@ impl ServiceRegistry {
             }
 
             let event = ServiceEvent {
-                event_type: if service_removed { EventType::ServiceDeregistered } else { EventType::InstanceDeregistered },
+                event_type: if service_removed {
+                    EventType::ServiceDeregistered
+                } else {
+                    EventType::InstanceDeregistered
+                },
                 service_name: instance.service_name.clone(),
                 instance_id: Some(instance_id.to_string()),
                 timestamp: Utc::now(),
@@ -146,8 +162,14 @@ impl ServiceRegistry {
         }
     }
 
-    pub async fn get_service_instances(&self, service_name: &str, query: &DiscoveryQuery) -> Vec<ServiceInstance> {
-        let mut instances = self.services.get(service_name)
+    pub async fn get_service_instances(
+        &self,
+        service_name: &str,
+        query: &DiscoveryQuery,
+    ) -> Vec<ServiceInstance> {
+        let mut instances = self
+            .services
+            .get(service_name)
             .map(|service| service.instances.clone())
             .unwrap_or_default();
 
@@ -157,9 +179,7 @@ impl ServiceRegistry {
 
         if let Some(required_tags) = &query.tags {
             let tags: Vec<&str> = required_tags.split(',').collect();
-            instances.retain(|i| {
-                tags.iter().all(|tag| i.tags.contains(&tag.to_string()))
-            });
+            instances.retain(|i| tags.iter().all(|tag| i.tags.contains(&tag.to_string())));
         }
 
         if let Some(limit) = query.limit {
@@ -169,7 +189,11 @@ impl ServiceRegistry {
         instances
     }
 
-    pub async fn load_balance_service(&self, service_name: &str, strategy: LoadBalancingStrategy) -> Option<ServiceInstance> {
+    pub async fn load_balance_service(
+        &self,
+        service_name: &str,
+        strategy: LoadBalancingStrategy,
+    ) -> Option<ServiceInstance> {
         let query = DiscoveryQuery {
             healthy_only: Some(true),
             tags: None,
@@ -189,32 +213,33 @@ impl ServiceRegistry {
                 instances.choose(&mut rng).cloned()
             }
             LoadBalancingStrategy::RoundRobin => {
-                let counter = self.round_robin_counters
+                let counter = self
+                    .round_robin_counters
                     .entry(service_name.to_string())
                     .or_insert_with(|| AtomicUsize::new(0));
 
                 let index = counter.fetch_add(1, Ordering::Relaxed) % instances.len();
                 instances.get(index).cloned()
             }
-            LoadBalancingStrategy::LeastConnections => {
-                instances.first().cloned()
-            }
-            LoadBalancingStrategy::WeightedRandom => { 
+            LoadBalancingStrategy::LeastConnections => instances.first().cloned(),
+            LoadBalancingStrategy::WeightedRandom => {
                 let mut rng = rand::rng();
                 instances.choose(&mut rng).cloned()
             }
-            LoadBalancingStrategy::HealthyOnly => {
-                instances.first().cloned()
-            }
+            LoadBalancingStrategy::HealthyOnly => instances.first().cloned(),
         }
     }
 
     pub async fn get_all_services(&self) -> Vec<Service> {
-        self.services.iter().map(|entry| entry.value().clone()).collect()
+        self.services
+            .iter()
+            .map(|entry| entry.value().clone())
+            .collect()
     }
 
     pub async fn get_services_by_tag(&self, tag: &str) -> Vec<Service> {
-        self.services.iter()
+        self.services
+            .iter()
             .filter(|entry| entry.value().tags.contains(&tag.to_string()))
             .map(|entry| entry.value().clone())
             .collect()
@@ -249,7 +274,9 @@ impl ServiceRegistry {
     pub async fn get_stats(&self) -> RegistryStats {
         let total_services = self.services.len();
         let total_instances = self.instances.len();
-        let healthy_instances = self.instances.iter()
+        let healthy_instances = self
+            .instances
+            .iter()
             .filter(|entry| matches!(entry.value().status, InstanceStatus::Up))
             .count();
 
@@ -266,6 +293,9 @@ impl ServiceRegistry {
     }
 
     pub fn get_all_instances(&self) -> Vec<ServiceInstance> {
-        self.instances.iter().map(|entry| entry.value().clone()).collect()
+        self.instances
+            .iter()
+            .map(|entry| entry.value().clone())
+            .collect()
     }
 }

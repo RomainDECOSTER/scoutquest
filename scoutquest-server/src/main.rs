@@ -1,5 +1,5 @@
 use axum::{
-    extract::{State},
+    extract::State,
     response::Json,
     routing::{delete, get, post, put},
     Router,
@@ -11,13 +11,13 @@ use std::{net::SocketAddr, sync::Arc};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
+mod api;
+mod health_checker;
 mod models;
 mod registry;
-mod health_checker;
-mod api;
 
-use registry::ServiceRegistry;
 use health_checker::HealthChecker;
+use registry::ServiceRegistry;
 
 /// SquoutQuest server configuration
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -121,7 +121,10 @@ async fn main() -> anyhow::Result<()> {
 
     setup_logging(&config.logging)?;
 
-    tracing::info!("🔍 Starting SquoutQuest Server v{}", env!("CARGO_PKG_VERSION"));
+    tracing::info!(
+        "🔍 Starting SquoutQuest Server v{}",
+        env!("CARGO_PKG_VERSION")
+    );
 
     let registry = Arc::new(ServiceRegistry::new());
     let health_checker = Arc::new(HealthChecker::new(registry.clone(), &config.health_check));
@@ -141,7 +144,9 @@ async fn main() -> anyhow::Result<()> {
                 .allow_methods(tower_http::cors::Any)
                 .allow_headers(tower_http::cors::Any)
         } else {
-            let origins: Result<Vec<_>, _> = config.server.cors_origins
+            let origins: Result<Vec<_>, _> = config
+                .server
+                .cors_origins
                 .iter()
                 .map(|origin| origin.parse::<axum::http::HeaderValue>())
                 .collect();
@@ -165,14 +170,11 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new()
         .nest("/api/v1", api_routes())
-
         .route("/health", get(health_endpoint))
         .route("/metrics", get(metrics_endpoint))
         .route("/dashboard", get(dashboard))
         .route("/info", get(info_endpoint))
-
         .route("/ws", get(websocket_handler))
-
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(app_state);
@@ -192,20 +194,24 @@ async fn main() -> anyhow::Result<()> {
 }
 
 fn load_config(args: &Args) -> anyhow::Result<AppConfig> {
-    let mut config_builder = Config::builder()
-        .add_source(config::Config::try_from(&AppConfig::default())?);
+    let mut config_builder =
+        Config::builder().add_source(config::Config::try_from(&AppConfig::default())?);
 
     if std::path::Path::new(&args.config).exists() {
-        config_builder = config_builder.add_source(File::with_name(&args.config.replace(".toml", "")));
+        config_builder =
+            config_builder.add_source(File::with_name(&args.config.replace(".toml", "")));
         tracing::info!("📄 Configuration loaded from {}", args.config);
     } else {
-        tracing::info!("📄 Configuration file {} not found, using default values", args.config);
+        tracing::info!(
+            "📄 Configuration file {} not found, using default values",
+            args.config
+        );
     }
 
     config_builder = config_builder.add_source(
         Environment::with_prefix("SCOUTQUEST")
             .separator("_")
-            .try_parsing(true)
+            .try_parsing(true),
     );
 
     let mut config: AppConfig = config_builder.build()?.try_deserialize()?;
@@ -224,12 +230,13 @@ fn load_config(args: &Args) -> anyhow::Result<AppConfig> {
 }
 
 fn setup_logging(config: &LoggingConfig) -> anyhow::Result<()> {
-    let level = config.level.parse::<tracing::Level>()
+    let level = config
+        .level
+        .parse::<tracing::Level>()
         .unwrap_or(tracing::Level::INFO);
 
     let registry = tracing_subscriber::registry()
-        .with(EnvFilter::from_default_env()
-            .add_directive(level.into()));
+        .with(EnvFilter::from_default_env().add_directive(level.into()));
 
     match config.format.as_str() {
         "json" => {
@@ -238,9 +245,7 @@ fn setup_logging(config: &LoggingConfig) -> anyhow::Result<()> {
                 .init();
         }
         "pretty" | _ => {
-            registry
-                .with(tracing_subscriber::fmt::layer())
-                .init();
+            registry.with(tracing_subscriber::fmt::layer()).init();
         }
     }
 
@@ -249,19 +254,34 @@ fn setup_logging(config: &LoggingConfig) -> anyhow::Result<()> {
 
 fn api_routes() -> Router<AppState> {
     Router::new()
-        .route("/services", get(api::list_services).post(api::register_service))
-        .route("/services/{name}", get(api::get_service).delete(api::delete_service))
+        .route(
+            "/services",
+            get(api::list_services).post(api::register_service),
+        )
+        .route(
+            "/services/{name}",
+            get(api::get_service).delete(api::delete_service),
+        )
         .route("/services/{name}/instances", get(api::get_instances))
-        .route("/services/{name}/instances/{id}", delete(api::deregister_instance))
-        .route("/services/{name}/instances/{id}/heartbeat", post(api::heartbeat))
-        .route("/services/{name}/instances/{id}/status", put(api::update_status))
-
+        .route(
+            "/services/{name}/instances/{id}",
+            delete(api::deregister_instance),
+        )
+        .route(
+            "/services/{name}/instances/{id}/heartbeat",
+            post(api::heartbeat),
+        )
+        .route(
+            "/services/{name}/instances/{id}/status",
+            put(api::update_status),
+        )
         .route("/discovery/{name}", get(api::discover_service))
-        .route("/discovery/{name}/load-balance", get(api::load_balance_service))
-
+        .route(
+            "/discovery/{name}/load-balance",
+            get(api::load_balance_service),
+        )
         .route("/services/{name}/tags", get(api::get_service_tags))
         .route("/tags/{tag}/services", get(api::get_services_by_tag))
-
         .route("/events", get(api::get_events))
         .route("/services/{name}/watch", get(api::watch_service))
 }
@@ -320,7 +340,8 @@ async fn metrics_endpoint(State(state): State<AppState>) -> Json<serde_json::Val
 }
 
 async fn dashboard() -> axum::response::Html<&'static str> {
-    axum::response::Html(r#"
+    axum::response::Html(
+        r#"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -478,7 +499,8 @@ async fn dashboard() -> axum::response::Html<&'static str> {
     </script>
 </body>
 </html>
-    "#)
+    "#,
+    )
 }
 
 async fn websocket_handler() -> Json<serde_json::Value> {

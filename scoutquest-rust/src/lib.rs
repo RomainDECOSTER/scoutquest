@@ -31,13 +31,13 @@
 //! ```
 
 pub mod client;
-pub mod models;
 pub mod error;
 pub mod load_balancer;
+pub mod models;
 
 pub use client::ServiceDiscoveryClient;
-pub use models::*;
 pub use error::ScoutQuestError;
 pub use load_balancer::{LoadBalancer, LoadBalancingStrategy};
+pub use models::*;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
