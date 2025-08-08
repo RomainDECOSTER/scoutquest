@@ -15,6 +15,8 @@ test: ## Run tests
 	cd scoutquest-server && cargo test
 	@echo "🧪 Rust SDK tests..."
 	cd scoutquest-rust && RUST_MIN_STACK=8388608 cargo test
+	@echo "🧪 JS SDK tests..."
+	cd scoutquest-js && pnpm test
 
 clean: ## Clean artifacts
 	cd scoutquest-server && cargo clean

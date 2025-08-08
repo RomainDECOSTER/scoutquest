@@ -2,6 +2,8 @@
 beforeEach(() => {
   // Clear all mocks before each test
   jest.clearAllMocks();
+  // Use real timers by default to avoid blocking retries
+  jest.useRealTimers();
 });
 
 afterEach(() => {

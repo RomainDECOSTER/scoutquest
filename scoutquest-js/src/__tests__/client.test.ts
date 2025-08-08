@@ -48,6 +48,7 @@ const MockedWebSocket = WebSocket as jest.MockedClass<typeof WebSocket>;
 
 describe('ScoutQuestClient', () => {
   let client: ScoutQuestClient;
+  let fastClient: ScoutQuestClient; // Client with minimal retry for faster tests
   let mockAxiosInstance: any;
   let mockServiceInstance: ServiceInstance;
   let mockService: Service;
@@ -95,6 +96,13 @@ describe('ScoutQuestClient', () => {
     };
 
     client = new ScoutQuestClient('http://localhost:8080');
+    
+    // Fast client for error tests (no retries, fast timeout)
+    fastClient = new ScoutQuestClient('http://localhost:8080', {
+      retry_attempts: 0,
+      retry_delay: 10,
+      timeout: 1000,
+    });
   });
 
   describe('constructor', () => {
@@ -204,9 +212,9 @@ describe('ScoutQuestClient', () => {
       mockAxiosInstance.post.mockRejectedValue(error);
 
       await expect(
-        client.registerService('test-service', 'localhost', 3000)
+        fastClient.registerService('test-service', 'localhost', 3000)
       ).rejects.toThrow('Registration failed');
-    }, 10000);
+    });
   });
 
   describe('discoverService', () => {
@@ -262,8 +270,8 @@ describe('ScoutQuestClient', () => {
       error.response = { status: 404 };
       mockAxiosInstance.get.mockRejectedValue(error);
 
-      await expect(client.discoverService('nonexistent')).rejects.toThrow();
-    }, 10000);
+      await expect(fastClient.discoverService('nonexistent')).rejects.toThrow();
+    });
   });
 
   describe('getService', () => {
@@ -286,8 +294,8 @@ describe('ScoutQuestClient', () => {
       error.response = { status: 404 };
       mockAxiosInstance.get.mockRejectedValue(error);
 
-      await expect(client.getService('nonexistent')).rejects.toThrow();
-    }, 10000);
+      await expect(fastClient.getService('nonexistent')).rejects.toThrow();
+    });
   });
 
   describe('listServices', () => {
@@ -323,8 +331,8 @@ describe('ScoutQuestClient', () => {
       error.response = { status: 404 };
       mockAxiosInstance.delete.mockRejectedValue(error);
 
-      await expect(client.deleteService('nonexistent')).rejects.toThrow();
-    }, 10000);
+      await expect(fastClient.deleteService('nonexistent')).rejects.toThrow();
+    });
   });
 
   describe('updateStatus', () => {
@@ -539,22 +547,29 @@ describe('ScoutQuestClient', () => {
       });
       mockAxiosInstance.delete.mockRejectedValue(new Error('Network error'));
 
-      await client.registerService('test-service', 'localhost', 3000);
+      await fastClient.registerService('test-service', 'localhost', 3000);
 
       // Mock error handler to capture emitted errors
       const errorHandler = jest.fn();
-      client.on('error', errorHandler);
+      fastClient.on('error', errorHandler);
 
       // Should not throw
-      await client.shutdown();
+      await fastClient.shutdown();
       
       // Should have emitted an error
       expect(errorHandler).toHaveBeenCalled();
-    }, 10000);
+    });
   });
 
   describe('retry logic', () => {
     it('should retry failed requests', async () => {
+      // Create a client with very fast retry delay for this test
+      const fastRetryClient = new ScoutQuestClient('http://localhost:8080', {
+        retry_attempts: 2,
+        retry_delay: 1, // 1ms delay instead of 1000ms
+        timeout: 1000,
+      });
+      
       mockAxiosInstance.get
         .mockRejectedValueOnce(new Error('Network error'))
         .mockRejectedValueOnce(new Error('Network error'))
@@ -563,7 +578,7 @@ describe('ScoutQuestClient', () => {
           status: 200,
         });
 
-      const result = await client.listServices();
+      const result = await fastRetryClient.listServices();
 
       expect(result).toEqual([mockService]);
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(3);
@@ -581,6 +596,6 @@ describe('ScoutQuestClient', () => {
 
       await expect(noRetryClient.listServices()).rejects.toThrow();
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(1);
-    }, 10000);
+    });
   });
 });
