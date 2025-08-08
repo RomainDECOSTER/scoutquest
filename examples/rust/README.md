@@ -1,33 +1,77 @@
-# SquoutQuest Rust Example
+# ScoutQuest Rust Examples
 
-This example demonstrates how to use the SquoutQuest Rust SDK with an Axum web service.
+This directory contains examples demonstrating how to use the ScoutQuest Rust SDK.
+
+## Examples
+
+### 1. Axum Service Example
+
+A simple Axum web service that integrates with ScoutQuest for service discovery.
+
+```bash
+cd axum_example
+cargo run --bin axum_service
+```
+
+### 2. Notification Service Example
+
+A complete notification service example with client SDK and server implementation, demonstrating service discovery, load balancing, and a REST API.
+
+```bash
+cd notification_example
+cargo run --bin notification_server
+```
 
 ## Prerequisites
 
-1. **Start the SquoutQuest server**:
+1. **Start the ScoutQuest server**:
    ```bash
-   cd scoutquest-server
+   cd ../../scoutquest-server
    cargo run
    ```
 
 2. **Build the ScoutQuest Rust SDK**:
    ```bash
-   cd scoutquest-rust
+   cd ../../scoutquest-rust
    cargo build
    ```
 
-## Running the Example
+## Running Examples
 
-### 1. Start the example service
+Each example is a separate Rust project with its own dependencies and README.
 
-```bash
-cd examples/rust
-cargo run --example axum_service
-```
+### Quick Start
 
-### 2. Environment Variables (Optional)
+1. **Start ScoutQuest server**:
+   ```bash
+   cd ../../scoutquest-server
+   cargo run
+   ```
 
-You can customize the service behavior with these environment variables:
+2. **Run any example**:
+   ```bash
+   # Simple Axum service
+   cd axum_example
+   cargo run --bin axum_service
+   
+   # Or the complete notification service
+   cd notification_example
+   cargo run --bin notification_server
+   ```
+
+## Example Details
+
+### Axum Example
+- **Location**: `axum_example/`
+- **Purpose**: Simple demonstration of ScoutQuest integration
+- **Features**: Basic service registration, health checks
+
+### Notification Example
+- **Location**: `notification_example/`
+- **Purpose**: Complete service with client SDK
+- **Features**: Service discovery, load balancing, REST API, exportable client library
+
+Each example includes its own README with detailed usage instructions.
 
 ```bash
 # Service configuration
