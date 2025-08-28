@@ -9,6 +9,8 @@ build: ## Compile server and SDK
 	cd scoutquest-server && cargo build --release
 	@echo "🔨 Compiling Rust SDK..."
 	cd scoutquest-rust && cargo build --release
+	@echo "🔨 Compiling JS SDK..."
+	cd scoutquest-js && pnpm build
 
 test: ## Run tests
 	@echo "🧪 Server tests..."
@@ -25,6 +27,7 @@ clean: ## Clean artifacts
 	cd examples/rust/axum_example && cargo clean
 	cd examples/rust/notification_example && cargo clean
 	cd scoutquest-js && pnpm clean
+	cd examples/js && pnpm clean
 
 run-server: ## Start server
 	cd scoutquest-server && cargo run

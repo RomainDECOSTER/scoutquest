@@ -169,7 +169,7 @@ async fn main() -> anyhow::Result<()> {
     };
 
     let app = Router::new()
-        .nest("/api/v1", api_routes())
+        .nest("/api", api_routes())
         .route("/health", get(health_endpoint))
         .route("/metrics", get(metrics_endpoint))
         .route("/dashboard", get(dashboard))
