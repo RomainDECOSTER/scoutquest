@@ -2,12 +2,12 @@
 name = "scoutquest-rust"
 version = "1.0.0"
 edition = "2021"
-description = "Rust SDK for SquoutQuest Service Discovery - Universal service discovery for microservices architectures"
+description = "Rust SDK for ScoutQuest Service Discovery - Universal service discovery for microservices architectures"
 license = "MIT"
-repository = "https://github.com/scoutquest/scoutquest"
-homepage = "https://scoutquest.dev"
+repository = "https://github.com/RomainDECOSTER/scoutquest"
+homepage = "https://github.com/RomainDECOSTER/scoutquest#readme"
 documentation = "https://docs.rs/scoutquest-rust"
-authors = ["SquoutQuest Team <team@scoutquest.dev>"]
+authors = ["Romain DECOSTER"]
 keywords = ["microservices", "service-discovery", "load-balancing", "scoutquest", "distributed-systems"]
 categories = ["network-programming", "web-programming", "asynchronous"]
 readme = "README.md"
