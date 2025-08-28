@@ -7,7 +7,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use scoutquest_rust::{
-    ServiceDiscoveryClient, ServiceRegistrationOptions, HealthCheck, LoadBalancingStrategy
+    ServiceDiscoveryClient, ServiceRegistrationOptions, HealthCheck
 };
 use std::collections::HashMap;
 use std::net::SocketAddr;
@@ -245,7 +245,6 @@ async fn call_product_service(State(state): State<AppState>) -> Json<ApiResponse
             "/api/products",
             reqwest::Method::GET,
             None,
-            LoadBalancingStrategy::RoundRobin,
         )
         .await
     {
@@ -253,7 +252,6 @@ async fn call_product_service(State(state): State<AppState>) -> Json<ApiResponse
             let response = json!({
                 "message": "Products retrieved from the product service",
                 "products": products,
-                "strategy": "round_robin"
             });
             Json(ApiResponse::success(response))
         }
@@ -271,14 +269,18 @@ async fn get_microservices_info(State(state): State<AppState>) -> Json<ApiRespon
 
             for service in &services {
                 match state.discovery_client.discover_service(&service.name, None).await {
-                    Ok(instances) => {
-                        let healthy_instances = instances.iter().filter(|i| i.is_healthy()).count();
+                    Ok(instance) => {
+                        let is_healthy = instance.is_healthy();
 
                         service_stats.push(json!({
                             "name": service.name,
-                            "total_instances": instances.len(),
-                            "healthy_instances": healthy_instances,
-                            "health_percentage": if instances.is_empty() { 0.0 } else { (healthy_instances as f64 / instances.len() as f64) * 100.0 },
+                            "instance": {
+                                "id": instance.id,
+                                "host": instance.host,
+                                "port": instance.port,
+                                "status": format!("{:?}", instance.status)
+                            },
+                            "healthy": is_healthy,
                             "tags": service.tags
                         }));
                     }
@@ -288,17 +290,14 @@ async fn get_microservices_info(State(state): State<AppState>) -> Json<ApiRespon
                 }
             }
 
-            let total_instances: usize = service_stats.iter()
-                .map(|s| s["total_instances"].as_u64().unwrap_or(0) as usize)
-                .sum();
-            let healthy_instances: usize = service_stats.iter()
-                .map(|s| s["healthy_instances"].as_u64().unwrap_or(0) as usize)
-                .sum();
+            let total_services = services.len();
+            let healthy_services = service_stats.iter()
+                .filter(|s| s["healthy"].as_bool().unwrap_or(false))
+                .count();
 
             let response = json!({
-                "microservices_count": services.len(),
-                "total_instances": total_instances,
-                "healthy_instances": healthy_instances,
+                "microservices_count": total_services,
+                "healthy_services": healthy_services,
                 "services": service_stats
             });
 
