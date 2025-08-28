@@ -24,6 +24,7 @@ clean: ## Clean artifacts
 	cd examples/rust && cargo clean
 	cd examples/rust/axum_example && cargo clean
 	cd examples/rust/notification_example && cargo clean
+	cd scoutquest-js && pnpm clean
 
 run-server: ## Start server
 	cd scoutquest-server && cargo run

@@ -9,14 +9,12 @@ import {
   UpdateStatusRequest,
   RegistryStats,
   ServiceEvent,
-  LoadBalancingStrategy,
   ClientConfig,
   ServiceRegistrationOptions,
   DiscoveryResponse,
   InstanceStatus,
 } from './types';
 import { ScoutQuestError } from './errors';
-import { LoadBalancer } from './load-balancer';
 
 /**
  * ScoutQuest Service Discovery Client for Node.js
@@ -45,7 +43,6 @@ import { LoadBalancer } from './load-balancer';
  */
 export class ScoutQuestClient extends EventEmitter {
   private readonly httpClient: AxiosInstance;
-  private readonly loadBalancer: LoadBalancer;
   private readonly discoveryUrl: string;
   private registeredInstance?: ServiceInstance;
   private heartbeatInterval?: any;
@@ -62,14 +59,12 @@ export class ScoutQuestClient extends EventEmitter {
     super();
     
     this.discoveryUrl = discoveryUrl.replace(/\/+$/, ''); // Remove trailing slashes
-    this.loadBalancer = new LoadBalancer();
     
     // Set default configuration
     this.config = {
       timeout: config.timeout ?? 30000,
       retry_attempts: config.retry_attempts ?? 3,
       retry_delay: config.retry_delay ?? 1000,
-      default_strategy: config.default_strategy ?? LoadBalancingStrategy.RoundRobin,
       headers: config.headers ?? {},
     };
 
@@ -176,19 +171,47 @@ export class ScoutQuestClient extends EventEmitter {
   }
 
   /**
-   * Discovers instances of a service.
+   * Discovers and selects a service instance. The server handles load balancing
+   * and returns the best available instance.
    * 
    * @param serviceName - Name of the service to discover
-   * @param query - Discovery query parameters
-   * @returns Promise resolving to discovered service instances
+   * @param query - Optional discovery parameters
+   * @returns Promise resolving to a selected service instance
    */
   async discoverService(
+    serviceName: string,
+    query: DiscoveryQuery = {}
+  ): Promise<ServiceInstance> {
+    try {
+      const response = await this.retryRequest(() =>
+        this.httpClient.get<ServiceInstance>(`/api/discovery/${serviceName}`, {
+          params: query,
+        })
+      );
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof ScoutQuestError && error.statusCode === 404) {
+        throw ScoutQuestError.serviceNotFound(serviceName);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Lists all instances of a service (for debugging/monitoring purposes).
+   * 
+   * @param serviceName - Name of the service
+   * @param query - Optional discovery parameters
+   * @returns Promise resolving to all service instances
+   */
+  async listServiceInstances(
     serviceName: string,
     query: DiscoveryQuery = {}
   ): Promise<ServiceInstance[]> {
     try {
       const response = await this.retryRequest(() =>
-        this.httpClient.get<DiscoveryResponse>(`/api/discovery/${serviceName}`, {
+        this.httpClient.get<DiscoveryResponse>(`/api/services/${serviceName}/instances`, {
           params: query,
         })
       );
@@ -200,9 +223,7 @@ export class ScoutQuestClient extends EventEmitter {
       }
       throw error;
     }
-  }
-
-  /**
+  }  /**
    * Gets a specific service by name.
    * 
    * @param serviceName - Name of the service
@@ -314,19 +335,17 @@ export class ScoutQuestClient extends EventEmitter {
   }
 
   /**
-   * Makes an HTTP GET request to a discovered service.
+   * Makes a GET request to a discovered service.
    * 
    * @param serviceName - Name of the target service
    * @param path - API path
-   * @param strategy - Load balancing strategy
    * @returns Promise resolving to the response data
    */
   async get<T = any>(
     serviceName: string,
-    path: string,
-    strategy?: LoadBalancingStrategy
+    path: string
   ): Promise<T> {
-    const instance = await this.selectInstance(serviceName, strategy);
+    const instance = await this.discoverService(serviceName, { healthy_only: true });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -337,21 +356,19 @@ export class ScoutQuestClient extends EventEmitter {
   }
 
   /**
-   * Makes an HTTP POST request to a discovered service.
+   * Makes a POST request to a discovered service.
    * 
    * @param serviceName - Name of the target service
    * @param path - API path
    * @param data - Request body data
-   * @param strategy - Load balancing strategy
    * @returns Promise resolving to the response data
    */
   async post<T = any>(
     serviceName: string,
     path: string,
-    data?: any,
-    strategy?: LoadBalancingStrategy
+    data?: any
   ): Promise<T> {
-    const instance = await this.selectInstance(serviceName, strategy);
+    const instance = await this.discoverService(serviceName, { healthy_only: true });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -359,24 +376,20 @@ export class ScoutQuestClient extends EventEmitter {
     );
 
     return response.data;
-  }
-
-  /**
-   * Makes an HTTP PUT request to a discovered service.
+  }  /**
+   * Makes a PUT request to a discovered service.
    * 
    * @param serviceName - Name of the target service
    * @param path - API path
    * @param data - Request body data
-   * @param strategy - Load balancing strategy
    * @returns Promise resolving to the response data
    */
   async put<T = any>(
     serviceName: string,
     path: string,
-    data?: any,
-    strategy?: LoadBalancingStrategy
+    data?: any
   ): Promise<T> {
-    const instance = await this.selectInstance(serviceName, strategy);
+    const instance = await this.discoverService(serviceName, { healthy_only: true });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -387,19 +400,17 @@ export class ScoutQuestClient extends EventEmitter {
   }
 
   /**
-   * Makes an HTTP DELETE request to a discovered service.
+   * Makes a DELETE request to a discovered service.
    * 
    * @param serviceName - Name of the target service
    * @param path - API path
-   * @param strategy - Load balancing strategy
    * @returns Promise resolving to the response data
    */
   async delete<T = any>(
     serviceName: string,
-    path: string,
-    strategy?: LoadBalancingStrategy
+    path: string
   ): Promise<T> {
-    const instance = await this.selectInstance(serviceName, strategy);
+    const instance = await this.discoverService(serviceName, { healthy_only: true });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -484,23 +495,6 @@ export class ScoutQuestClient extends EventEmitter {
     this.stopHeartbeat();
     this.disconnectEventStream();
     this.removeAllListeners();
-  }
-
-  /**
-   * Selects a service instance using load balancing.
-   */
-  private async selectInstance(
-    serviceName: string,
-    strategy?: LoadBalancingStrategy
-  ): Promise<ServiceInstance> {
-    const instances = await this.discoverService(serviceName, {
-      healthy_only: true,
-    });
-
-    return this.loadBalancer.select(
-      instances,
-      strategy ?? this.config.default_strategy
-    );
   }
 
   /**

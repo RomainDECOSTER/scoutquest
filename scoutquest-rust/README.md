@@ -68,10 +68,11 @@ use scoutquest_rust::*;
 
 let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
 
-// Different load balancing strategies
-let instance = client.load_balance_service("api-service", LoadBalancingStrategy::RoundRobin).await?;
-let instance = client.load_balance_service("api-service", LoadBalancingStrategy::Random).await?;
-let instance = client.load_balance_service("api-service", LoadBalancingStrategy::HealthyOnly).await?;
+// Service discovery returns a ready-to-use service instance
+let instance = client.discover_service("api-service", None).await?;
+
+// Use the instance to make HTTP calls
+let response = client.get(&instance, "/users", None).await?;
 ```
 
 ### Service Discovery with Filters

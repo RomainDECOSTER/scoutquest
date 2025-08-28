@@ -1,5 +1,4 @@
 use crate::error::{Result, ScoutQuestError};
-use crate::load_balancer::{LoadBalancer, LoadBalancingStrategy};
 use crate::models::*;
 use reqwest::{Client as HttpClient, Method};
 use serde_json::Value;
@@ -12,7 +11,7 @@ use url::Url;
 
 /// The main client for interacting with ScoutQuest Service Discovery.
 ///
-/// This client provides methods for service registration, discovery, load balancing,
+/// This client provides methods for service registration, discovery,
 /// and making HTTP calls to discovered services. It handles automatic heartbeats
 /// for registered services and includes retry logic for failed requests.
 ///
@@ -29,7 +28,7 @@ use url::Url;
 ///     client.register_service("my-service", "localhost", 3000, None).await?;
 ///     
 ///     // Discover services
-///     let instances = client.discover_service("other-service", None).await?;
+///     let instance = client.discover_service("other-service", None).await?;
 ///     
 ///     Ok(())
 /// }
@@ -40,7 +39,6 @@ pub struct ServiceDiscoveryClient {
     http_client: HttpClient,
     registered_instance: Arc<RwLock<Option<ServiceInstance>>>,
     heartbeat_handle: Arc<Mutex<Option<tokio::task::JoinHandle<()>>>>,
-    load_balancer: LoadBalancer,
     retry_attempts: usize,
     retry_delay: Duration,
 }
@@ -105,7 +103,6 @@ impl ServiceDiscoveryClient {
             http_client,
             registered_instance: Arc::new(RwLock::new(None)),
             heartbeat_handle: Arc::new(Mutex::new(None)),
-            load_balancer: LoadBalancer::new(),
             retry_attempts,
             retry_delay,
         })
@@ -163,7 +160,7 @@ impl ServiceDiscoveryClient {
             health_check: options.health_check,
         };
 
-        let url = format!("{}/api/v1/services", self.discovery_url);
+        let url = format!("{}/api/services", self.discovery_url);
 
         let response = self.http_client.post(&url).json(&request).send().await?;
 
@@ -189,16 +186,16 @@ impl ServiceDiscoveryClient {
         }
     }
 
-    /// Discovers instances of a specific service.
+    /// Discovers a service instance from the ScoutQuest discovery server.
     ///
     /// # Arguments
     ///
     /// * `service_name` - The name of the service to discover
-    /// * `options` - Optional discovery options (healthy only, tags filter, limit)
+    /// * `options` - Discovery options (healthy only, tags, etc.)
     ///
     /// # Returns
     ///
-    /// Returns a vector of ServiceInstance objects, or an empty vector if no instances are found.
+    /// Returns a ServiceInstance or an error if no instances are available.
     ///
     /// # Examples
     ///
@@ -209,10 +206,8 @@ impl ServiceDiscoveryClient {
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
     ///
-    /// let instances = client.discover_service("user-service", None).await?;
-    /// for instance in instances {
-    ///     println!("Found instance: {}:{}", instance.host, instance.port);
-    /// }
+    /// let instance = client.discover_service("user-service", None).await?;
+    /// println!("Found instance: {}:{}", instance.host, instance.port);
     /// # Ok(())
     /// # }
     /// ```
@@ -220,11 +215,11 @@ impl ServiceDiscoveryClient {
         &self,
         service_name: &str,
         options: Option<ServiceDiscoveryOptions>,
-    ) -> Result<Vec<ServiceInstance>> {
+    ) -> Result<ServiceInstance> {
         let options = options.unwrap_or_default();
 
         let mut url = Url::parse(&format!(
-            "{}/api/v1/discovery/{}",
+            "{}/api/discovery/{}",
             self.discovery_url, service_name
         ))?;
 
@@ -244,50 +239,27 @@ impl ServiceDiscoveryClient {
         let response = self.http_client.get(url).send().await?;
 
         if response.status().is_success() {
-            let instances: Vec<ServiceInstance> = response.json().await?;
+            let instance: ServiceInstance = response.json().await?;
             debug!(
-                "Discovered {} instances for service {}",
-                instances.len(),
-                service_name
+                "Discovered instance for service {}: {}:{}",
+                service_name, instance.host, instance.port
             );
-            Ok(instances)
+            Ok(instance)
         } else if response.status().as_u16() == 404 {
-            Ok(Vec::new())
+            Err(ScoutQuestError::ServiceNotFound {
+                service_name: service_name.to_string(),
+            })
         } else {
             warn!(
                 "Discovery failed for {}: {}",
                 service_name,
                 response.status()
             );
-            Ok(Vec::new())
+            Err(ScoutQuestError::InternalError(format!(
+                "Discovery failed with status: {}",
+                response.status()
+            )))
         }
-    }
-
-    /// Selects a service instance using the specified load balancing strategy.
-    ///
-    /// # Arguments
-    ///
-    /// * `service_name` - The name of the service
-    /// * `strategy` - The load balancing strategy to use
-    ///
-    /// # Returns
-    ///
-    /// Returns a selected ServiceInstance or an error if no instances are available.
-    pub async fn load_balance_service(
-        &self,
-        service_name: &str,
-        strategy: LoadBalancingStrategy,
-    ) -> Result<ServiceInstance> {
-        let instances = self.discover_service(service_name, None).await?;
-
-        if instances.is_empty() {
-            return Err(ScoutQuestError::ServiceNotFound {
-                service_name: service_name.to_string(),
-            });
-        }
-
-        let selected = self.load_balancer.select_instance(&instances, &strategy)?;
-        Ok(selected)
     }
 
     /// Finds all services that have the specified tag.
@@ -300,7 +272,7 @@ impl ServiceDiscoveryClient {
     ///
     /// Returns a vector of Service objects that have the specified tag.
     pub async fn get_services_by_tag(&self, tag: &str) -> Result<Vec<Service>> {
-        let url = format!("{}/api/v1/tags/{}/services", self.discovery_url, tag);
+        let url = format!("{}/api/services/tags/{}", self.discovery_url, tag);
 
         let response = self.http_client.get(&url).send().await?;
 
@@ -313,13 +285,14 @@ impl ServiceDiscoveryClient {
         }
     }
 
-    /// Calls a REST API endpoint on a discovered service.
+    /// Calls a REST API endpoint on a discovered service with retry logic.
     ///
     /// # Arguments
     ///
     /// * `service_name` - The name of the service to call
     /// * `path` - The API path to call
     /// * `method` - The HTTP method to use
+    /// * `body` - Optional request body
     ///
     /// # Returns
     ///
@@ -330,14 +303,13 @@ impl ServiceDiscoveryClient {
         path: &str,
         method: Method,
         body: Option<Value>,
-        strategy: LoadBalancingStrategy,
     ) -> Result<T>
     where
         T: serde::de::DeserializeOwned,
     {
         for attempt in 1..=self.retry_attempts {
             match self
-                .try_call_service(service_name, path, &method, &body, &strategy)
+                .try_call_service(service_name, path, &method, &body)
                 .await
             {
                 Ok(response) => {
@@ -377,7 +349,6 @@ impl ServiceDiscoveryClient {
     /// * `path` - The API path to call
     /// * `method` - The HTTP method to use
     /// * `body` - The request body
-    /// * `strategy` - The load balancing strategy to use
     ///
     /// # Returns
     ///
@@ -388,14 +359,11 @@ impl ServiceDiscoveryClient {
         path: &str,
         method: &Method,
         body: &Option<Value>,
-        strategy: &LoadBalancingStrategy,
     ) -> Result<T>
     where
         T: serde::de::DeserializeOwned,
     {
-        let instance = self
-            .load_balance_service(service_name, strategy.clone())
-            .await?;
+        let instance = self.discover_service(service_name, None).await?;
         let url = instance.get_url(path);
 
         let mut request_builder = self.http_client.request(method.clone(), &url);
@@ -452,7 +420,6 @@ impl ServiceDiscoveryClient {
             path,
             Method::GET,
             None,
-            LoadBalancingStrategy::Random,
         )
         .await
     }
@@ -477,7 +444,6 @@ impl ServiceDiscoveryClient {
             path,
             Method::POST,
             Some(body),
-            LoadBalancingStrategy::Random,
         )
         .await
     }
@@ -502,7 +468,6 @@ impl ServiceDiscoveryClient {
             path,
             Method::PUT,
             Some(body),
-            LoadBalancingStrategy::Random,
         )
         .await
     }
@@ -524,7 +489,6 @@ impl ServiceDiscoveryClient {
                 path,
                 Method::DELETE,
                 None,
-                LoadBalancingStrategy::Random,
             )
             .await?;
         Ok(())
@@ -566,7 +530,7 @@ impl ServiceDiscoveryClient {
             self.stop_heartbeat().await;
 
             let url = format!(
-                "{}/api/v1/services/{}/instances/{}",
+                "{}/api/services/{}/instances/{}",
                 self.discovery_url, instance.service_name, instance.id
             );
 
@@ -611,7 +575,7 @@ impl ServiceDiscoveryClient {
 
                 if let Some(instance) = instance {
                     let url = format!(
-                        "{}/api/v1/services/{}/instances/{}/heartbeat",
+                        "{}/api/services/{}/instances/{}/heartbeat",
                         discovery_url, instance.service_name, instance.id
                     );
 

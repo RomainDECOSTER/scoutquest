@@ -1,8 +1,8 @@
 /**
  * @fileoverview ScoutQuest SDK for Node.js - Main entry point
  * 
- * This SDK provides service discovery, registration, and load balancing
- * capabilities for Node.js microservices using the ScoutQuest platform.
+ * This SDK provides service discovery and registration capabilities
+ * for Node.js microservices using the ScoutQuest platform.
  * 
  * @author ScoutQuest Team
  * @version 1.0.0
@@ -10,9 +10,6 @@
 
 // Main client
 export { ScoutQuestClient } from './client';
-
-// Load balancer
-export { LoadBalancer } from './load-balancer';
 
 // Types and interfaces
 export * from './types';
@@ -27,7 +24,6 @@ import { ScoutQuestClient } from './client';
 export {
   ServiceInstance,
   Service,
-  LoadBalancingStrategy,
   InstanceStatus,
   ServiceRegistrationOptions,
   ClientConfig,

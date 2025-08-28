@@ -25,7 +25,7 @@ mod tests {
         });
 
         Mock::given(method("POST"))
-            .and(path("/api/v1/services"))
+            .and(path("/api/services"))
             .respond_with(ResponseTemplate::new(201).set_body_json(mock_response))
             .mount(&mock_server)
             .await;
@@ -53,8 +53,8 @@ mod tests {
         let mock_server = MockServer::start().await;
 
         Mock::given(method("GET"))
-            .and(path("/api/v1/discovery/user-service"))
-            .respond_with(ResponseTemplate::new(200).set_body_json(json!([
+            .and(path("/api/discovery/user-service"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(json!(
                 {
                     "id": "user-123",
                     "service_name": "user-service",
@@ -68,7 +68,7 @@ mod tests {
                     "last_heartbeat": "2024-01-01T00:00:00Z",
                     "last_status_change": "2024-01-01T00:00:00Z"
                 }
-            ])))
+            )))
             .mount(&mock_server)
             .await;
 
@@ -77,111 +77,8 @@ mod tests {
         let result = client.discover_service("user-service", None).await;
 
         assert!(result.is_ok());
-        let instances = result.unwrap();
-        assert_eq!(instances.len(), 1);
-        assert_eq!(instances[0].service_name, "user-service");
-    }
-
-    #[tokio::test]
-    async fn test_load_balancing() {
-        let instances = vec![
-            ServiceInstance {
-                id: "1".to_string(),
-                service_name: "test".to_string(),
-                host: "host1".to_string(),
-                port: 3000,
-                secure: false,
-                status: InstanceStatus::Up,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            },
-            ServiceInstance {
-                id: "2".to_string(),
-                service_name: "test".to_string(),
-                host: "host2".to_string(),
-                port: 3001,
-                secure: false,
-                status: InstanceStatus::Up,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            },
-        ];
-
-        let load_balancer = LoadBalancer::new();
-
-        // Test Random
-        let result = load_balancer.select_instance(&instances, &LoadBalancingStrategy::Random);
-        assert!(result.is_ok());
-
-        // Test RoundRobin
-        let result1 = load_balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin);
-        let result2 = load_balancer.select_instance(&instances, &LoadBalancingStrategy::RoundRobin);
-
-        assert!(result1.is_ok());
-        assert!(result2.is_ok());
-        assert_ne!(result1.unwrap().id, result2.unwrap().id);
-    }
-
-    #[tokio::test]
-    async fn test_healthy_only_strategy() {
-        let instances = vec![
-            ServiceInstance {
-                id: "1".to_string(),
-                service_name: "test".to_string(),
-                host: "host1".to_string(),
-                port: 3000,
-                secure: false,
-                status: InstanceStatus::Up,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            },
-            ServiceInstance {
-                id: "2".to_string(),
-                service_name: "test".to_string(),
-                host: "host2".to_string(),
-                port: 3001,
-                secure: false,
-                status: InstanceStatus::Down,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            },
-        ];
-
-        let load_balancer = LoadBalancer::new();
-
-        let result = load_balancer.select_instance(&instances, &LoadBalancingStrategy::HealthyOnly);
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap().id, "1");
-
-        let unhealthy_instances = vec![ServiceInstance {
-            id: "1".to_string(),
-            service_name: "test".to_string(),
-            host: "host1".to_string(),
-            port: 3000,
-            secure: false,
-            status: InstanceStatus::Down,
-            metadata: HashMap::new(),
-            tags: Vec::new(),
-            registered_at: chrono::Utc::now(),
-            last_heartbeat: chrono::Utc::now(),
-            last_status_change: chrono::Utc::now(),
-        }];
-
-        let result = load_balancer
-            .select_instance(&unhealthy_instances, &LoadBalancingStrategy::HealthyOnly);
-        assert!(result.is_err());
+        let instance = result.unwrap();
+        assert_eq!(instance.service_name, "user-service");
     }
 
     #[tokio::test]
@@ -206,7 +103,7 @@ mod tests {
         });
 
         Mock::given(method("POST"))
-            .and(path("/api/v1/services"))
+            .and(path("/api/services"))
             .respond_with(ResponseTemplate::new(201).set_body_json(mock_response))
             .mount(&mock_server)
             .await;
@@ -241,8 +138,8 @@ mod tests {
         let mock_server = MockServer::start().await;
 
         Mock::given(method("GET"))
-            .and(path("/api/v1/discovery/filtered-service"))
-            .respond_with(ResponseTemplate::new(200).set_body_json(json!([
+            .and(path("/api/discovery/filtered-service"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(json!(
                 {
                     "id": "healthy-1",
                     "service_name": "filtered-service",
@@ -255,8 +152,7 @@ mod tests {
                     "registered_at": "2024-01-01T00:00:00Z",
                     "last_heartbeat": "2024-01-01T00:00:00Z",
                     "last_status_change": "2024-01-01T00:00:00Z"
-                }
-            ])))
+                })))
             .mount(&mock_server)
             .await;
 
@@ -272,9 +168,8 @@ mod tests {
             .await;
 
         assert!(result.is_ok());
-        let instances = result.unwrap();
-        assert_eq!(instances.len(), 1);
-        assert!(instances[0].tags.contains(&"production".to_string()));
+        let instance = result.unwrap();
+        assert!(instance.tags.contains(&"production".to_string()));
     }
 
     #[tokio::test]
@@ -304,7 +199,7 @@ mod tests {
         let mock_server = MockServer::start().await;
 
         Mock::given(method("POST"))
-            .and(path("/api/v1/services"))
+            .and(path("/api/services"))
             .respond_with(ResponseTemplate::new(500).set_body_string("Internal Server Error"))
             .mount(&mock_server)
             .await;
@@ -329,7 +224,7 @@ mod tests {
         let mock_server = MockServer::start().await;
 
         Mock::given(method("GET"))
-            .and(path("/api/v1/tags/api/services"))
+            .and(path("/api/services/tags/api"))
             .respond_with(ResponseTemplate::new(200).set_body_json(json!([
                 {
                     "name": "user-service",
@@ -373,7 +268,7 @@ mod tests {
         });
 
         Mock::given(method("POST"))
-            .and(path("/api/v1/services"))
+            .and(path("/api/services"))
             .respond_with(ResponseTemplate::new(201).set_body_json(mock_register_response))
             .mount(&mock_server)
             .await;
@@ -381,7 +276,7 @@ mod tests {
         // Mock deregistration
         Mock::given(method("DELETE"))
             .and(path(
-                "/api/v1/services/test-service/instances/test-deregister",
+                "/api/services/test-service/instances/test-deregister",
             ))
             .respond_with(ResponseTemplate::new(200))
             .mount(&mock_server)

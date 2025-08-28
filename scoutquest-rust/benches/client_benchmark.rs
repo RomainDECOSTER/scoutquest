@@ -1,8 +1,8 @@
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 use scoutquest_rust::*;
 use std::collections::HashMap;
 
-fn benchmark_load_balancing(c: &mut Criterion) {
+fn benchmark_service_discovery(c: &mut Criterion) {
     let instances = (0..100)
         .map(|i| ServiceInstance {
             id: format!("instance-{}", i),
@@ -23,33 +23,22 @@ fn benchmark_load_balancing(c: &mut Criterion) {
         })
         .collect::<Vec<_>>();
 
-    let load_balancer = LoadBalancer::new();
+    // Benchmark service instance filtering
+    c.bench_function("filter_healthy_instances", |b| {
+        b.iter(|| {
+            instances
+                .iter()
+                .filter(|instance| instance.is_healthy())
+                .count()
+        })
+    });
 
-    // Benchmark different load balancing strategies
-    let strategies = vec![
-        ("Random", LoadBalancingStrategy::Random),
-        ("RoundRobin", LoadBalancingStrategy::RoundRobin),
-        ("HealthyOnly", LoadBalancingStrategy::HealthyOnly),
-        ("LeastConnections", LoadBalancingStrategy::LeastConnections),
-        ("WeightedRandom", LoadBalancingStrategy::WeightedRandom),
-    ];
-
-    for (name, strategy) in strategies {
-        c.bench_with_input(
-            BenchmarkId::new("load_balance", name),
-            &strategy,
-            |b, strategy| {
-                b.iter(|| {
-                    load_balancer
-                        .select_instance(
-                            std::hint::black_box(&instances),
-                            std::hint::black_box(strategy),
-                        )
-                        .unwrap()
-                })
-            },
-        );
-    }
+    // Benchmark getting service URL
+    c.bench_function("get_service_url", |b| {
+        b.iter(|| {
+            instances[0].get_url("/api/test")
+        })
+    });
 }
 
 fn benchmark_service_instance_operations(c: &mut Criterion) {
@@ -77,75 +66,16 @@ fn benchmark_service_instance_operations(c: &mut Criterion) {
     });
 
     c.bench_function("get_url", |b| {
-        b.iter(|| std::hint::black_box(&instance).get_url("/api/v1/users"))
+        b.iter(|| std::hint::black_box(&instance).get_url("/api/users"))
     });
-}
 
-fn benchmark_instance_pool_sizes(c: &mut Criterion) {
-    let load_balancer = LoadBalancer::new();
-
-    for pool_size in [1, 5, 10, 50, 100, 500, 1000].iter() {
-        let instances = (0..*pool_size)
-            .map(|i| ServiceInstance {
-                id: format!("instance-{}", i),
-                service_name: "test-service".to_string(),
-                host: format!("host-{}", i),
-                port: 3000 + i as u16,
-                secure: false,
-                status: InstanceStatus::Up,
-                metadata: HashMap::new(),
-                tags: Vec::new(),
-                registered_at: chrono::Utc::now(),
-                last_heartbeat: chrono::Utc::now(),
-                last_status_change: chrono::Utc::now(),
-            })
-            .collect::<Vec<_>>();
-
-        c.bench_with_input(
-            BenchmarkId::new("random_selection_pool_size", pool_size),
-            &instances,
-            |b, instances| {
-                b.iter(|| {
-                    load_balancer
-                        .select_instance(
-                            std::hint::black_box(instances),
-                            std::hint::black_box(&LoadBalancingStrategy::Random),
-                        )
-                        .unwrap()
-                })
-            },
-        );
-
-        c.bench_with_input(
-            BenchmarkId::new("round_robin_selection_pool_size", pool_size),
-            &instances,
-            |b, instances| {
-                b.iter(|| {
-                    load_balancer
-                        .select_instance(
-                            std::hint::black_box(instances),
-                            std::hint::black_box(&LoadBalancingStrategy::RoundRobin),
-                        )
-                        .unwrap()
-                })
-            },
-        );
-
-        c.bench_with_input(
-            BenchmarkId::new("healthy_only_selection_pool_size", pool_size),
-            &instances,
-            |b, instances| {
-                b.iter(|| {
-                    load_balancer
-                        .select_instance(
-                            std::hint::black_box(instances),
-                            std::hint::black_box(&LoadBalancingStrategy::HealthyOnly),
-                        )
-                        .unwrap()
-                })
-            },
-        );
-    }
+    c.bench_function("get_secure_url", |b| {
+        let secure_instance = ServiceInstance {
+            secure: true,
+            ..instance.clone()
+        };
+        b.iter(|| std::hint::black_box(&secure_instance).get_url("/api/users"))
+    });
 }
 
 fn benchmark_serialization(c: &mut Criterion) {
@@ -213,11 +143,26 @@ fn benchmark_serialization(c: &mut Criterion) {
     });
 }
 
+fn benchmark_service_discovery_options(c: &mut Criterion) {
+    c.bench_function("create_default_options", |b| {
+        b.iter(|| ServiceDiscoveryOptions::default())
+    });
+
+    c.bench_function("create_complex_options", |b| {
+        b.iter(|| {
+            ServiceDiscoveryOptions::new()
+                .with_healthy_only(true)
+                .with_tags(vec!["api".to_string(), "production".to_string()])
+                .with_limit(50)
+        })
+    });
+}
+
 criterion_group!(
     benches,
-    benchmark_load_balancing,
+    benchmark_service_discovery,
     benchmark_service_instance_operations,
-    benchmark_instance_pool_sizes,
-    benchmark_serialization
+    benchmark_serialization,
+    benchmark_service_discovery_options
 );
 criterion_main!(benches);

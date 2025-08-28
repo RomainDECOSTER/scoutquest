@@ -8,17 +8,12 @@ describe('SDK Index', () => {
       expect(SDK.ScoutQuestClient).toBe(ScoutQuestClient);
     });
 
-    it('should export LoadBalancer', () => {
-      expect(SDK.LoadBalancer).toBeDefined();
-    });
-
     it('should export error classes', () => {
       expect(SDK.ScoutQuestError).toBeDefined();
       expect(SDK.isScoutQuestError).toBeDefined();
     });
 
     it('should export types and enums', () => {
-      expect(SDK.LoadBalancingStrategy).toBeDefined();
       expect(SDK.InstanceStatus).toBeDefined();
     });
 

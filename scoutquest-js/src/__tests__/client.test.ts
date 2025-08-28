@@ -7,7 +7,7 @@ import type {
   RegistryStats,
   ClientConfig,
 } from '../types';
-import { InstanceStatus, LoadBalancingStrategy } from '../types';
+import { InstanceStatus } from '../types';
 import { ScoutQuestError } from '../errors';
 
 // Mock axios
@@ -124,7 +124,6 @@ describe('ScoutQuestClient', () => {
         timeout: 60000,
         retry_attempts: 5,
         retry_delay: 2000,
-        default_strategy: LoadBalancingStrategy.Random,
         headers: { 'X-Custom': 'value' },
       };
 
@@ -219,19 +218,14 @@ describe('ScoutQuestClient', () => {
 
   describe('discoverService', () => {
     it('should discover service instances', async () => {
-      const mockResponse = {
-        instances: [mockServiceInstance],
-        strategy: LoadBalancingStrategy.RoundRobin,
-      };
-
       mockAxiosInstance.get.mockResolvedValue({
-        data: mockResponse,
+        data: mockServiceInstance,
         status: 200,
       });
 
       const result = await client.discoverService('test-service');
 
-      expect(result).toEqual([mockServiceInstance]);
+      expect(result).toEqual(mockServiceInstance);
       expect(mockAxiosInstance.get).toHaveBeenCalledWith(
         '/api/discovery/test-service',
         { params: {} }
@@ -239,13 +233,8 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should discover service with query parameters', async () => {
-      const mockResponse = {
-        instances: [mockServiceInstance],
-        strategy: LoadBalancingStrategy.HealthyOnly,
-      };
-
       mockAxiosInstance.get.mockResolvedValue({
-        data: mockResponse,
+        data: mockServiceInstance,
         status: 200,
       });
 
@@ -253,12 +242,11 @@ describe('ScoutQuestClient', () => {
         healthy_only: true,
         tags: 'api,test',
         limit: 5,
-        strategy: LoadBalancingStrategy.HealthyOnly,
       };
 
       const result = await client.discoverService('test-service', query);
 
-      expect(result).toEqual([mockServiceInstance]);
+      expect(result).toEqual(mockServiceInstance);
       expect(mockAxiosInstance.get).toHaveBeenCalledWith(
         '/api/discovery/test-service',
         { params: query }
@@ -421,20 +409,22 @@ describe('ScoutQuestClient', () => {
 
   describe('HTTP methods', () => {
     beforeEach(() => {
-      // Mock discoverService to return a healthy instance
-      mockAxiosInstance.get
-        .mockResolvedValueOnce({
-          data: { instances: [mockServiceInstance] },
-          status: 200,
-        })
-        .mockResolvedValueOnce({
-          data: { users: [] },
-          status: 200,
-        });
+      // Mock discoverService to return the instance directly
+      mockAxiosInstance.get.mockResolvedValue({
+        data: mockServiceInstance,
+        status: 200,
+      });
     });
 
     it('should make GET request to discovered service', async () => {
-      mockedAxios.get.mockResolvedValue({
+      // Mock discoverService call
+      mockAxiosInstance.get.mockResolvedValueOnce({
+        data: mockServiceInstance,
+        status: 200,
+      });
+
+      // Mock actual GET call
+      mockedAxios.get.mockResolvedValueOnce({
         data: { users: [] },
         status: 200,
       });
@@ -449,7 +439,14 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should make POST request to discovered service', async () => {
-      mockedAxios.post.mockResolvedValue({
+      // Mock discoverService call
+      mockAxiosInstance.get.mockResolvedValueOnce({
+        data: mockServiceInstance,
+        status: 200,
+      });
+
+      // Mock actual POST call
+      mockedAxios.post.mockResolvedValueOnce({
         data: { id: 1 },
         status: 201,
       });
@@ -466,7 +463,14 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should make PUT request to discovered service', async () => {
-      mockedAxios.put.mockResolvedValue({
+      // Mock discoverService call
+      mockAxiosInstance.get.mockResolvedValueOnce({
+        data: mockServiceInstance,
+        status: 200,
+      });
+
+      // Mock actual PUT call
+      mockedAxios.put.mockResolvedValueOnce({
         data: { id: 1, name: 'John Updated' },
         status: 200,
       });
@@ -483,7 +487,14 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should make DELETE request to discovered service', async () => {
-      mockedAxios.delete.mockResolvedValue({
+      // Mock discoverService call
+      mockAxiosInstance.get.mockResolvedValueOnce({
+        data: mockServiceInstance,
+        status: 200,
+      });
+
+      // Mock actual DELETE call
+      mockedAxios.delete.mockResolvedValueOnce({
         data: null,
         status: 204,
       });

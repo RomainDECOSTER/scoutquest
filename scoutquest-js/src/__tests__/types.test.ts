@@ -9,11 +9,9 @@ import type {
   ServiceEvent,
   ServiceRegistrationOptions,
   ClientConfig,
-  DiscoveryResponse,
 } from '../types';
 import {
   InstanceStatus,
-  LoadBalancingStrategy,
   EventType,
 } from '../types';
 
@@ -29,16 +27,6 @@ describe('Types', () => {
     });
   });
 
-  describe('LoadBalancingStrategy enum', () => {
-    it('should have all expected strategies', () => {
-      expect(LoadBalancingStrategy.RoundRobin).toBe('RoundRobin');
-      expect(LoadBalancingStrategy.Random).toBe('Random');
-      expect(LoadBalancingStrategy.LeastConnections).toBe('LeastConnections');
-      expect(LoadBalancingStrategy.WeightedRandom).toBe('WeightedRandom');
-      expect(LoadBalancingStrategy.HealthyOnly).toBe('HealthyOnly');
-    });
-  });
-
   describe('EventType enum', () => {
     it('should have all expected event types', () => {
       expect(EventType.ServiceRegistered).toBe('ServiceRegistered');
@@ -49,10 +37,10 @@ describe('Types', () => {
     });
   });
 
-  describe('Type checking', () => {
-    it('should accept valid ServiceInstance', () => {
+  describe('ServiceInstance interface', () => {
+    it('should be valid with all required fields', () => {
       const instance: ServiceInstance = {
-        id: 'test-1',
+        id: 'test-instance',
         service_name: 'test-service',
         host: 'localhost',
         port: 3000,
@@ -65,26 +53,14 @@ describe('Types', () => {
         last_status_change: '2023-01-01T00:00:00Z',
       };
 
-      expect(instance.id).toBe('test-1');
+      expect(instance.id).toBe('test-instance');
       expect(instance.service_name).toBe('test-service');
       expect(instance.status).toBe(InstanceStatus.Up);
     });
+  });
 
-    it('should accept valid HealthCheck', () => {
-      const healthCheck: HealthCheck = {
-        url: '/health',
-        interval_seconds: 30,
-        timeout_seconds: 5,
-        method: 'GET',
-        expected_status: 200,
-        headers: { 'X-Health': 'check' },
-      };
-
-      expect(healthCheck.url).toBe('/health');
-      expect(healthCheck.method).toBe('GET');
-    });
-
-    it('should accept valid Service', () => {
+  describe('Service interface', () => {
+    it('should be valid with all required fields', () => {
       const service: Service = {
         name: 'test-service',
         instances: [],
@@ -96,8 +72,10 @@ describe('Types', () => {
       expect(service.name).toBe('test-service');
       expect(Array.isArray(service.instances)).toBe(true);
     });
+  });
 
-    it('should accept valid RegisterServiceRequest', () => {
+  describe('RegisterServiceRequest interface', () => {
+    it('should be valid with all required fields', () => {
       const request: RegisterServiceRequest = {
         service_name: 'test-service',
         host: 'localhost',
@@ -105,80 +83,71 @@ describe('Types', () => {
         secure: false,
         metadata: { version: '1.0.0' },
         tags: ['api'],
-      };
-
-      expect(request.service_name).toBe('test-service');
-      expect(request.port).toBe(3000);
-    });
-
-    it('should accept valid DiscoveryQuery', () => {
-      const query: DiscoveryQuery = {
-        healthy_only: true,
-        tags: 'api,v1',
-        limit: 5,
-        strategy: LoadBalancingStrategy.RoundRobin,
-      };
-
-      expect(query.healthy_only).toBe(true);
-      expect(query.strategy).toBe(LoadBalancingStrategy.RoundRobin);
-    });
-
-    it('should accept valid ClientConfig', () => {
-      const config: ClientConfig = {
-        timeout: 60000,
-        retry_attempts: 5,
-        retry_delay: 2000,
-        default_strategy: LoadBalancingStrategy.Random,
-        headers: { 'X-Custom': 'value' },
-      };
-
-      expect(config.timeout).toBe(60000);
-      expect(config.default_strategy).toBe(LoadBalancingStrategy.Random);
-    });
-
-    it('should accept valid ServiceRegistrationOptions', () => {
-      const options: ServiceRegistrationOptions = {
-        secure: true,
-        metadata: { version: '2.0.0' },
-        tags: ['api', 'v2'],
-        enable_heartbeat: true,
-        heartbeat_interval: 30000,
-        health_check: {
+        health_check: { 
           url: '/health',
           interval_seconds: 30,
           timeout_seconds: 5,
           method: 'GET',
-          expected_status: 200,
+          expected_status: 200
         },
       };
 
-      expect(options.secure).toBe(true);
-      expect(options.enable_heartbeat).toBe(true);
+      expect(request.service_name).toBe('test-service');
+      expect(request.host).toBe('localhost');
+      expect(request.port).toBe(3000);
+    });
+  });
+
+  describe('DiscoveryQuery interface', () => {
+    it('should be valid with empty query', () => {
+      const query: DiscoveryQuery = {};
+      expect(query).toEqual({});
     });
 
-    it('should accept valid RegistryStats', () => {
-      const stats: RegistryStats = {
-        total_services: 10,
-        total_instances: 25,
-        healthy_instances: 20,
-        start_time: 1640995200,
+    it('should be valid with optional fields', () => {
+      const query: DiscoveryQuery = {
+        healthy_only: true,
+        tags: 'api',
       };
 
-      expect(stats.total_services).toBe(10);
-      expect(stats.healthy_instances).toBe(20);
+      expect(query.healthy_only).toBe(true);
+      expect(query.tags).toBe('api');
+    });
+  });
+
+  describe('ClientConfig interface', () => {
+    it('should be valid with empty config', () => {
+      const config: ClientConfig = {};
+      expect(config).toEqual({});
     });
 
-    it('should accept valid ServiceEvent', () => {
+    it('should be valid with all optional fields', () => {
+      const config: ClientConfig = {
+        timeout: 30000,
+        retry_attempts: 3,
+        retry_delay: 1000,
+        headers: { 'X-API-Key': 'secret' },
+      };
+
+      expect(config.timeout).toBe(30000);
+      expect(config.retry_attempts).toBe(3);
+      expect(config.retry_delay).toBe(1000);
+    });
+  });
+
+  describe('ServiceEvent interface', () => {
+    it('should be valid event', () => {
       const event: ServiceEvent = {
         event_type: EventType.ServiceRegistered,
         service_name: 'test-service',
-        instance_id: 'test-1',
+        instance_id: 'test-instance',
         timestamp: '2023-01-01T00:00:00Z',
-        details: { message: 'Service registered successfully' },
+        details: { version: '1.0.0' },
       };
 
       expect(event.event_type).toBe(EventType.ServiceRegistered);
       expect(event.service_name).toBe('test-service');
+      expect(event.instance_id).toBe('test-instance');
     });
   });
 });

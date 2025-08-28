@@ -1,7 +1,7 @@
 //! # ScoutQuest Rust SDK
 //!
 //! This SDK allows easy interaction with ScoutQuest Service Discovery.
-//! It provides registration, discovery, and load balancing functionalities
+//! It provides registration and discovery functionalities
 //! for your Rust microservices.
 //!
 //! ## Usage Example
@@ -21,7 +21,7 @@
 //!     client.register_service("user-service", "localhost", 3000, Some(options)).await?;
 //!
 //!     // Discover other services
-//!     let instances = client.discover_service("user-service", None).await?;
+//!     let instance = client.discover_service("user-service", None).await?;
 //!
 //!     // Call another service
 //!     let response: serde_json::Value = client.get("user-service", "/api/users").await?;
@@ -32,12 +32,10 @@
 
 pub mod client;
 pub mod error;
-pub mod load_balancer;
 pub mod models;
 
 pub use client::ServiceDiscoveryClient;
 pub use error::ScoutQuestError;
-pub use load_balancer::{LoadBalancer, LoadBalancingStrategy};
 pub use models::*;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
