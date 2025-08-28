@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API Reference - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <--inspect --trace-warnings --signal Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link active">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring & Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">REST API Reference</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>REST API Reference</h1>
+                            <p class="docs-lead">
+                                Complete REST API documentation for ScoutQuest service discovery server.
+                            </p>
+                            <div class="docs-meta">
+                                <span class="docs-version">API Version: 1.0</span>
+                                <span class="docs-version">Base URL: <code>http://localhost:8080/api</code></span>
+                            </div>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Authentication</h2>
+                                <p>ScoutQuest supports multiple authentication methods:</p>
+
+                                <h3>API Key Authentication</h3>
+                                <div class="code-block">
+                                    <pre><code># Include API key in header
+curl -H "X-API-Key: your-api-key-here" \
+  http://localhost:8080/api/services</code></pre>
+                                </div>
+
+                                <h3>JWT Token Authentication</h3>
+                                <div class="code-block">
+                                    <pre><code># Include JWT token in Authorization header
+curl -H "Authorization: Bearer your-jwt-token-here" \
+  http://localhost:8080/api/services</code></pre>
+                                </div>
+
+                                <h3>No Authentication (Development)</h3>
+                                <p>For development environments, authentication can be disabled in the configuration.
+                                </p>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Service Management</h2>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-post">POST</span>
+                                        <span class="path">/api/services</span>
+                                        <span class="description">Register a new service instance</span>
+                                    </div>
+
+                                    <h4>Request Body</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "name": "user-service",
+  "host": "localhost",
+  "port": 3000,
+  "metadata": {
+    "version": "1.2.3",
+    "environment": "production",
+    "region": "us-east-1",
+    "team": "backend",
+    "capabilities": ["users", "auth"]
+  },
+  "tags": ["api", "v1", "production"],
+  "healthCheckUrl": "http://localhost:3000/health"
+}</code></pre>
+                                    </div>
+
+                                    <h4>Response (201 Created)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "id": "user-service-1a2b3c4d",
+  "name": "user-service",
+  "host": "localhost",
+  "port": 3000,
+  "status": "healthy",
+  "metadata": {
+    "version": "1.2.3",
+    "environment": "production",
+    "region": "us-east-1",
+    "team": "backend",
+    "capabilities": ["users", "auth"]
+  },
+  "tags": ["api", "v1", "production"],
+  "healthCheckUrl": "http://localhost:3000/health",
+  "registeredAt": "2024-01-15T10:30:00Z",
+  "lastSeen": "2024-01-15T10:30:00Z"
+}</code></pre>
+                                    </div>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code>curl -X POST http://localhost:8080/api/services \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "user-service",
+    "host": "localhost",
+    "port": 3000,
+    "metadata": {
+      "version": "1.2.3",
+      "environment": "production"
+    }
+  }'</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/services</span>
+                                        <span class="description">List all registered services</span>
+                                    </div>
+
+                                    <h4>Query Parameters</h4>
+                                    <ul>
+                                        <li><code>status</code> - Filter by status: <code>healthy</code>,
+                                            <code>unhealthy</code>, <code>all</code> (default: <code>healthy</code>)
+                                        </li>
+                                        <li><code>tags</code> - Filter by tags (comma-separated):
+                                            <code>?tags=api,v1</code></li>
+                                        <li><code>environment</code> - Filter by environment metadata</li>
+                                        <li><code>limit</code> - Limit number of results (default: 100)</li>
+                                        <li><code>offset</code> - Pagination offset (default: 0)</li>
+                                    </ul>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "services": [
+    {
+      "name": "user-service",
+      "instanceCount": 3,
+      "healthyInstances": 3,
+      "unhealthyInstances": 0,
+      "tags": ["api", "v1", "production"],
+      "lastUpdated": "2024-01-15T10:30:00Z"
+    },
+    {
+      "name": "order-service",
+      "instanceCount": 2,
+      "healthyInstances": 2,
+      "unhealthyInstances": 0,
+      "tags": ["api", "v2", "production"],
+      "lastUpdated": "2024-01-15T10:25:00Z"
+    }
+  ],
+  "total": 2,
+  "limit": 100,
+  "offset": 0
+}</code></pre>
+                                    </div>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code># List all services
+curl http://localhost:8080/api/services
+
+# Filter by tags
+curl http://localhost:8080/api/services?tags=api,production
+
+# Filter by status
+curl http://localhost:8080/api/services?status=all</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/services/{service_name}</span>
+                                        <span class="description">Get a specific service (returns one healthy
+                                            instance)</span>
+                                    </div>
+
+                                    <h4>Path Parameters</h4>
+                                    <ul>
+                                        <li><code>service_name</code> - Name of the service to discover</li>
+                                    </ul>
+
+                                    <h4>Query Parameters</h4>
+                                    <ul>
+                                        <li><code>tags</code> - Filter by tags</li>
+                                        <li><code>strategy</code> - Load balancing strategy: <code>round_robin</code>,
+                                            <code>random</code> (default: <code>round_robin</code>)</li>
+                                        <li><code>prefer_local</code> - Prefer local instances: <code>true</code>,
+                                            <code>false</code></li>
+                                    </ul>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "id": "user-service-1a2b3c4d",
+  "name": "user-service",
+  "host": "localhost",
+  "port": 3000,
+  "status": "healthy",
+  "metadata": {
+    "version": "1.2.3",
+    "environment": "production",
+    "region": "us-east-1"
+  },
+  "tags": ["api", "v1", "production"],
+  "healthCheckUrl": "http://localhost:3000/health",
+  "registeredAt": "2024-01-15T10:30:00Z",
+  "lastSeen": "2024-01-15T10:35:00Z",
+  "healthStatus": {
+    "status": "healthy",
+    "lastCheck": "2024-01-15T10:35:00Z",
+    "responseTime": 15,
+    "checks": {
+      "database": "healthy",
+      "redis": "healthy"
+    }
+  }
+}</code></pre>
+                                    </div>
+
+                                    <h4>Error Responses</h4>
+                                    <div class="code-block">
+                                        <pre><code># 404 Not Found - Service not registered
+{
+  "error": "service_not_found",
+  "message": "Service 'unknown-service' not found",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+
+# 503 Service Unavailable - No healthy instances
+{
+  "error": "service_unavailable",
+  "message": "Service 'user-service' has no healthy instances",
+  "timestamp": "2024-01-15T10:30:00Z"
+}</code></pre>
+                                    </div>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code># Discover service
+curl http://localhost:8080/api/services/user-service
+
+# With filtering
+curl "http://localhost:8080/api/services/user-service?tags=production&strategy=random"</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/services/{service_name}/instances</span>
+                                        <span class="description">List all instances of a service</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "serviceName": "user-service",
+  "instances": [
+    {
+      "id": "user-service-1a2b3c4d",
+      "host": "localhost",
+      "port": 3000,
+      "status": "healthy",
+      "metadata": {
+        "version": "1.2.3",
+        "load": 0.65
+      },
+      "registeredAt": "2024-01-15T10:30:00Z",
+      "lastSeen": "2024-01-15T10:35:00Z"
+    },
+    {
+      "id": "user-service-5e6f7g8h",
+      "host": "localhost",
+      "port": 3001,
+      "status": "healthy",
+      "metadata": {
+        "version": "1.2.3",
+        "load": 0.45
+      },
+      "registeredAt": "2024-01-15T10:31:00Z",
+      "lastSeen": "2024-01-15T10:35:00Z"
+    }
+  ],
+  "total": 2,
+  "healthyCount": 2,
+  "unhealthyCount": 0
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-delete">DELETE</span>
+                                        <span class="path">/api/services/{instance_id}</span>
+                                        <span class="description">Deregister a service instance</span>
+                                    </div>
+
+                                    <h4>Response (204 No Content)</h4>
+                                    <p>Empty response body on successful deregistration.</p>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code>curl -X DELETE http://localhost:8080/api/services/user-service-1a2b3c4d</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-put">PUT</span>
+                                        <span class="path">/api/services/{instance_id}/heartbeat</span>
+                                        <span class="description">Send heartbeat to keep instance alive</span>
+                                    </div>
+
+                                    <h4>Request Body (Optional)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "metadata": {
+    "load": 0.75,
+    "connections": 150,
+    "version": "1.2.4"
+  }
+}</code></pre>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "message": "Heartbeat received",
+  "instanceId": "user-service-1a2b3c4d",
+  "lastSeen": "2024-01-15T10:35:00Z"
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Health Check Endpoints</h2>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/health</span>
+                                        <span class="description">ScoutQuest server health check</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "version": "1.0.0",
+  "uptime": 3600,
+  "checks": {
+    "database": {
+      "status": "healthy",
+      "responseTime": 5
+    },
+    "redis": {
+      "status": "healthy",
+      "responseTime": 2
+    }
+  },
+  "stats": {
+    "totalServices": 15,
+    "totalInstances": 47,
+    "healthyInstances": 45,
+    "unhealthyInstances": 2
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/ready</span>
+                                        <span class="description">ScoutQuest server readiness check</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "status": "ready",
+  "timestamp": "2024-01-15T10:35:00Z"
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/services/{service_name}/health</span>
+                                        <span class="description">Get health status of all service instances</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "serviceName": "user-service",
+  "overallStatus": "healthy",
+  "instances": [
+    {
+      "id": "user-service-1a2b3c4d",
+      "host": "localhost",
+      "port": 3000,
+      "status": "healthy",
+      "lastCheck": "2024-01-15T10:35:00Z",
+      "responseTime": 15,
+      "checks": {
+        "database": "healthy",
+        "redis": "healthy"
+      }
+    }
+  ]
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Metrics & Monitoring</h2>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/metrics</span>
+                                        <span class="description">Prometheus-format metrics</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code># HELP scoutquest_services_total Total number of registered services
+# TYPE scoutquest_services_total gauge
+scoutquest_services_total 15
+
+# HELP scoutquest_instances_total Total number of service instances
+# TYPE scoutquest_instances_total gauge
+scoutquest_instances_total{status="healthy"} 45
+scoutquest_instances_total{status="unhealthy"} 2
+
+# HELP scoutquest_http_requests_total Total number of HTTP requests
+# TYPE scoutquest_http_requests_total counter
+scoutquest_http_requests_total{method="GET",endpoint="/api/services",status="200"} 1234
+scoutquest_http_requests_total{method="POST",endpoint="/api/services",status="201"} 89
+
+# HELP scoutquest_http_request_duration_seconds HTTP request duration
+# TYPE scoutquest_http_request_duration_seconds histogram
+scoutquest_http_request_duration_seconds_bucket{method="GET",endpoint="/api/services",le="0.005"} 450
+scoutquest_http_request_duration_seconds_bucket{method="GET",endpoint="/api/services",le="0.01"} 890</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/stats</span>
+                                        <span class="description">Get system statistics</span>
+                                    </div>
+
+                                    <h4>Response (200 OK)</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
+  "timestamp": "2024-01-15T10:35:00Z",
+  "uptime": 3600,
+  "services": {
+    "total": 15,
+    "byStatus": {
+      "healthy": 13,
+      "unhealthy": 2
+    },
+    "byEnvironment": {
+      "production": 10,
+      "staging": 3,
+      "development": 2
+    }
+  },
+  "instances": {
+    "total": 47,
+    "healthy": 45,
+    "unhealthy": 2,
+    "averageResponseTime": 25
+  },
+  "requests": {
+    "total": 12345,
+    "last24h": 2890,
+    "successRate": 99.5
+  },
+  "memory": {
+    "used": 134217728,
+    "total": 536870912,
+    "percentage": 25.0
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Proxy Endpoints</h2>
+                                <p>ScoutQuest can proxy HTTP requests to discovered services.</p>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">GET</span>
+                                        <span class="path">/api/proxy/{service_name}/**</span>
+                                        <span class="description">Proxy GET request to service</span>
+                                    </div>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code># Proxies to a healthy instance of user-service
+curl http://localhost:8080/api/proxy/user-service/api/users/123</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-post">POST</span>
+                                        <span class="path">/api/proxy/{service_name}/**</span>
+                                        <span class="description">Proxy POST request to service</span>
+                                    </div>
+
+                                    <h4>cURL Example</h4>
+                                    <div class="code-block">
+                                        <pre><code>curl -X POST http://localhost:8080/api/proxy/user-service/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>WebSocket Events</h2>
+                                <p>ScoutQuest provides real-time updates via WebSocket connections.</p>
+
+                                <div class="api-endpoint">
+                                    <div class="endpoint-header">
+                                        <span class="method method-get">WS</span>
+                                        <span class="path">/api/events</span>
+                                        <span class="description">WebSocket connection for real-time events</span>
+                                    </div>
+
+                                    <h4>Event Types</h4>
+                                    <div class="code-block">
+                                        <pre><code># Service registered
+{
+  "type": "service_registered",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "data": {
+    "instanceId": "user-service-1a2b3c4d",
+    "serviceName": "user-service",
+    "host": "localhost",
+    "port": 3000
+  }
+}
+
+# Service deregistered
+{
+  "type": "service_deregistered",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "data": {
+    "instanceId": "user-service-1a2b3c4d",
+    "serviceName": "user-service"
+  }
+}
+
+# Health status changed
+{
+  "type": "health_status_changed",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "data": {
+    "instanceId": "user-service-1a2b3c4d",
+    "serviceName": "user-service",
+    "previousStatus": "healthy",
+    "currentStatus": "unhealthy"
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Error Responses</h2>
+                                <p>All API endpoints return structured error responses:</p>
+
+                                <div class="error-reference">
+                                    <h3>HTTP Status Codes</h3>
+                                    <div class="error-item">
+                                        <code>400 Bad Request</code>
+                                        <p>Invalid request data or parameters</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>401 Unauthorized</code>
+                                        <p>Missing or invalid authentication credentials</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>403 Forbidden</code>
+                                        <p>Insufficient permissions for the requested operation</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>404 Not Found</code>
+                                        <p>Requested service or resource not found</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>409 Conflict</code>
+                                        <p>Service instance already registered</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>429 Too Many Requests</code>
+                                        <p>Rate limit exceeded</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>500 Internal Server Error</code>
+                                        <p>Internal server error</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>503 Service Unavailable</code>
+                                        <p>Service has no healthy instances or server is overloaded</p>
+                                    </div>
+                                </div>
+
+                                <h3>Error Response Format</h3>
+                                <div class="code-block">
+                                    <pre><code>{
+  "error": "service_not_found",
+  "message": "Service 'unknown-service' not found",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "requestId": "req-1a2b3c4d5e6f",
+  "details": {
+    "serviceName": "unknown-service",
+    "availableServices": ["user-service", "order-service"]
+  }
+}</code></pre>
+                                </div>
+
+                                <h3>Common Error Codes</h3>
+                                <ul>
+                                    <li><code>service_not_found</code> - Requested service is not registered</li>
+                                    <li><code>service_unavailable</code> - Service has no healthy instances</li>
+                                    <li><code>invalid_request</code> - Request body or parameters are invalid</li>
+                                    <li><code>authentication_failed</code> - Invalid API key or JWT token</li>
+                                    <li><code>rate_limit_exceeded</code> - Too many requests from client</li>
+                                    <li><code>internal_error</code> - Unexpected server error</li>
+                                </ul>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Rate Limiting</h2>
+                                <p>ScoutQuest implements rate limiting to prevent abuse:</p>
+
+                                <div class="code-block">
+                                    <pre><code># Rate limit headers in responses
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1642248000
+X-RateLimit-Window: 60</code></pre>
+                                </div>
+
+                                <p><strong>Default Limits:</strong></p>
+                                <ul>
+                                    <li>1000 requests per minute per API key</li>
+                                    <li>100 concurrent connections per IP</li>
+                                    <li>10 service registrations per minute per service name</li>
+                                </ul>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>API Versioning</h2>
+                                <p>ScoutQuest uses URL-based versioning:</p>
+
+                                <div class="code-block">
+                                    <pre><code># Current version (v1)
+http://localhost:8080/api/services
+
+# Explicit version
+http://localhost:8080/api/v1/services
+
+# Future versions
+http://localhost:8080/api/v2/services</code></pre>
+                                </div>
+
+                                <p>Version compatibility:</p>
+                                <ul>
+                                    <li><strong>v1</strong> - Current stable version</li>
+                                    <li>Backward compatibility guaranteed within major versions</li>
+                                    <li>Deprecation notices provided 6 months before removal</li>
+                                </ul>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>SDKs and Tools</h2>
+                                <p>While you can use the REST API directly, we recommend using our official SDKs:</p>
+
+                                <div class="example-links">
+                                    <a href="js-sdk.html" class="example-link">
+                                        <h3>JavaScript/TypeScript SDK</h3>
+                                        <p>Full-featured client with advanced features</p>
+                                    </a>
+                                    <a href="rust-sdk.html" class="example-link">
+                                        <h3>Rust SDK</h3>
+                                        <p>High-performance client with async support</p>
+                                    </a>
+                                    <a href="https://github.com/RomainDECOSTER/scoutquest/tree/main/examples"
+                                        class="example-link">
+                                        <h3>CLI Tools</h3>
+                                        <p>Command-line tools for testing and administration</p>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <--inspect --trace-warnings --signal Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

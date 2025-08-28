@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <--inspect --trace-warnings --signal Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link active">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring & Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Troubleshooting</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Troubleshooting</h1>
+                            <p class="docs-lead">
+                                Common issues, solutions, and debugging techniques for ScoutQuest deployment and
+                                operation.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Common Issues</h2>
+
+                                <h3>Service Registration Problems</h3>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: "Connection refused" when registering service</h4>
+                                    <p><strong>Symptoms:</strong> Client throws connection errors when trying to
+                                        register</p>
+                                    <div class="code-block">
+                                        <pre><code>Error: Request failed with status code ECONNREFUSED
+at ScoutQuestClient.registerService (client.js:45)
+
+// Or in Rust:
+Error: Network error: Connection refused (os error 61)</code></pre>
+                                    </div>
+                                    <p><strong>Causes & Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>ScoutQuest server not running:</strong> Start the server with
+                                            <code>./scoutquest-server</code></li>
+                                        <li><strong>Wrong server URL:</strong> Check if using correct host and port
+                                            (default: <code>http://localhost:8080</code>)</li>
+                                        <li><strong>Firewall blocking:</strong> Ensure port 8080 is open and accessible
+                                        </li>
+                                        <li><strong>Network connectivity:</strong> Test with
+                                            <code>curl http://localhost:8080/health</code></li>
+                                    </ul>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: Service registration succeeds but service not discoverable</h4>
+                                    <p><strong>Symptoms:</strong> Registration returns success but
+                                        <code>discoverService()</code> fails</p>
+                                    <div class="code-block">
+                                        <pre><code>// Registration succeeds
+const instance = await client.registerService('my-service', 'localhost', 3000);
+console.log('Registered:', instance.id); // Works
+
+// Discovery fails
+const discovered = await client.discoverService('my-service'); // ServiceNotFoundError</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Check service name spelling:</strong> Service names are
+                                            case-sensitive</li>
+                                        <li><strong>Verify health status:</strong> Service might be registered but
+                                            marked unhealthy</li>
+                                        <li><strong>Database issues:</strong> Check server logs for database connection
+                                            errors</li>
+                                        <li><strong>Cache issues:</strong> Clear discovery cache or wait for TTL
+                                            expiration</li>
+                                    </ul>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: Health check failures</h4>
+                                    <p><strong>Symptoms:</strong> Services registered but marked as unhealthy</p>
+                                    <div class="code-block">
+                                        <pre><code>// Health check endpoint not responding
+GET http://localhost:3000/health → 404 Not Found
+
+// Or timeout
+Error: Health check timeout after 5000ms</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Implement health endpoint:</strong> Add <code>/health</code>
+                                            endpoint to your service</li>
+                                        <li><strong>Check endpoint path:</strong> Ensure health check URL is correct
+                                        </li>
+                                        <li><strong>Verify service is running:</strong> Test service accessibility
+                                            directly</li>
+                                        <li><strong>Adjust timeout:</strong> Increase health check timeout in
+                                            configuration</li>
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Service Discovery Issues</h2>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: "ServiceNotFoundError" for existing services</h4>
+                                    <p><strong>Symptoms:</strong> Service exists but cannot be discovered</p>
+                                    <div class="code-block">
+                                        <pre><code>ScoutQuestError: Service 'user-service' not found
+    at ServiceDiscoveryClient.discoverService</code></pre>
+                                    </div>
+                                    <p><strong>Debug Steps:</strong></p>
+                                    <div class="code-block">
+                                        <pre><code># 1. List all services
+curl http://localhost:8080/api/services
+
+# 2. Check specific service instances
+curl http://localhost:8080/api/services/user-service/instances
+
+# 3. Verify service registration
+curl -X POST http://localhost:8080/api/services \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "user-service",
+    "host": "localhost",
+    "port": 3000
+  }'</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: Load balancing not working</h4>
+                                    <p><strong>Symptoms:</strong> Always get same instance, no distribution</p>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Multiple instances:</strong> Ensure multiple healthy instances are
+                                            registered</li>
+                                        <li><strong>Check strategy:</strong> Verify load balancing strategy
+                                            configuration</li>
+                                        <li><strong>Clear cache:</strong> Discovery cache might return same cached
+                                            instance</li>
+                                    </ul>
+                                    <div class="code-block">
+                                        <pre><code>// Force fresh discovery (bypass cache)
+const options = { 
+  bypassCache: true,
+  loadBalancingStrategy: 'round_robin' 
+};
+const instance = await client.discoverServiceWithOptions('user-service', options);</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>HTTP Communication Problems</h2>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: HTTP requests through ScoutQuest fail</h4>
+                                    <p><strong>Symptoms:</strong> Direct calls work, but calls through discovery fail
+                                    </p>
+                                    <div class="code-block">
+                                        <pre><code>// Direct call works
+const response = await fetch('http://localhost:3000/api/users');
+
+// Through ScoutQuest fails
+const response = await client.getService('user-service', '/api/users'); // Error</code></pre>
+                                    </div>
+                                    <p><strong>Debug approach:</strong></p>
+                                    <div class="code-block">
+                                        <pre><code>// 1. Verify service discovery works
+const instance = await client.discoverService('user-service');
+console.log('Discovered:', instance);
+
+// 2. Test direct call to discovered instance
+const directResponse = await fetch(`http://${instance.host}:${instance.port}/api/users`);
+console.log('Direct call status:', directResponse.status);
+
+// 3. Enable debug logging
+const client = new ScoutQuestClient({
+  serverUrl: 'http://localhost:8080',
+  debug: true
+});</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: Timeout errors</h4>
+                                    <p><strong>Symptoms:</strong> Requests timeout inconsistently</p>
+                                    <div class="code-block">
+                                        <pre><code>ScoutQuestError: Request timeout after 5000ms</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Increase timeout:</strong> Adjust client timeout configuration</li>
+                                        <li><strong>Check service performance:</strong> Monitor target service response
+                                            times</li>
+                                        <li><strong>Network issues:</strong> Verify network connectivity and latency
+                                        </li>
+                                    </ul>
+                                    <div class="code-block">
+                                        <pre><code>// Increase timeout for specific calls
+const response = await client.getService('slow-service', '/api/data', {
+  timeout: 30000 // 30 seconds
+});</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Server-Side Issues</h2>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: ScoutQuest server won't start</h4>
+                                    <p><strong>Common error messages and solutions:</strong></p>
+
+                                    <div class="code-block">
+                                        <pre><code># Error: Address already in use
+Error: Address already in use (os error 48)</code></pre>
+                                    </div>
+                                    <p><strong>Solution:</strong> Another process using port 8080</p>
+                                    <div class="code-block">
+                                        <pre><code># Find process using port 8080
+lsof -i :8080
+kill -9 <PID>
+
+# Or use different port
+SCOUTQUEST_PORT=8081 ./scoutquest-server</code></pre>
+                                    </div>
+
+                                    <div class="code-block">
+                                        <pre><code># Error: Database connection failed
+Error: Failed to connect to database: Connection refused</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li>Start PostgreSQL: <code>brew services start postgresql</code> (macOS) or
+                                            <code>sudo systemctl start postgresql</code> (Linux)</li>
+                                        <li>Create database: <code>createdb scoutquest</code></li>
+                                        <li>Check connection string in config file</li>
+                                    </ul>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: High memory usage</h4>
+                                    <p><strong>Symptoms:</strong> Server memory consumption grows over time</p>
+                                    <p><strong>Diagnostic steps:</strong></p>
+                                    <div class="code-block">
+                                        <pre><code># Check memory usage
+ps aux | grep scoutquest-server
+
+# Monitor over time
+watch -n 5 'ps aux | grep scoutquest-server'
+
+# Check metrics endpoint
+curl http://localhost:8080/metrics | grep memory</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Reduce cache size:</strong> Lower cache TTL and max size in
+                                            configuration</li>
+                                        <li><strong>Connection pool limits:</strong> Reduce database connection pool
+                                            size</li>
+                                        <li><strong>Service cleanup:</strong> Implement automatic deregistration of dead
+                                            services</li>
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Debugging Techniques</h2>
+
+                                <h3>Enable Debug Logging</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="js-debug">JavaScript</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-debug">Rust</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="server-debug">Server</button>
+                                    </div>
+                                </div>
+                                <div id="js-debug" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>// Enable debug logging in JavaScript
+const client = new ScoutQuestClient({
+  serverUrl: 'http://localhost:8080',
+  debug: true,
+  logLevel: 'debug'
+});
+
+// Or set environment variable
+process.env.SCOUTQUEST_DEBUG = 'true';
+process.env.SCOUTQUEST_LOG_LEVEL = 'debug';</code></pre>
+                                    </div>
+                                </div>
+                                <div id="rust-debug" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>// Enable debug logging in Rust
+RUST_LOG=debug cargo run
+
+// Or specific to scoutquest
+RUST_LOG=scoutquest_rust=debug cargo run
+
+// In code
+use tracing::{debug, info, warn, error};
+
+let client = ServiceDiscoveryClient::builder()
+    .server_url("http://localhost:8080")
+    .enable_debug_logging(true)
+    .build()?;</code></pre>
+                                    </div>
+                                </div>
+                                <div id="server-debug" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code># Enable server debug logging
+RUST_LOG=debug ./scoutquest-server
+
+# Or via configuration
+[logging]
+level = "debug"
+format = "text"  # Easier to read during debugging</code></pre>
+                                    </div>
+                                </div>
+
+                                <h3>Network Debugging</h3>
+                                <div class="code-block">
+                                    <pre><code># Test ScoutQuest server connectivity
+curl -v http://localhost:8080/health
+
+# Test service registration
+curl -X POST http://localhost:8080/api/services \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "test-service",
+    "host": "localhost",
+    "port": 3000,
+    "metadata": {"version": "1.0.0"}
+  }'
+
+# Test service discovery
+curl http://localhost:8080/api/services/test-service
+
+# Test health checks
+curl http://localhost:3000/health
+
+# Monitor network traffic
+sudo tcpdump -i lo0 port 8080</code></pre>
+                                </div>
+
+                                <h3>Database Debugging</h3>
+                                <div class="code-block">
+                                    <pre><code># Connect to PostgreSQL database
+psql -h localhost -U scoutquest -d scoutquest
+
+# Check services table
+SELECT * FROM services;
+
+# Check service instances
+SELECT * FROM service_instances;
+
+# Check health check status
+SELECT si.*, hc.status, hc.last_check 
+FROM service_instances si 
+LEFT JOIN health_checks hc ON si.id = hc.service_instance_id;</code></pre>
+                                </div>
+
+                                <h3>Performance Analysis</h3>
+                                <div class="code-block">
+                                    <pre><code># Server metrics
+curl http://localhost:8080/metrics
+
+# Specific metrics to check
+curl -s http://localhost:8080/metrics | grep -E "(http_requests|service_discovery|health_check)"
+
+# Load testing with Apache Bench
+ab -n 1000 -c 10 http://localhost:8080/api/services
+
+# Monitor with htop
+htop -p $(pgrep scoutquest-server)</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Common Error Messages</h2>
+
+                                <div class="error-reference">
+                                    <h3>Client Errors</h3>
+                                    <div class="error-item">
+                                        <code>ServiceNotFoundError: Service 'xyz' not found</code>
+                                        <p>Service is not registered or all instances are unhealthy</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>ServiceUnavailableError: Service 'xyz' is unavailable</code>
+                                        <p>Service registered but no healthy instances available</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>NetworkError: Connection refused</code>
+                                        <p>Cannot connect to ScoutQuest server</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>TimeoutError: Request timeout after Xms</code>
+                                        <p>Request took longer than configured timeout</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>CircuitBreakerOpenError: Circuit breaker is open</code>
+                                        <p>Too many failures, circuit breaker protecting service</p>
+                                    </div>
+                                </div>
+
+                                <div class="error-reference">
+                                    <h3>Server Errors</h3>
+                                    <div class="error-item">
+                                        <code>Address already in use (os error 48)</code>
+                                        <p>Port 8080 is already in use by another process</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>Failed to connect to database</code>
+                                        <p>PostgreSQL is not running or connection configuration is incorrect</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>Redis connection failed</code>
+                                        <p>Redis server is not accessible (if using Redis for caching)</p>
+                                    </div>
+                                    <div class="error-item">
+                                        <code>TLS certificate error</code>
+                                        <p>Invalid or expired TLS certificates</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Health Check Debugging</h2>
+
+                                <h3>Manual Health Check Testing</h3>
+                                <div class="code-block">
+                                    <pre><code># Test health endpoint directly
+curl -v http://localhost:3000/health
+
+# Expected response
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"status": "healthy", "timestamp": "2024-01-15T10:30:00Z"}</code></pre>
+                                </div>
+
+                                <h3>Health Check Implementation Examples</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="express-health">Express.js</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="axum-health">Rust/Axum</button>
+                                    </div>
+                                </div>
+                                <div id="express-health" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>app.get('/health', (req, res) => {
+  // Basic health check
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: process.env.npm_package_version
+  });
+});
+
+// Advanced health check with dependencies
+app.get('/health', async (req, res) => {
+  const checks = {};
+  let healthy = true;
+  
+  // Database check
+  try {
+    await db.query('SELECT 1');
+    checks.database = 'healthy';
+  } catch (error) {
+    checks.database = 'unhealthy';
+    healthy = false;
+  }
+  
+  // Redis check
+  try {
+    await redis.ping();
+    checks.redis = 'healthy';
+  } catch (error) {
+    checks.redis = 'unhealthy';
+    healthy = false;
+  }
+  
+  const status = healthy ? 200 : 503;
+  res.status(status).json({
+    status: healthy ? 'healthy' : 'unhealthy',
+    checks,
+    timestamp: new Date().toISOString()
+  });
+});</code></pre>
+                                    </div>
+                                </div>
+                                <div id="axum-health" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use axum::{http::StatusCode, response::Json, routing::get, Router};
+use serde_json::{json, Value};
+
+async fn health_check() -> Result<Json<Value>, StatusCode> {
+    // Basic health check
+    Ok(Json(json!({
+        "status": "healthy",
+        "timestamp": chrono::Utc::now().to_rfc3339(),
+        "version": env!("CARGO_PKG_VERSION")
+    })))
+}
+
+// Advanced health check
+async fn advanced_health_check(
+    Extension(db_pool): Extension<sqlx::PgPool>,
+    Extension(redis_pool): Extension<r2d2::Pool<redis::Client>>
+) -> Result<Json<Value>, StatusCode> {
+    let mut checks = serde_json::Map::new();
+    let mut healthy = true;
+    
+    // Database check
+    match sqlx::query("SELECT 1").fetch_one(&db_pool).await {
+        Ok(_) => checks.insert("database".to_string(), json!("healthy")),
+        Err(_) => {
+            checks.insert("database".to_string(), json!("unhealthy"));
+            healthy = false;
+        }
+    };
+    
+    // Redis check
+    let redis_status = match redis_pool.get() {
+        Ok(mut conn) => {
+            match redis::cmd("PING").query::<String>(&mut conn) {
+                Ok(_) => "healthy",
+                Err(_) => { healthy = false; "unhealthy" }
+            }
+        }
+        Err(_) => { healthy = false; "unhealthy" }
+    };
+    checks.insert("redis".to_string(), json!(redis_status));
+    
+    let status_code = if healthy { StatusCode::OK } else { StatusCode::SERVICE_UNAVAILABLE };
+    
+    Ok(Json(json!({
+        "status": if healthy { "healthy" } else { "unhealthy" },
+        "checks": checks,
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    })))
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Performance Issues</h2>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: Slow service discovery</h4>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Enable caching:</strong> Use discovery cache with appropriate TTL
+                                        </li>
+                                        <li><strong>Database optimization:</strong> Ensure proper indexes on services
+                                            table</li>
+                                        <li><strong>Connection pooling:</strong> Use database connection pooling</li>
+                                    </ul>
+                                    <div class="code-block">
+                                        <pre><code>// Enable client-side caching
+const client = new ScoutQuestClient({
+  serverUrl: 'http://localhost:8080',
+  cache: {
+    enabled: true,
+    ttl: 60000, // 1 minute
+    maxSize: 1000
+  }
+});</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="trouble-item">
+                                    <h4>❌ Problem: High latency HTTP calls</h4>
+                                    <p><strong>Diagnostic approach:</strong></p>
+                                    <div class="code-block">
+                                        <pre><code># Measure different components
+time curl http://localhost:8080/api/services/user-service  # Discovery time
+time curl http://localhost:3000/api/users  # Direct service time
+time scoutquest-client get user-service /api/users  # Through ScoutQuest</code></pre>
+                                    </div>
+                                    <p><strong>Solutions:</strong></p>
+                                    <ul>
+                                        <li><strong>Keep-alive connections:</strong> Enable HTTP keep-alive</li>
+                                        <li><strong>Connection pooling:</strong> Reuse HTTP connections</li>
+                                        <li><strong>Local instances:</strong> Prefer geographically closer instances
+                                        </li>
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Getting Help</h2>
+
+                                <div class="alert alert-info">
+                                    <h3>Before Opening an Issue</h3>
+                                    <ol>
+                                        <li>Check this troubleshooting guide</li>
+                                        <li>Search existing <a
+                                                href="https://github.com/RomainDECOSTER/scoutquest/issues">GitHub
+                                                issues</a></li>
+                                        <li>Enable debug logging and gather relevant logs</li>
+                                        <li>Prepare a minimal reproducible example</li>
+                                        <li>Include your environment details (OS, ScoutQuest version, etc.)</li>
+                                    </ol>
+                                </div>
+
+                                <div class="help-resources">
+                                    <a href="https://github.com/RomainDECOSTER/scoutquest/issues" class="help-link">
+                                        <h3>GitHub Issues</h3>
+                                        <p>Report bugs and request features</p>
+                                    </a>
+                                    <a href="https://github.com/RomainDECOSTER/scoutquest/discussions"
+                                        class="help-link">
+                                        <h3>GitHub Discussions</h3>
+                                        <p>Ask questions and share solutions</p>
+                                    </a>
+                                    <a href="../index.html#docs" class="help-link">
+                                        <h3>Documentation</h3>
+                                        <p>Complete guides and API reference</p>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <--inspect --trace-warnings --signal Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

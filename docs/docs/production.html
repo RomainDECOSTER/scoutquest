@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Deployment - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <!-- Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring & Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link active">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Production Deployment</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Production Deployment</h1>
+                            <p class="docs-lead">
+                                Complete guide for deploying ScoutQuest in production with high availability, security,
+                                and performance optimization.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Architecture Overview</h2>
+                                <p>A production ScoutQuest deployment typically includes:</p>
+
+                                <div class="architecture-grid">
+                                    <div class="arch-component">
+                                        <h3>🏗️ Infrastructure</h3>
+                                        <ul>
+                                            <li>Load balancers</li>
+                                            <li>Multiple ScoutQuest instances</li>
+                                            <li>Database clustering</li>
+                                            <li>Network isolation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="arch-component">
+                                        <h3>🔐 Security</h3>
+                                        <ul>
+                                            <li>TLS/SSL encryption</li>
+                                            <li>Authentication & authorization</li>
+                                            <li>Network policies</li>
+                                            <li>Secret management</li>
+                                        </ul>
+                                    </div>
+                                    <div class="arch-component">
+                                        <h3>📊 Observability</h3>
+                                        <ul>
+                                            <li>Metrics collection</li>
+                                            <li>Centralized logging</li>
+                                            <li>Distributed tracing</li>
+                                            <li>Alerting systems</li>
+                                        </ul>
+                                    </div>
+                                    <div class="arch-component">
+                                        <h3>⚡ Performance</h3>
+                                        <ul>
+                                            <li>Resource optimization</li>
+                                            <li>Caching strategies</li>
+                                            <li>Connection pooling</li>
+                                            <li>Rate limiting</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Kubernetes Deployment</h2>
+
+                                <h3>Production Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># scoutquest-production.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: scoutquest-system
+  labels:
+    name: scoutquest-system
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scoutquest-config
+  namespace: scoutquest-system
+data:
+  config.toml: |
+    [server]
+    host = "0.0.0.0"
+    port = 8080
+    
+    [registry]
+    cleanup_interval = 30
+    health_check_interval = 10
+    max_retries = 3
+    
+    [security]
+    enable_tls = true
+    cert_file = "/etc/certs/tls.crt"
+    key_file = "/etc/certs/tls.key"
+    require_auth = true
+    
+    [database]
+    url = "postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres-service:5432/scoutquest"
+    max_connections = 20
+    min_connections = 5
+    
+    [observability]
+    metrics_enabled = true
+    tracing_enabled = true
+    jaeger_endpoint = "http://jaeger-collector:14268/api/traces"
+    
+    [performance]
+    request_timeout = 30
+    max_concurrent_requests = 1000
+    enable_compression = true
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: scoutquest-secrets
+  namespace: scoutquest-system
+type: Opaque
+data:
+  postgres-password: <base64-encoded-password>
+  jwt-secret: <base64-encoded-jwt-secret>
+  api-key: <base64-encoded-api-key>
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoutquest-server
+  namespace: scoutquest-system
+  labels:
+    app: scoutquest-server
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: scoutquest-server
+  template:
+    metadata:
+      labels:
+        app: scoutquest-server
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: scoutquest-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: scoutquest
+        image: scoutquest/server:v1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: scoutquest-secrets
+              key: postgres-password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: scoutquest-secrets
+              key: jwt-secret
+        - name: RUST_LOG
+          value: "info,scoutquest=debug"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/scoutquest
+          readOnly: true
+        - name: tls-certs
+          mountPath: /etc/certs
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        configMap:
+          name: scoutquest-config
+      - name: tls-certs
+        secret:
+          secretName: scoutquest-tls-cert
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - scoutquest-server
+              topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scoutquest-service
+  namespace: scoutquest-system
+  labels:
+    app: scoutquest-server
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: http
+    protocol: TCP
+    name: https
+  selector:
+    app: scoutquest-server
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scoutquest-ingress
+  namespace: scoutquest-system
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - scoutquest.example.com
+    secretName: scoutquest-tls-cert
+  rules:
+  - host: scoutquest.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: scoutquest-service
+            port:
+              number: 8080</code></pre>
+                                </div>
+
+                                <h3>RBAC Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scoutquest-service-account
+  namespace: scoutquest-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: scoutquest-cluster-role
+rules:
+- apiGroups: [""]
+  resources: ["services", "endpoints", "pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: scoutquest-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: scoutquest-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: scoutquest-service-account
+  namespace: scoutquest-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: scoutquest-role
+  namespace: scoutquest-system
+rules:
+- apiGroups: [""]
+  resources: ["secrets", "configmaps"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: scoutquest-role-binding
+  namespace: scoutquest-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: scoutquest-role
+subjects:
+- kind: ServiceAccount
+  name: scoutquest-service-account
+  namespace: scoutquest-system</code></pre>
+                                </div>
+
+                                <h3>PostgreSQL High Availability</h3>
+                                <div class="code-block">
+                                    <pre><code># postgres-ha.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-cluster
+  namespace: scoutquest-system
+spec:
+  instances: 3
+  
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: "256MB"
+      effective_cache_size: "1GB"
+      maintenance_work_mem: "64MB"
+      checkpoint_completion_target: "0.9"
+      wal_buffers: "16MB"
+      default_statistics_target: "100"
+      random_page_cost: "1.1"
+      effective_io_concurrency: "200"
+      work_mem: "4MB"
+      min_wal_size: "1GB"
+      max_wal_size: "4GB"
+  
+  bootstrap:
+    initdb:
+      database: scoutquest
+      owner: scoutquest
+      secret:
+        name: postgres-credentials
+  
+  storage:
+    size: 100Gi
+    storageClass: fast-ssd
+  
+  monitoring:
+    enabled: true
+    
+  backup:
+    retentionPolicy: "30d"
+    barmanObjectStore:
+      destinationPath: "s3://backup-bucket/postgres"
+      s3Credentials:
+        accessKeyId:
+          name: backup-credentials
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: backup-credentials
+          key: SECRET_ACCESS_KEY
+      wal:
+        retention: "5d"
+      data:
+        retention: "30d"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials
+  namespace: scoutquest-system
+type: kubernetes.io/basic-auth
+data:
+  username: <base64-encoded-username>
+  password: <base64-encoded-password></code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Security Configuration</h2>
+
+                                <h3>TLS and Certificate Management</h3>
+                                <div class="code-block">
+                                    <pre><code># cert-manager-issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@example.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+    - dns01:
+        route53:
+          region: us-east-1
+          accessKeyID: <access-key-id>
+          secretAccessKeySecretRef:
+            name: route53-credentials
+            key: secret-access-key
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: scoutquest-tls-cert
+  namespace: scoutquest-system
+spec:
+  secretName: scoutquest-tls-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - scoutquest.example.com
+  - api.scoutquest.example.com</code></pre>
+                                </div>
+
+                                <h3>Network Policies</h3>
+                                <div class="code-block">
+                                    <pre><code># network-policies.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: scoutquest-network-policy
+  namespace: scoutquest-system
+spec:
+  podSelector:
+    matchLabels:
+      app: scoutquest-server
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-system
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring-system
+    - podSelector:
+        matchLabels:
+          app: scoutquest-server
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: scoutquest-system
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 14268
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: postgres-network-policy
+  namespace: scoutquest-system
+spec:
+  podSelector:
+    matchLabels:
+      postgresql: postgres-cluster
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: scoutquest-server
+    ports:
+    - protocol: TCP
+      port: 5432</code></pre>
+                                </div>
+
+                                <h3>Pod Security Standards</h3>
+                                <div class="code-block">
+                                    <pre><code># pod-security-policy.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: scoutquest-psp
+  namespace: scoutquest-system
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'secret'
+    - 'emptyDir'
+    - 'downwardAPI'
+    - 'projected'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: true
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: scoutquest-psp-role
+  namespace: scoutquest-system
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs: ['use']
+  resourceNames:
+  - scoutquest-psp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: scoutquest-psp-binding
+  namespace: scoutquest-system
+roleRef:
+  kind: Role
+  name: scoutquest-psp-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: scoutquest-service-account
+  namespace: scoutquest-system</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Docker Compose for Smaller Deployments</h2>
+
+                                <div class="code-block">
+                                    <pre><code># docker-compose.prod.yml
+version: '3.8'
+
+services:
+  scoutquest-1:
+    image: scoutquest/server:v1.0.0
+    container_name: scoutquest-server-1
+    restart: unless-stopped
+    environment:
+      - POSTGRES_URL=postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres:5432/scoutquest
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - RUST_LOG=info,scoutquest=debug
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/production.toml:/etc/scoutquest/config.toml:ro
+      - ./certs:/etc/certs:ro
+      - scoutquest-logs:/var/log/scoutquest
+    networks:
+      - scoutquest-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  scoutquest-2:
+    image: scoutquest/server:v1.0.0
+    container_name: scoutquest-server-2
+    restart: unless-stopped
+    environment:
+      - POSTGRES_URL=postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres:5432/scoutquest
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - RUST_LOG=info,scoutquest=debug
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/production.toml:/etc/scoutquest/config.toml:ro
+      - ./certs:/etc/certs:ro
+      - scoutquest-logs:/var/log/scoutquest
+    networks:
+      - scoutquest-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: scoutquest-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx-logs:/var/log/nginx
+    networks:
+      - scoutquest-network
+    depends_on:
+      - scoutquest-1
+      - scoutquest-2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: scoutquest-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=scoutquest
+      - POSTGRES_USER=scoutquest
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    networks:
+      - scoutquest-network
+    command: >
+      postgres 
+      -c config_file=/etc/postgresql/postgresql.conf
+      -c log_statement=all
+      -c log_destination=stderr
+      -c logging_collector=on
+      -c log_directory=/var/log/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scoutquest -d scoutquest"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: scoutquest-redis
+    restart: unless-stopped
+    command: >
+      redis-server 
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - scoutquest-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Monitoring stack
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    networks:
+      - monitoring-network
+      - scoutquest-network
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    networks:
+      - monitoring-network
+    ports:
+      - "3001:3000"
+
+volumes:
+  postgres-data:
+  redis-data:
+  prometheus-data:
+  grafana-data:
+  scoutquest-logs:
+  nginx-logs:
+
+networks:
+  scoutquest-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  monitoring-network:
+    driver: bridge</code></pre>
+                                </div>
+
+                                <h3>Nginx Load Balancer Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># nginx/nginx.conf
+events {
+    worker_connections 1024;
+    use epoll;
+    multi_accept on;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    # Logging
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for" '
+                    'rt=$request_time uct="$upstream_connect_time" '
+                    'uht="$upstream_header_time" urt="$upstream_response_time"';
+    
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log warn;
+    
+    # Performance
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    client_max_body_size 16M;
+    
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types text/plain text/css text/xml text/javascript 
+               application/json application/javascript application/xml+rss 
+               application/atom+xml image/svg+xml;
+    
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+    limit_req_zone $binary_remote_addr zone=health:10m rate=100r/s;
+    
+    # Upstream configuration
+    upstream scoutquest_backend {
+        least_conn;
+        server scoutquest-1:8080 max_fails=3 fail_timeout=30s;
+        server scoutquest-2:8080 max_fails=3 fail_timeout=30s;
+        keepalive 32;
+    }
+    
+    # Health check endpoint
+    server {
+        listen 80;
+        server_name _;
+        
+        location /health {
+            access_log off;
+            return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+    }
+    
+    # HTTP to HTTPS redirect
+    server {
+        listen 80;
+        server_name scoutquest.example.com;
+        return 301 https://$server_name$request_uri;
+    }
+    
+    # Main HTTPS server
+    server {
+        listen 443 ssl http2;
+        server_name scoutquest.example.com;
+        
+        # SSL configuration
+        ssl_certificate /etc/nginx/ssl/cert.pem;
+        ssl_certificate_key /etc/nginx/ssl/key.pem;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozTLS:10m;
+        ssl_session_tickets off;
+        
+        # Modern configuration
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+        ssl_prefer_server_ciphers off;
+        
+        # HSTS
+        add_header Strict-Transport-Security "max-age=63072000" always;
+        
+        # Security headers
+        add_header X-Frame-Options DENY always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';" always;
+        
+        # API routes with rate limiting
+        location /api/ {
+            limit_req zone=api burst=20 nodelay;
+            
+            proxy_pass https://scoutquest_backend;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
+            
+            # Timeouts
+            proxy_connect_timeout 5s;
+            proxy_send_timeout 30s;
+            proxy_read_timeout 30s;
+        }
+        
+        # Health check with higher rate limit
+        location /health {
+            limit_req zone=health burst=50 nodelay;
+            proxy_pass https://scoutquest_backend/health;
+            access_log off;
+        }
+        
+        # Metrics endpoint (internal only)
+        location /metrics {
+            allow 172.20.0.0/16;
+            deny all;
+            proxy_pass https://scoutquest_backend/metrics;
+        }
+        
+        # Static assets
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+            try_files $uri =404;
+        }
+    }
+}</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Performance Optimization</h2>
+
+                                <h3>Production Configuration Tuning</h3>
+                                <div class="code-block">
+                                    <pre><code># config/production.toml
+[server]
+host = "0.0.0.0"
+port = 8080
+worker_threads = 8
+max_blocking_threads = 16
+
+[registry]
+cleanup_interval = 60
+health_check_interval = 15
+max_retries = 5
+health_check_timeout = 10
+batch_size = 100
+concurrent_health_checks = 50
+
+[database]
+url = "postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres:5432/scoutquest"
+max_connections = 50
+min_connections = 10
+connection_timeout = 30
+idle_timeout = 300
+max_lifetime = 3600
+
+[cache]
+enabled = true
+redis_url = "redis://:${REDIS_PASSWORD}@redis:6379"
+default_ttl = 300
+max_connections = 20
+connection_timeout = 5
+command_timeout = 5
+
+[security]
+enable_tls = true
+cert_file = "/etc/certs/cert.pem"
+key_file = "/etc/certs/key.pem"
+require_auth = true
+jwt_secret = "${JWT_SECRET}"
+jwt_expiry = 3600
+rate_limit_requests = 1000
+rate_limit_window = 60
+
+[performance]
+request_timeout = 30
+max_concurrent_requests = 5000
+enable_compression = true
+compression_level = 6
+keep_alive_timeout = 75
+tcp_nodelay = true
+tcp_keepalive = true
+
+[observability]
+metrics_enabled = true
+tracing_enabled = true
+jaeger_endpoint = "http://jaeger:14268/api/traces"
+log_level = "info"
+structured_logging = true
+
+[backup]
+enabled = true
+s3_bucket = "scoutquest-backups"
+s3_region = "us-east-1"
+backup_interval = 3600
+retention_days = 30</code></pre>
+                                </div>
+
+                                <h3>Database Performance Tuning</h3>
+                                <div class="code-block">
+                                    <pre><code># postgres/postgresql.conf
+# Connection Settings
+max_connections = 200
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = 512MB                  # 25% of total RAM
+effective_cache_size = 1536MB           # 75% of total RAM
+work_mem = 4MB                          # RAM / max_connections
+maintenance_work_mem = 128MB
+
+# Checkpoint Settings
+checkpoint_completion_target = 0.9
+checkpoint_timeout = 15min
+max_wal_size = 2GB
+min_wal_size = 512MB
+checkpoint_warning = 30s
+
+# WAL Settings
+wal_buffers = 16MB
+wal_level = replica
+wal_log_hints = on
+archive_mode = on
+archive_command = 'test ! -f /var/lib/postgresql/archive/%f && cp %p /var/lib/postgresql/archive/%f'
+
+# Query Planner
+default_statistics_target = 500
+random_page_cost = 1.1
+effective_io_concurrency = 200
+
+# Background Writer
+bgwriter_delay = 50ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+
+# Autovacuum
+autovacuum = on
+autovacuum_max_workers = 3
+autovacuum_naptime = 20s
+autovacuum_vacuum_threshold = 50
+autovacuum_analyze_threshold = 50
+autovacuum_vacuum_scale_factor = 0.02
+autovacuum_analyze_scale_factor = 0.01
+
+# Logging
+log_destination = 'stderr'
+logging_collector = on
+log_directory = '/var/log/postgresql'
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+log_min_duration_statement = 100ms
+log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+log_autovacuum_min_duration = 0
+
+# Replication (for read replicas)
+max_wal_senders = 3
+wal_keep_segments = 64</code></pre>
+                                </div>
+
+                                <h3>Connection Pooling with PgBouncer</h3>
+                                <div class="code-block">
+                                    <pre><code># pgbouncer/pgbouncer.ini
+[databases]
+scoutquest = host=postgres port=5432 dbname=scoutquest
+
+[pgbouncer]
+pool_mode = transaction
+listen_port = 6432
+listen_addr = *
+auth_type = scram-sha-256
+auth_file = /etc/pgbouncer/userlist.txt
+logfile = /var/log/pgbouncer/pgbouncer.log
+pidfile = /var/run/pgbouncer/pgbouncer.pid
+
+# Pool configuration
+max_client_conn = 1000
+default_pool_size = 25
+min_pool_size = 5
+reserve_pool_size = 5
+reserve_pool_timeout = 5
+max_db_connections = 50
+
+# Timing
+server_reset_query = DISCARD ALL
+server_check_query = select 1
+server_check_delay = 30
+server_connect_timeout = 15
+server_login_retry = 15
+client_login_timeout = 60
+autodb_idle_timeout = 3600
+
+# Performance
+application_name_add_host = 1
+ignore_startup_parameters = extra_float_digits</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Backup and Disaster Recovery</h2>
+
+                                <h3>Automated Backup Strategy</h3>
+                                <div class="code-block">
+                                    <pre><code># backup/backup-script.sh
+#!/bin/bash
+
+set -euo pipefail
+
+# Configuration
+BACKUP_DIR="/backups"
+S3_BUCKET="scoutquest-backups"
+RETENTION_DAYS=30
+POSTGRES_HOST="postgres"
+POSTGRES_DB="scoutquest"
+POSTGRES_USER="scoutquest"
+
+# Create timestamped backup directory
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_PATH="${BACKUP_DIR}/${TIMESTAMP}"
+mkdir -p "${BACKUP_PATH}"
+
+echo "Starting backup at $(date)"
+
+# Database backup
+echo "Backing up database..."
+pg_dump -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" \
+    --format=custom --compress=9 --verbose \
+    --file="${BACKUP_PATH}/database.dump"
+
+# Configuration backup
+echo "Backing up configuration..."
+tar -czf "${BACKUP_PATH}/config.tar.gz" /etc/scoutquest/
+
+# Create backup manifest
+cat > "${BACKUP_PATH}/manifest.json" << EOF
+{
+  "timestamp": "${TIMESTAMP}",
+  "database_size": $(stat -c%s "${BACKUP_PATH}/database.dump"),
+  "config_size": $(stat -c%s "${BACKUP_PATH}/config.tar.gz"),
+  "scoutquest_version": "$(scoutquest --version 2>/dev/null || echo 'unknown')",
+  "postgres_version": "$(psql -h ${POSTGRES_HOST} -U ${POSTGRES_USER} -d ${POSTGRES_DB} -t -c 'SELECT version();' 2>/dev/null || echo 'unknown')"
+}
+EOF
+
+# Upload to S3
+echo "Uploading to S3..."
+aws s3 sync "${BACKUP_PATH}" "s3://${S3_BUCKET}/${TIMESTAMP}/" \
+    --storage-class STANDARD_IA \
+    --server-side-encryption AES256
+
+# Verify backup
+echo "Verifying backup..."
+aws s3 ls "s3://${S3_BUCKET}/${TIMESTAMP}/" --recursive | grep -q "database.dump"
+aws s3 ls "s3://${S3_BUCKET}/${TIMESTAMP}/" --recursive | grep -q "config.tar.gz"
+
+# Cleanup old local backups
+echo "Cleaning up old local backups..."
+find "${BACKUP_DIR}" -type d -name "20*" -mtime +7 -exec rm -rf {} \; || true
+
+# Cleanup old S3 backups
+echo "Cleaning up old S3 backups..."
+CUTOFF_DATE=$(date -d "${RETENTION_DAYS} days ago" +"%Y%m%d")
+aws s3 ls "s3://${S3_BUCKET}/" | while read -r line; do
+    BACKUP_DATE=$(echo "$line" | awk '{print $2}' | sed 's/_.*//g')
+    if [[ "${BACKUP_DATE}" < "${CUTOFF_DATE}" ]]; then
+        BACKUP_PREFIX=$(echo "$line" | awk '{print $2}')
+        echo "Deleting old backup: ${BACKUP_PREFIX}"
+        aws s3 rm "s3://${S3_BUCKET}/${BACKUP_PREFIX}" --recursive
+    fi
+done
+
+echo "Backup completed successfully at $(date)"
+
+# Send notification
+if command -v curl &> /dev/null && [[ -n "${SLACK_WEBHOOK:-}" ]]; then
+    curl -X POST -H 'Content-type: application/json' \
+        --data "{\"text\":\"✅ ScoutQuest backup completed successfully: ${TIMESTAMP}\"}" \
+        "${SLACK_WEBHOOK}"
+fi</code></pre>
+                                </div>
+
+                                <h3>Disaster Recovery Procedures</h3>
+                                <div class="code-block">
+                                    <pre><code># disaster-recovery/restore.sh
+#!/bin/bash
+
+set -euo pipefail
+
+# Configuration
+S3_BUCKET="scoutquest-backups"
+RESTORE_TIMESTAMP="${1:-latest}"
+POSTGRES_HOST="${POSTGRES_HOST:-postgres}"
+POSTGRES_DB="${POSTGRES_DB:-scoutquest}"
+POSTGRES_USER="${POSTGRES_USER:-scoutquest}"
+
+echo "Starting disaster recovery process..."
+
+# Find backup to restore
+if [[ "${RESTORE_TIMESTAMP}" == "latest" ]]; then
+    RESTORE_TIMESTAMP=$(aws s3 ls "s3://${S3_BUCKET}/" | tail -n 1 | awk '{print $2}' | sed 's/\///g')
+fi
+
+echo "Restoring from backup: ${RESTORE_TIMESTAMP}"
+
+# Create temporary directory
+TEMP_DIR=$(mktemp -d)
+trap "rm -rf ${TEMP_DIR}" EXIT
+
+# Download backup
+echo "Downloading backup from S3..."
+aws s3 sync "s3://${S3_BUCKET}/${RESTORE_TIMESTAMP}/" "${TEMP_DIR}/"
+
+# Verify backup integrity
+echo "Verifying backup integrity..."
+if [[ ! -f "${TEMP_DIR}/database.dump" ]] || [[ ! -f "${TEMP_DIR}/config.tar.gz" ]]; then
+    echo "ERROR: Backup files not found or incomplete"
+    exit 1
+fi
+
+# Check if database is accessible
+if ! pg_isready -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}"; then
+    echo "ERROR: Database is not accessible"
+    exit 1
+fi
+
+# Create backup of current database (if exists)
+echo "Creating safety backup of current database..."
+SAFETY_BACKUP="${TEMP_DIR}/current_db_backup.dump"
+pg_dump -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" \
+    --format=custom --file="${SAFETY_BACKUP}" || echo "No existing database to backup"
+
+# Stop ScoutQuest services
+echo "Stopping ScoutQuest services..."
+kubectl scale deployment scoutquest-server --replicas=0 -n scoutquest-system || true
+docker-compose stop scoutquest-1 scoutquest-2 || true
+
+# Drop and recreate database
+echo "Recreating database..."
+psql -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d postgres << EOF
+DROP DATABASE IF EXISTS ${POSTGRES_DB};
+CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};
+EOF
+
+# Restore database
+echo "Restoring database..."
+pg_restore -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" \
+    --verbose --clean --if-exists "${TEMP_DIR}/database.dump"
+
+# Restore configuration
+echo "Restoring configuration..."
+tar -xzf "${TEMP_DIR}/config.tar.gz" -C /
+
+# Verify database connection
+echo "Verifying database restoration..."
+RESTORED_TABLES=$(psql -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" \
+    -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public';")
+
+if [[ "${RESTORED_TABLES}" -lt 1 ]]; then
+    echo "ERROR: Database restoration failed - no tables found"
+    exit 1
+fi
+
+# Start services
+echo "Starting ScoutQuest services..."
+kubectl scale deployment scoutquest-server --replicas=3 -n scoutquest-system || true
+docker-compose start scoutquest-1 scoutquest-2 || true
+
+# Wait for services to be ready
+echo "Waiting for services to be ready..."
+sleep 30
+
+# Health check
+echo "Performing health check..."
+for i in {1..30}; do
+    if curl -f -s http://localhost/health > /dev/null; then
+        echo "✅ ScoutQuest is healthy and running"
+        break
+    fi
+    echo "Waiting for service to be ready... ($i/30)"
+    sleep 10
+done
+
+# Send notification
+if command -v curl &> /dev/null && [[ -n "${SLACK_WEBHOOK:-}" ]]; then
+    curl -X POST -H 'Content-type: application/json' \
+        --data "{\"text\":\"✅ ScoutQuest disaster recovery completed successfully. Restored from: ${RESTORE_TIMESTAMP}\"}" \
+        "${SLACK_WEBHOOK}"
+fi
+
+echo "Disaster recovery completed successfully!"
+echo "Restored from backup: ${RESTORE_TIMESTAMP}"
+echo "Safety backup of previous database available at: ${SAFETY_BACKUP}"</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Operational Best Practices</h2>
+
+                                <div class="alert alert-success">
+                                    <h3>✅ Production Checklist</h3>
+                                    <ul>
+                                        <li><strong>High Availability:</strong> Deploy multiple instances across
+                                            availability zones</li>
+                                        <li><strong>Load Balancing:</strong> Use proper load balancers with health
+                                            checks</li>
+                                        <li><strong>Database:</strong> Set up database clustering and read replicas</li>
+                                        <li><strong>Security:</strong> Enable TLS, implement proper authentication</li>
+                                        <li><strong>Monitoring:</strong> Set up comprehensive monitoring and alerting
+                                        </li>
+                                        <li><strong>Logging:</strong> Configure centralized logging with log rotation
+                                        </li>
+                                        <li><strong>Backups:</strong> Automate regular backups and test recovery
+                                            procedures</li>
+                                        <li><strong>Resource Limits:</strong> Set appropriate CPU/memory limits and
+                                            requests</li>
+                                        <li><strong>Network Security:</strong> Implement network policies and firewalls
+                                        </li>
+                                        <li><strong>Update Strategy:</strong> Plan for zero-downtime rolling updates
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <h3>⚠️ Common Production Issues</h3>
+                                    <ul>
+                                        <li><strong>Database Connection Exhaustion:</strong> Use connection pooling</li>
+                                        <li><strong>Memory Leaks:</strong> Monitor memory usage and set limits</li>
+                                        <li><strong>Certificate Expiry:</strong> Set up automated certificate renewal
+                                        </li>
+                                        <li><strong>Split Brain Scenarios:</strong> Implement proper leader election
+                                        </li>
+                                        <li><strong>Cascading Failures:</strong> Use circuit breakers and timeouts</li>
+                                        <li><strong>Log Storage:</strong> Implement log rotation and retention policies
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <h3>Maintenance Windows</h3>
+                                <div class="code-block">
+                                    <pre><code># maintenance/rolling-update.sh
+#!/bin/bash
+
+set -euo pipefail
+
+NEW_IMAGE="scoutquest/server:${1:-latest}"
+NAMESPACE="scoutquest-system"
+DEPLOYMENT="scoutquest-server"
+
+echo "Starting rolling update to ${NEW_IMAGE}"
+
+# Update deployment
+kubectl set image deployment/${DEPLOYMENT} \
+    scoutquest=${NEW_IMAGE} \
+    -n ${NAMESPACE}
+
+# Wait for rollout to complete
+kubectl rollout status deployment/${DEPLOYMENT} \
+    -n ${NAMESPACE} \
+    --timeout=600s
+
+# Verify deployment
+READY_REPLICAS=$(kubectl get deployment ${DEPLOYMENT} \
+    -n ${NAMESPACE} \
+    -o jsonpath='{.status.readyReplicas}')
+
+if [[ "${READY_REPLICAS}" -ge 2 ]]; then
+    echo "✅ Rolling update completed successfully"
+    
+    # Run health checks
+    kubectl get pods -n ${NAMESPACE} -l app=scoutquest-server
+    
+    # Test endpoints
+    curl -f http://scoutquest.example.com/health
+    curl -f http://scoutquest.example.com/api/health
+    
+else
+    echo "❌ Rolling update failed"
+    kubectl rollout undo deployment/${DEPLOYMENT} -n ${NAMESPACE}
+    exit 1
+fi</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Next Steps</h2>
+                                <div class="next-steps">
+                                    <a href="monitoring.html" class="next-step">
+                                        <h3>Monitoring & Observability</h3>
+                                        <p>Set up comprehensive monitoring, logging, and tracing for your production
+                                            deployment</p>
+                                    </a>
+                                    <a href="health-checking.html" class="next-step">
+                                        <h3>Health Checking</h3>
+                                        <p>Implement robust health checks for reliable service discovery</p>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

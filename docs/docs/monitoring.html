@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring & Observability - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <!-- Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link active">Monitoring &
+                                        Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Monitoring & Observability</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Monitoring & Observability</h1>
+                            <p class="docs-lead">
+                                Complete guide to monitoring, metrics, logging, and tracing for ScoutQuest and your
+                                services.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Overview</h2>
+                                <p>Observability is crucial for understanding the behavior of distributed systems.
+                                    ScoutQuest provides comprehensive monitoring capabilities across three key pillars:
+                                </p>
+
+                                <div class="pillars-grid">
+                                    <div class="pillar">
+                                        <h3>📊 Metrics</h3>
+                                        <p>Quantitative measurements of system performance and behavior over time</p>
+                                    </div>
+                                    <div class="pillar">
+                                        <h3>📝 Logging</h3>
+                                        <p>Detailed records of events and operations for debugging and auditing</p>
+                                    </div>
+                                    <div class="pillar">
+                                        <h3>🔍 Tracing</h3>
+                                        <p>End-to-end tracking of requests across distributed services</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Metrics Collection</h2>
+
+                                <h3>ScoutQuest Built-in Metrics</h3>
+                                <p>ScoutQuest automatically exposes Prometheus-compatible metrics:</p>
+
+                                <div class="code-block">
+                                    <pre><code># ScoutQuest server metrics endpoint
+curl http://localhost:8080/metrics
+
+# Key metrics available:
+# - scoutquest_services_total: Total registered services
+# - scoutquest_instances_total{status="healthy|unhealthy"}: Service instances by status
+# - scoutquest_http_requests_total: HTTP requests by method and endpoint
+# - scoutquest_http_request_duration_seconds: Request latency histograms
+# - scoutquest_service_discovery_requests_total: Service discovery operations
+# - scoutquest_health_check_duration_seconds: Health check performance
+# - scoutquest_registration_events_total: Service registration/deregistration events</code></pre>
+                                </div>
+
+                                <h3>Application Metrics with Prometheus</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="js-metrics">JavaScript</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-metrics">Rust</button>
+                                    </div>
+                                </div>
+
+                                <div id="js-metrics" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>const express = require('express');
+const prometheus = require('prom-client');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+// Create a Registry to register metrics
+const register = new prometheus.Registry();
+
+// Add default metrics (CPU, memory, etc.)
+prometheus.collectDefaultMetrics({ register });
+
+// Custom business metrics
+const httpRequestsTotal = new prometheus.Counter({
+    name: 'http_requests_total',
+    help: 'Total number of HTTP requests',
+    labelNames: ['method', 'route', 'status_code'],
+    registers: [register]
+});
+
+const httpRequestDuration = new prometheus.Histogram({
+    name: 'http_request_duration_seconds',
+    help: 'Duration of HTTP requests in seconds',
+    labelNames: ['method', 'route', 'status_code'],
+    buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
+    registers: [register]
+});
+
+const serviceDiscoveryDuration = new prometheus.Histogram({
+    name: 'service_discovery_duration_seconds',
+    help: 'Duration of service discovery requests',
+    labelNames: ['service_name', 'operation'],
+    registers: [register]
+});
+
+const activeConnections = new prometheus.Gauge({
+    name: 'active_connections',
+    help: 'Number of active connections',
+    registers: [register]
+});
+
+const app = express();
+const client = new ScoutQuestClient({ 
+    serverUrl: 'http://localhost:8080',
+    enableMetrics: true 
+});
+
+// Middleware to collect HTTP metrics
+app.use((req, res, next) => {
+    const startTime = Date.now();
+    
+    res.on('finish', () => {
+        const duration = (Date.now() - startTime) / 1000;
+        const labels = {
+            method: req.method,
+            route: req.route?.path || req.path,
+            status_code: res.statusCode
+        };
+        
+        httpRequestsTotal.inc(labels);
+        httpRequestDuration.observe(labels, duration);
+    });
+    
+    next();
+});
+
+// Instrument service discovery calls
+async function instrumentedServiceCall(serviceName, path) {
+    const startTime = Date.now();
+    
+    try {
+        const result = await client.getService(serviceName, path);
+        const duration = (Date.now() - startTime) / 1000;
+        
+        serviceDiscoveryDuration
+            .labels(serviceName, 'get_service')
+            .observe(duration);
+            
+        return result;
+    } catch (error) {
+        const duration = (Date.now() - startTime) / 1000;
+        
+        serviceDiscoveryDuration
+            .labels(serviceName, 'get_service_error')
+            .observe(duration);
+            
+        throw error;
+    }
+}
+
+// Expose metrics endpoint
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+});
+
+// Update active connections gauge
+setInterval(() => {
+    // Your logic to count active connections
+    const connections = getActiveConnectionCount();
+    activeConnections.set(connections);
+}, 5000);
+
+app.listen(3000, () => {
+    console.log('Server with metrics running on port 3000');
+});</code></pre>
+                                    </div>
+                                </div>
+
+                                <div id="rust-metrics" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use axum::{extract::Extension, http::StatusCode, response::Response, routing::get, Router};
+use prometheus::{Counter, Histogram, Gauge, Registry, Encoder, TextEncoder, opts};
+use scoutquest_rust::ServiceDiscoveryClient;
+use std::sync::Arc;
+use std::time::Instant;
+
+#[derive(Clone)]
+struct Metrics {
+    http_requests_total: Counter,
+    http_request_duration: Histogram,
+    service_discovery_duration: Histogram,
+    active_connections: Gauge,
+    registry: Registry,
+}
+
+impl Metrics {
+    fn new() -> Result<Self, Box<dyn std::error::Error>> {
+        let registry = Registry::new();
+        
+        let http_requests_total = Counter::with_opts(
+            opts!("http_requests_total", "Total number of HTTP requests")
+                .variable_labels(vec!["method".to_string(), "route".to_string(), "status_code".to_string()])
+        )?;
+        
+        let http_request_duration = Histogram::with_opts(
+            prometheus::HistogramOpts::new("http_request_duration_seconds", "Duration of HTTP requests")
+                .variable_labels(vec!["method".to_string(), "route".to_string()])
+                .buckets(vec![0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0])
+        )?;
+        
+        let service_discovery_duration = Histogram::with_opts(
+            prometheus::HistogramOpts::new("service_discovery_duration_seconds", "Service discovery request duration")
+                .variable_labels(vec!["service_name".to_string(), "operation".to_string()])
+        )?;
+        
+        let active_connections = Gauge::with_opts(
+            opts!("active_connections", "Number of active connections")
+        )?;
+        
+        registry.register(Box::new(http_requests_total.clone()))?;
+        registry.register(Box::new(http_request_duration.clone()))?;
+        registry.register(Box::new(service_discovery_duration.clone()))?;
+        registry.register(Box::new(active_connections.clone()))?;
+        
+        Ok(Metrics {
+            http_requests_total,
+            http_request_duration,
+            service_discovery_duration,
+            active_connections,
+            registry,
+        })
+    }
+    
+    async fn instrumented_service_call(
+        &self,
+        client: &ServiceDiscoveryClient,
+        service_name: &str,
+        path: &str
+    ) -> Result<String, Box<dyn std::error::Error>> {
+        let start = Instant::now();
+        
+        match client.get_service(service_name, path).await {
+            Ok(result) => {
+                self.service_discovery_duration
+                    .with_label_values(&[service_name, "get_service"])
+                    .observe(start.elapsed().as_secs_f64());
+                Ok(result)
+            }
+            Err(e) => {
+                self.service_discovery_duration
+                    .with_label_values(&[service_name, "get_service_error"])
+                    .observe(start.elapsed().as_secs_f64());
+                Err(e.into())
+            }
+        }
+    }
+}
+
+async fn metrics_handler(Extension(metrics): Extension<Metrics>) -> Response {
+    let encoder = TextEncoder::new();
+    let metric_families = metrics.registry.gather();
+    
+    let mut buffer = Vec::new();
+    encoder.encode(&metric_families, &mut buffer).unwrap();
+    
+    Response::builder()
+        .status(StatusCode::OK)
+        .header("Content-Type", encoder.format_type())
+        .body(buffer.into())
+        .unwrap()
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let metrics = Arc::new(Metrics::new()?);
+    let client = Arc::new(ServiceDiscoveryClient::new("http://localhost:8080")?);
+    
+    // Background task to update connection metrics
+    let metrics_clone = metrics.clone();
+    tokio::spawn(async move {
+        let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(5));
+        loop {
+            interval.tick().await;
+            let connections = get_active_connection_count().await;
+            metrics_clone.active_connections.set(connections as f64);
+        }
+    });
+    
+    let app = Router::new()
+        .route("/metrics", get(metrics_handler))
+        .layer(Extension(metrics))
+        .layer(Extension(client));
+    
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+    axum::serve(listener, app).await?;
+    
+    Ok(())
+}
+
+async fn get_active_connection_count() -> u64 {
+    // Implementation to count active connections
+    42
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <h3>Prometheus Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "scoutquest_alerts.yml"
+
+scrape_configs:
+  # ScoutQuest server
+  - job_name: 'scoutquest-server'
+    static_configs:
+      - targets: ['localhost:8080']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    
+  # Application services
+  - job_name: 'application-services'
+    consul_sd_configs:
+      - server: 'localhost:8080'
+        services: []
+        tags: ["metrics"]
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: service_name
+      - source_labels: [__meta_consul_service_address]
+        target_label: __address__
+        replacement: '${1}:${__meta_consul_service_port}'
+        
+  # Service discovery via ScoutQuest API
+  - job_name: 'scoutquest-discovered-services'
+    http_sd_configs:
+      - url: 'http://localhost:8080/api/prometheus/targets'
+        refresh_interval: 60s
+    relabel_configs:
+      - source_labels: [__meta_service_name]
+        target_label: service_name
+      - source_labels: [__meta_service_version]
+        target_label: version
+      - source_labels: [__meta_service_environment]
+        target_label: environment
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Logging</h2>
+
+                                <h3>Structured Logging</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="js-logging">JavaScript</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-logging">Rust</button>
+                                    </div>
+                                </div>
+
+                                <div id="js-logging" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>const winston = require('winston');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+// Configure structured logging
+const logger = winston.createLogger({
+    level: process.env.LOG_LEVEL || 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.errors({ stack: true }),
+        winston.format.json(),
+        winston.format.printf(({ timestamp, level, message, service, traceId, ...meta }) => {
+            return JSON.stringify({
+                timestamp,
+                level,
+                message,
+                service: service || 'user-service',
+                traceId: traceId || 'unknown',
+                ...meta
+            });
+        })
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' })
+    ]
+});
+
+// ScoutQuest client with logging
+const client = new ScoutQuestClient({ 
+    serverUrl: 'http://localhost:8080',
+    logger: logger.child({ component: 'scoutquest-client' })
+});
+
+// Service discovery with logging
+async function discoverServiceWithLogging(serviceName, traceId) {
+    logger.info('Discovering service', {
+        serviceName,
+        traceId,
+        operation: 'service_discovery'
+    });
+    
+    try {
+        const startTime = Date.now();
+        const instance = await client.discoverService(serviceName);
+        const duration = Date.now() - startTime;
+        
+        logger.info('Service discovered successfully', {
+            serviceName,
+            traceId,
+            instanceId: instance.id,
+            host: instance.host,
+            port: instance.port,
+            duration,
+            operation: 'service_discovery'
+        });
+        
+        return instance;
+    } catch (error) {
+        logger.error('Service discovery failed', {
+            serviceName,
+            traceId,
+            error: error.message,
+            stack: error.stack,
+            operation: 'service_discovery'
+        });
+        throw error;
+    }
+}
+
+// HTTP request logging middleware
+function requestLoggingMiddleware(req, res, next) {
+    const startTime = Date.now();
+    const traceId = req.headers['x-trace-id'] || generateTraceId();
+    
+    // Add trace ID to request for use in handlers
+    req.traceId = traceId;
+    
+    logger.info('HTTP request started', {
+        method: req.method,
+        url: req.url,
+        userAgent: req.get('User-Agent'),
+        traceId,
+        operation: 'http_request'
+    });
+    
+    res.on('finish', () => {
+        const duration = Date.now() - startTime;
+        
+        logger.info('HTTP request completed', {
+            method: req.method,
+            url: req.url,
+            statusCode: res.statusCode,
+            duration,
+            traceId,
+            operation: 'http_request'
+        });
+    });
+    
+    next();
+}
+
+function generateTraceId() {
+    return Math.random().toString(36).substring(2, 15) + 
+           Math.random().toString(36).substring(2, 15);
+}
+
+module.exports = { logger, requestLoggingMiddleware, discoverServiceWithLogging };</code></pre>
+                                    </div>
+                                </div>
+
+                                <div id="rust-logging" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use serde_json::json;
+use tracing::{info, error, warn, debug, instrument};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+use uuid::Uuid;
+use scoutquest_rust::ServiceDiscoveryClient;
+
+// Initialize structured logging
+pub fn init_logging() -> Result<(), Box<dyn std::error::Error>> {
+    tracing_subscriber::registry()
+        .with(EnvFilter::from_default_env().add_directive("scoutquest=info".parse()?))
+        .with(
+            tracing_subscriber::fmt::layer()
+                .json()
+                .with_target(true)
+                .with_current_span(false)
+                .with_span_list(true)
+        )
+        .init();
+    
+    Ok(())
+}
+
+#[derive(Clone)]
+pub struct ServiceLogger {
+    service_name: String,
+    version: String,
+}
+
+impl ServiceLogger {
+    pub fn new(service_name: &str, version: &str) -> Self {
+        Self {
+            service_name: service_name.to_string(),
+            version: version.to_string(),
+        }
+    }
+    
+    #[instrument(skip(self), fields(service = %self.service_name, version = %self.version))]
+    pub async fn discover_service_with_logging(
+        &self,
+        client: &ServiceDiscoveryClient,
+        service_name: &str,
+        trace_id: &str
+    ) -> Result<scoutquest_rust::ServiceInstance, Box<dyn std::error::Error>> {
+        info!(
+            service_name = %service_name,
+            trace_id = %trace_id,
+            operation = "service_discovery",
+            "Discovering service"
+        );
+        
+        let start_time = std::time::Instant::now();
+        
+        match client.discover_service(service_name).await {
+            Ok(instance) => {
+                let duration = start_time.elapsed();
+                
+                info!(
+                    service_name = %service_name,
+                    trace_id = %trace_id,
+                    instance_id = %instance.id,
+                    host = %instance.host,
+                    port = instance.port,
+                    duration_ms = duration.as_millis(),
+                    operation = "service_discovery",
+                    "Service discovered successfully"
+                );
+                
+                Ok(instance)
+            }
+            Err(e) => {
+                let duration = start_time.elapsed();
+                
+                error!(
+                    service_name = %service_name,
+                    trace_id = %trace_id,
+                    error = %e,
+                    duration_ms = duration.as_millis(),
+                    operation = "service_discovery",
+                    "Service discovery failed"
+                );
+                
+                Err(e.into())
+            }
+        }
+    }
+    
+    #[instrument(skip(self), fields(service = %self.service_name))]
+    pub fn log_service_registration(&self, instance_id: &str, host: &str, port: u16) {
+        info!(
+            instance_id = %instance_id,
+            host = %host,
+            port = port,
+            operation = "service_registration",
+            "Service registered successfully"
+        );
+    }
+    
+    #[instrument(skip(self), fields(service = %self.service_name))]
+    pub fn log_health_check_result(&self, status: &str, response_time_ms: u64) {
+        info!(
+            status = %status,
+            response_time_ms = response_time_ms,
+            operation = "health_check",
+            "Health check completed"
+        );
+    }
+}
+
+// Request tracing middleware for Axum
+use axum::{extract::Request, middleware::Next, response::Response};
+
+pub async fn request_tracing_middleware(
+    mut request: Request,
+    next: Next,
+) -> Response {
+    let trace_id = request.headers()
+        .get("x-trace-id")
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or_else(|| {
+            let id = Uuid::new_v4().to_string();
+            request.headers_mut().insert(
+                "x-trace-id",
+                id.parse().unwrap()
+            );
+            request.headers().get("x-trace-id").unwrap().to_str().unwrap()
+        });
+    
+    let method = request.method().clone();
+    let uri = request.uri().clone();
+    let start_time = std::time::Instant::now();
+    
+    info!(
+        method = %method,
+        uri = %uri,
+        trace_id = %trace_id,
+        operation = "http_request",
+        "HTTP request started"
+    );
+    
+    let response = next.run(request).await;
+    
+    let duration = start_time.elapsed();
+    let status = response.status();
+    
+    info!(
+        method = %method,
+        uri = %uri,
+        status_code = status.as_u16(),
+        duration_ms = duration.as_millis(),
+        trace_id = %trace_id,
+        operation = "http_request",
+        "HTTP request completed"
+    );
+    
+    response
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    init_logging()?;
+    
+    let service_logger = ServiceLogger::new("user-service", "1.0.0");
+    let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+    
+    // Example usage
+    let trace_id = Uuid::new_v4().to_string();
+    let instance = service_logger
+        .discover_service_with_logging(&client, "auth-service", &trace_id)
+        .await?;
+    
+    Ok(())
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <h3>Log Aggregation with ELK Stack</h3>
+                                <div class="code-block">
+                                    <pre><code># docker-compose.yml for ELK Stack
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: kibana:8.11.0
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: logstash:8.11.0
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/config:/usr/share/logstash/config
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: elastic/filebeat:8.11.0
+    user: root
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - logstash
+
+volumes:
+  elasticsearch_data:</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <pre><code># filebeat/filebeat.yml
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+    - /var/log/scoutquest/*.log
+  fields:
+    service: scoutquest-server
+    environment: production
+  fields_under_root: true
+  multiline.pattern: '^\d{4}-\d{2}-\d{2}'
+  multiline.negate: true
+  multiline.match: after
+
+- type: docker
+  containers.ids: '*'
+  processors:
+    - add_docker_metadata:
+        host: "unix:///var/run/docker.sock"
+    - decode_json_fields:
+        fields: ["message"]
+        target: ""
+        overwrite_keys: true
+
+output.logstash:
+  hosts: ["logstash:5044"]
+
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Distributed Tracing</h2>
+
+                                <h3>OpenTelemetry Integration</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="js-tracing">JavaScript</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-tracing">Rust</button>
+                                    </div>
+                                </div>
+
+                                <div id="js-tracing" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>const { NodeSDK } = require('@opentelemetry/sdk-node');
+const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
+const { Resource } = require('@opentelemetry/resources');
+const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const opentelemetry = require('@opentelemetry/api');
+
+// Initialize OpenTelemetry
+const jaegerExporter = new JaegerExporter({
+    endpoint: process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
+});
+
+const sdk = new NodeSDK({
+    resource: new Resource({
+        [SemanticResourceAttributes.SERVICE_NAME]: process.env.SERVICE_NAME || 'user-service',
+        [SemanticResourceAttributes.SERVICE_VERSION]: process.env.SERVICE_VERSION || '1.0.0',
+        [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.ENVIRONMENT || 'development',
+    }),
+    traceExporter: jaegerExporter,
+    instrumentations: [
+        getNodeAutoInstrumentations({
+            '@opentelemetry/instrumentation-fs': { enabled: false },
+        })
+    ],
+});
+
+sdk.start();
+
+const { ScoutQuestClient } = require('scoutquest-js');
+
+// Enhanced ScoutQuest client with tracing
+class TracingScoutQuestClient extends ScoutQuestClient {
+    async discoverService(serviceName, options = {}) {
+        const tracer = opentelemetry.trace.getTracer('scoutquest-client');
+        
+        return tracer.startActiveSpan(`discover_service:${serviceName}`, async (span) => {
+            span.setAttributes({
+                'service.discovery.service_name': serviceName,
+                'service.discovery.client_version': '1.0.0',
+            });
+            
+            try {
+                const result = await super.discoverService(serviceName, options);
+                
+                span.setAttributes({
+                    'service.discovery.instance_id': result.id,
+                    'service.discovery.host': result.host,
+                    'service.discovery.port': result.port,
+                    'service.discovery.status': 'success',
+                });
+                
+                span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
+                return result;
+            } catch (error) {
+                span.recordException(error);
+                span.setStatus({ 
+                    code: opentelemetry.SpanStatusCode.ERROR,
+                    message: error.message 
+                });
+                throw error;
+            } finally {
+                span.end();
+            }
+        });
+    }
+    
+    async getService(serviceName, path, options = {}) {
+        const tracer = opentelemetry.trace.getTracer('scoutquest-client');
+        
+        return tracer.startActiveSpan(`get_service:${serviceName}${path}`, async (span) => {
+            span.setAttributes({
+                'http.method': 'GET',
+                'http.url': path,
+                'service.name': serviceName,
+                'service.discovery.method': 'get_service',
+            });
+            
+            try {
+                const result = await super.getService(serviceName, path, options);
+                
+                span.setAttributes({
+                    'http.status_code': 200,
+                    'service.discovery.status': 'success',
+                });
+                
+                span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
+                return result;
+            } catch (error) {
+                span.recordException(error);
+                span.setAttributes({
+                    'http.status_code': error.statusCode || 0,
+                    'service.discovery.status': 'error',
+                });
+                span.setStatus({ 
+                    code: opentelemetry.SpanStatusCode.ERROR,
+                    message: error.message 
+                });
+                throw error;
+            } finally {
+                span.end();
+            }
+        });
+    }
+}
+
+// Business logic with custom spans
+async function processUserOrder(userId, orderId) {
+    const tracer = opentelemetry.trace.getTracer('user-service');
+    
+    return tracer.startActiveSpan('process_user_order', async (span) => {
+        span.setAttributes({
+            'user.id': userId,
+            'order.id': orderId,
+            'business.operation': 'process_order',
+        });
+        
+        try {
+            const client = new TracingScoutQuestClient({ 
+                serverUrl: 'http://localhost:8080' 
+            });
+            
+            // These calls will be automatically traced
+            const user = await client.getService('user-service', `/users/${userId}`);
+            const order = await client.getService('order-service', `/orders/${orderId}`);
+            const payment = await client.postService('payment-service', '/payments', {
+                userId,
+                orderId,
+                amount: order.total
+            });
+            
+            span.setAttributes({
+                'user.email': user.email,
+                'order.amount': order.total,
+                'payment.id': payment.id,
+            });
+            
+            span.addEvent('Order processed successfully');
+            span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
+            
+            return { success: true, paymentId: payment.id };
+        } catch (error) {
+            span.recordException(error);
+            span.setStatus({ 
+                code: opentelemetry.SpanStatusCode.ERROR,
+                message: error.message 
+            });
+            throw error;
+        } finally {
+            span.end();
+        }
+    });
+}
+
+module.exports = { TracingScoutQuestClient, processUserOrder };</code></pre>
+                                    </div>
+                                </div>
+
+                                <div id="rust-tracing" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use opentelemetry::{global, trace::TraceError, KeyValue};
+use opentelemetry_jaeger::JaegerTraceExporter;
+use opentelemetry_sdk::{trace as sdktrace, Resource};
+use tracing::{info, instrument, Span};
+use tracing_opentelemetry::OpenTelemetryLayer;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use scoutquest_rust::ServiceDiscoveryClient;
+
+// Initialize OpenTelemetry with Jaeger
+fn init_tracer() -> Result<sdktrace::Tracer, TraceError> {
+    let jaeger_exporter = JaegerTraceExporter::builder()
+        .with_agent_endpoint("http://localhost:14268/api/traces")
+        .build()?;
+    
+    let tracer = opentelemetry_sdk::trace::TracerProvider::builder()
+        .with_batch_exporter(jaeger_exporter, opentelemetry_sdk::runtime::Tokio)
+        .with_resource(Resource::new(vec![
+            KeyValue::new("service.name", "user-service"),
+            KeyValue::new("service.version", "1.0.0"),
+            KeyValue::new("deployment.environment", "production"),
+        ]))
+        .build()
+        .tracer("user-service");
+    
+    Ok(tracer)
+}
+
+// Initialize tracing with OpenTelemetry
+pub fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
+    let tracer = init_tracer()?;
+    
+    tracing_subscriber::registry()
+        .with(tracing_subscriber::EnvFilter::from_default_env())
+        .with(tracing_subscriber::fmt::layer())
+        .with(OpenTelemetryLayer::new(tracer))
+        .init();
+    
+    Ok(())
+}
+
+// Enhanced service client with tracing
+pub struct TracingServiceDiscoveryClient {
+    client: ServiceDiscoveryClient,
+}
+
+impl TracingServiceDiscoveryClient {
+    pub fn new(server_url: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        Ok(Self {
+            client: ServiceDiscoveryClient::new(server_url)?,
+        })
+    }
+    
+    #[instrument(
+        skip(self),
+        fields(
+            service.name = %service_name,
+            service.discovery.method = "discover_service"
+        )
+    )]
+    pub async fn discover_service(
+        &self,
+        service_name: &str,
+    ) -> Result<scoutquest_rust::ServiceInstance, Box<dyn std::error::Error>> {
+        let span = Span::current();
+        
+        span.record("service.discovery.service_name", service_name);
+        
+        match self.client.discover_service(service_name).await {
+            Ok(instance) => {
+                span.record("service.discovery.instance_id", &instance.id);
+                span.record("service.discovery.host", &instance.host);
+                span.record("service.discovery.port", instance.port);
+                span.record("service.discovery.status", "success");
+                
+                info!(
+                    service_name = %service_name,
+                    instance_id = %instance.id,
+                    "Service discovered successfully"
+                );
+                
+                Ok(instance)
+            }
+            Err(e) => {
+                span.record("service.discovery.status", "error");
+                span.record("error.message", &e.to_string());
+                
+                tracing::error!(
+                    service_name = %service_name,
+                    error = %e,
+                    "Service discovery failed"
+                );
+                
+                Err(e.into())
+            }
+        }
+    }
+    
+    #[instrument(
+        skip(self),
+        fields(
+            http.method = "GET",
+            http.url = %path,
+            service.name = %service_name,
+            service.discovery.method = "get_service"
+        )
+    )]
+    pub async fn get_service(
+        &self,
+        service_name: &str,
+        path: &str,
+    ) -> Result<String, Box<dyn std::error::Error>> {
+        let span = Span::current();
+        
+        match self.client.get_service(service_name, path).await {
+            Ok(response) => {
+                span.record("http.status_code", 200);
+                span.record("service.discovery.status", "success");
+                
+                info!(
+                    service_name = %service_name,
+                    path = %path,
+                    "Service call successful"
+                );
+                
+                Ok(response)
+            }
+            Err(e) => {
+                span.record("http.status_code", 500);
+                span.record("service.discovery.status", "error");
+                span.record("error.message", &e.to_string());
+                
+                tracing::error!(
+                    service_name = %service_name,
+                    path = %path,
+                    error = %e,
+                    "Service call failed"
+                );
+                
+                Err(e.into())
+            }
+        }
+    }
+}
+
+// Business logic with custom spans
+#[instrument(
+    fields(
+        user.id = %user_id,
+        order.id = %order_id,
+        business.operation = "process_order"
+    )
+)]
+pub async fn process_user_order(
+    client: &TracingServiceDiscoveryClient,
+    user_id: &str,
+    order_id: &str,
+) -> Result<String, Box<dyn std::error::Error>> {
+    let span = Span::current();
+    
+    info!("Processing user order");
+    
+    // These calls will be automatically traced
+    let user_response = client
+        .get_service("user-service", &format!("/users/{}", user_id))
+        .await?;
+    
+    let order_response = client
+        .get_service("order-service", &format!("/orders/{}", order_id))
+        .await?;
+    
+    // Add custom attributes to span
+    span.record("user.data", &user_response[..100.min(user_response.len())]);
+    span.record("order.data", &order_response[..100.min(order_response.len())]);
+    
+    info!("Order processed successfully");
+    
+    Ok("Order processed".to_string())
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    init_tracing()?;
+    
+    let client = TracingServiceDiscoveryClient::new("http://localhost:8080")?;
+    
+    // Example usage
+    let result = process_user_order(&client, "user123", "order456").await?;
+    println!("Result: {}", result);
+    
+    // Ensure all spans are exported
+    global::shutdown_tracer_provider();
+    
+    Ok(())
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Dashboards and Alerting</h2>
+
+                                <h3>Grafana Dashboard Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># grafana/dashboards/scoutquest-overview.json
+{
+  "dashboard": {
+    "id": null,
+    "title": "ScoutQuest Overview",
+    "tags": ["scoutquest", "service-discovery"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Service Registry Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "scoutquest_services_total",
+            "legendFormat": "Total Services"
+          },
+          {
+            "expr": "scoutquest_instances_total{status=\"healthy\"}",
+            "legendFormat": "Healthy Instances"
+          },
+          {
+            "expr": "scoutquest_instances_total{status=\"unhealthy\"}",
+            "legendFormat": "Unhealthy Instances"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 80},
+                {"color": "red", "value": 90}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "HTTP Request Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(scoutquest_http_requests_total[5m])",
+            "legendFormat": "{{method}} {{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "Service Discovery Latency",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, rate(scoutquest_service_discovery_duration_seconds_bucket[5m]))",
+            "legendFormat": "p50"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(scoutquest_service_discovery_duration_seconds_bucket[5m]))",
+            "legendFormat": "p95"
+          },
+          {
+            "expr": "histogram_quantile(0.99, rate(scoutquest_service_discovery_duration_seconds_bucket[5m]))",
+            "legendFormat": "p99"
+          }
+        ]
+      },
+      {
+        "title": "Health Check Status",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "rate(scoutquest_health_check_duration_seconds_bucket[5m])",
+            "legendFormat": "{{service_name}}"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+}</code></pre>
+                                </div>
+
+                                <h3>Prometheus Alerting Rules</h3>
+                                <div class="code-block">
+                                    <pre><code># scoutquest_alerts.yml
+groups:
+  - name: scoutquest.rules
+    rules:
+      # Service availability alerts
+      - alert: ServiceDown
+        expr: scoutquest_instances_total{status="healthy"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: service-discovery
+        annotations:
+          summary: "Service {{ $labels.service_name }} has no healthy instances"
+          description: "Service {{ $labels.service_name }} has been down for more than 2 minutes"
+          runbook_url: "https://docs.company.com/runbooks/service-down"
+      
+      - alert: ServiceDegraded
+        expr: |
+          (
+            scoutquest_instances_total{status="unhealthy"} / 
+            (scoutquest_instances_total{status="healthy"} + scoutquest_instances_total{status="unhealthy"})
+          ) > 0.3
+        for: 5m
+        labels:
+          severity: warning
+          component: service-discovery
+        annotations:
+          summary: "Service {{ $labels.service_name }} is degraded"
+          description: "More than 30% of {{ $labels.service_name }} instances are unhealthy"
+      
+      # ScoutQuest server health
+      - alert: ScoutQuestServerDown
+        expr: up{job="scoutquest-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: scoutquest-server
+        annotations:
+          summary: "ScoutQuest server is down"
+          description: "ScoutQuest service discovery server has been down for more than 1 minute"
+      
+      - alert: HighServiceDiscoveryLatency
+        expr: |
+          histogram_quantile(0.95, 
+            rate(scoutquest_service_discovery_duration_seconds_bucket[5m])
+          ) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          component: scoutquest-server
+        annotations:
+          summary: "High service discovery latency"
+          description: "95th percentile service discovery latency is {{ $value }}s"
+      
+      - alert: HighErrorRate
+        expr: |
+          (
+            rate(scoutquest_http_requests_total{status_code=~"5.."}[5m]) /
+            rate(scoutquest_http_requests_total[5m])
+          ) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          component: scoutquest-server
+        annotations:
+          summary: "High error rate in ScoutQuest server"
+          description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+      
+      # Health check alerts
+      - alert: HealthCheckFailures
+        expr: |
+          rate(scoutquest_health_check_total{status="failure"}[5m]) > 0.1
+        for: 3m
+        labels:
+          severity: warning
+          component: health-checker
+        annotations:
+          summary: "High health check failure rate"
+          description: "Health check failure rate for {{ $labels.service_name }} is {{ $value | humanizePercentage }}"
+      
+      # Resource utilization
+      - alert: HighMemoryUsage
+        expr: |
+          process_resident_memory_bytes{job="scoutquest-server"} / 
+          (1024 * 1024 * 1024) > 1
+        for: 10m
+        labels:
+          severity: warning
+          component: scoutquest-server
+        annotations:
+          summary: "High memory usage in ScoutQuest server"
+          description: "Memory usage is {{ $value | humanize }}GB"
+      
+      - alert: HighCPUUsage
+        expr: |
+          rate(process_cpu_seconds_total{job="scoutquest-server"}[5m]) > 0.8
+        for: 10m
+        labels:
+          severity: warning
+          component: scoutquest-server
+        annotations:
+          summary: "High CPU usage in ScoutQuest server"
+          description: "CPU usage is {{ $value | humanizePercentage }}"</code></pre>
+                                </div>
+
+                                <h3>AlertManager Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># alertmanager.yml
+global:
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alerts@company.com'
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+route:
+  group_by: ['alertname', 'component']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'default'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 5m
+    
+    - match:
+        component: scoutquest-server
+      receiver: 'scoutquest-team'
+    
+    - match:
+        component: service-discovery
+      receiver: 'platform-team'
+
+receivers:
+  - name: 'default'
+    email_configs:
+      - to: 'team@company.com'
+        subject: 'Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          {{ end }}
+
+  - name: 'critical-alerts'
+    slack_configs:
+      - channel: '#alerts-critical'
+        title: 'Critical Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* {{ .Labels.severity }}
+          *Component:* {{ .Labels.component }}
+          {{ if .Annotations.runbook_url }}*Runbook:* {{ .Annotations.runbook_url }}{{ end }}
+          {{ end }}
+        send_resolved: true
+    
+    email_configs:
+      - to: 'oncall@company.com'
+        subject: 'CRITICAL: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        
+  - name: 'scoutquest-team'
+    slack_configs:
+      - channel: '#scoutquest-alerts'
+        title: 'ScoutQuest Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+  - name: 'platform-team'
+    slack_configs:
+      - channel: '#platform-alerts'
+        title: 'Service Discovery Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'component']</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Best Practices</h2>
+
+                                <div class="alert alert-success">
+                                    <h3>✅ Monitoring Best Practices</h3>
+                                    <ul>
+                                        <li><strong>USE Method:</strong> Monitor Utilization, Saturation, and Errors for
+                                            all resources</li>
+                                        <li><strong>RED Method:</strong> Track Rate, Errors, and Duration for all
+                                            services</li>
+                                        <li><strong>Golden Signals:</strong> Focus on latency, traffic, errors, and
+                                            saturation</li>
+                                        <li><strong>SLI/SLO approach:</strong> Define Service Level Indicators and
+                                            Objectives</li>
+                                        <li><strong>Semantic versioning for metrics:</strong> Version your metrics
+                                            schema</li>
+                                        <li><strong>High cardinality awareness:</strong> Be mindful of label
+                                            combinations</li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <h3>⚠️ Common Pitfalls</h3>
+                                    <ul>
+                                        <li><strong>Alert fatigue:</strong> Too many noisy alerts reduce effectiveness
+                                        </li>
+                                        <li><strong>Monitoring overhead:</strong> Don't let monitoring impact
+                                            performance significantly</li>
+                                        <li><strong>Missing context:</strong> Include enough labels and metadata for
+                                            debugging</li>
+                                        <li><strong>Single point of failure:</strong> Monitor your monitoring
+                                            infrastructure</li>
+                                        <li><strong>Retention policies:</strong> Balance storage costs with data
+                                            retention needs</li>
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Next Steps</h2>
+                                <div class="next-steps">
+                                    <a href="production.html" class="next-step">
+                                        <h3>Production Deployment</h3>
+                                        <p>Learn how to deploy ScoutQuest in production with high availability and
+                                            security</p>
+                                    </a>
+                                    <a href="health-checking.html" class="next-step">
+                                        <h3>Health Checking</h3>
+                                        <p>Implement comprehensive health checks for robust service discovery</p>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>
