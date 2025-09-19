@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  scoutquest-server:
+    build: ./scoutquest-server
+    ports:
+      - "8080:8080"
+    environment:
+      - SCOUTQUEST_SERVER_HOST=0.0.0.0
+      - SCOUTQUEST_SERVER_PORT=8080
+      - SCOUTQUEST_LOGGING_LEVEL=info
+    volumes:
+      - ./config/default.toml:/app/config.toml:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  example-service:
+    build: scoutquest-rust
+    ports:
+      - "4000:4000"
+    environment:
+      - RUST_LOG=info
+      - HOST=example-service
+      - PORT=4000
+      - DISCOVERY_URL=http://scoutquest-server:8080
+    depends_on:
+      scoutquest-server:
+        condition: service_healthy

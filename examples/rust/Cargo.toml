@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "axum_example",
+    "notification_example",
+]
+resolver = "2"

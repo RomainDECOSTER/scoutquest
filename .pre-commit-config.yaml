@@ -1,0 +1,70 @@
+repos:
+  # Hooks JavaScript/TypeScript avec Prettier
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+        files: ^scoutquest-js/.*\.(ts|js|json)$
+        exclude: ^scoutquest-js/(dist|node_modules)/
+
+  # Hooks locaux pour Rust et JavaScript
+  - repo: local
+    hooks:
+      # Rust formatting
+      - id: rust-fmt-server
+        name: Rust Format (Server)
+        entry: bash -c 'cd scoutquest-server && cargo fmt -- --check'
+        language: system
+        files: ^scoutquest-server/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-fmt-sdk
+        name: Rust Format (SDK)
+        entry: bash -c 'cd scoutquest-rust && cargo fmt -- --check'
+        language: system
+        files: ^scoutquest-rust/.*\.rs$
+        pass_filenames: false
+
+      # Rust linting
+      - id: rust-clippy-server
+        name: Rust Clippy (Server)
+        entry: bash -c 'cd scoutquest-server && cargo clippy -- -D warnings'
+        language: system
+        files: ^scoutquest-server/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-clippy-sdk
+        name: Rust Clippy (SDK)
+        entry: bash -c 'cd scoutquest-rust && cargo clippy -- -D warnings'
+        language: system
+        files: ^scoutquest-rust/.*\.rs$
+        pass_filenames: false
+
+      # JavaScript linting
+      - id: js-lint
+        name: JavaScript Lint
+        entry: bash -c 'cd scoutquest-js && pnpm run lint'
+        language: system
+        files: ^scoutquest-js/src/.*\.ts$
+        pass_filenames: false
+
+      # JavaScript type checking
+      - id: js-typecheck
+        name: JavaScript Type Check
+        entry: bash -c 'cd scoutquest-js && pnpm run typecheck'
+        language: system
+        files: ^scoutquest-js/src/.*\.ts$
+        pass_filenames: false
+
+  # Hooks généraux
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1000']

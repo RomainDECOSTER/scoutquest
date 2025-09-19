@@ -25,3 +25,4 @@ Cargo.lock
 scoutquest-server/node_modules
 scoutquest-server/pnpm-lock.yaml
 
+node_modules/

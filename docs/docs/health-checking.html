@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Checking - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <!-- Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link active">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring & Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Health Checking</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Health Checking</h1>
+                            <p class="docs-lead">
+                                Comprehensive guide to implementing robust health checks for your services in
+                                ScoutQuest.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Overview</h2>
+                                <p>Health checks are critical for maintaining service reliability in distributed
+                                    systems. ScoutQuest provides comprehensive health checking capabilities to ensure
+                                    only healthy service instances receive traffic.</p>
+
+                                <h3>Health Check Types</h3>
+                                <ul>
+                                    <li><strong>Liveness Checks</strong> - Determine if the service is running</li>
+                                    <li><strong>Readiness Checks</strong> - Determine if the service is ready to receive
+                                        traffic</li>
+                                    <li><strong>Startup Checks</strong> - Determine if the service has completed
+                                        initialization</li>
+                                    <li><strong>Custom Checks</strong> - Application-specific health validations</li>
+                                </ul>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Basic Health Check Implementation</h2>
+
+                                <h3>Simple HTTP Health Endpoint</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="express-basic">Express.js</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-basic">Rust</button>
+                                    </div>
+                                </div>
+
+                                <div id="express-basic" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const client = new ScoutQuestClient({ serverUrl: 'http://localhost:8080' });
+
+// Basic health check
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        version: process.env.npm_package_version
+    });
+});
+
+// Readiness check
+app.get('/ready', (req, res) => {
+    // Check if service is ready to serve requests
+    const isReady = checkDatabaseConnection() && checkExternalAPIs();
+
+    if (isReady) {
+        res.status(200).json({
+            status: 'ready',
+            timestamp: new Date().toISOString()
+        });
+    } else {
+        res.status(503).json({
+            status: 'not ready',
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Register service with health check URL
+async function startServer() {
+    const port = 3000;
+    app.listen(port, async () => {
+        console.log(`Server running on port ${port}`);
+
+        // Register with ScoutQuest
+        await client.registerService('user-service', 'localhost', port, {
+            version: '1.0.0',
+            environment: 'production'
+        }, {
+            healthCheckUrl: `http://localhost:${port}/health`
+        });
+    });
+}
+
+startServer();</code></pre>
+                                    </div>
+                                </div>
+
+                                <div id="rust-basic" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use axum::{
+    extract::Extension,
+    http::StatusCode,
+    response::Json,
+    routing::get,
+    Router,
+};
+use scoutquest_rust::ServiceDiscoveryClient;
+use serde_json::{json, Value};
+use std::sync::Arc;
+use tokio::net::TcpListener;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Arc::new(ServiceDiscoveryClient::new("http://localhost:8080")?);
+
+    let app = Router::new()
+        .route("/health", get(health_check))
+        .route("/ready", get(readiness_check))
+        .layer(Extension(client.clone()));
+
+    let listener = TcpListener::bind("0.0.0.0:3000").await?;
+    println!("Server running on port 3000");
+
+    // Register service with health check
+    client.register_service_with_health(
+        "user-service",
+        "localhost",
+        3000,
+        Some([("version".to_string(), "1.0.0".to_string())].into()),
+        "http://localhost:3000/health"
+    ).await?;
+
+    axum::serve(listener, app).await?;
+    Ok(())
+}
+
+async fn health_check() -> Json<Value> {
+    Json(json!({
+        "status": "healthy",
+        "timestamp": chrono::Utc::now().to_rfc3339(),
+        "uptime": std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs(),
+        "version": env!("CARGO_PKG_VERSION")
+    }))
+}
+
+async fn readiness_check() -> Result<Json<Value>, StatusCode> {
+    // Check dependencies
+    let database_ready = check_database().await;
+    let cache_ready = check_cache().await;
+
+    if database_ready && cache_ready {
+        Ok(Json(json!({
+            "status": "ready",
+            "timestamp": chrono::Utc::now().to_rfc3339()
+        })))
+    } else {
+        Err(StatusCode::SERVICE_UNAVAILABLE)
+    }
+}
+
+async fn check_database() -> bool {
+    // Implement database connectivity check
+    true
+}
+
+async fn check_cache() -> bool {
+    // Implement cache connectivity check
+    true
+}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Advanced Health Checks</h2>
+
+                                <h3>Multi-Component Health Checks</h3>
+                                <div class="code-block">
+                                    <pre><code>// Advanced health check with multiple components
+app.get('/health', async (req, res) => {
+    const healthChecks = {};
+    let overallHealthy = true;
+
+    // Database health check
+    try {
+        await db.raw('SELECT 1');
+        healthChecks.database = {
+            status: 'healthy',
+            responseTime: await measureDatabaseResponseTime()
+        };
+    } catch (error) {
+        healthChecks.database = {
+            status: 'unhealthy',
+            error: error.message
+        };
+        overallHealthy = false;
+    }
+
+    // Redis health check
+    try {
+        await redis.ping();
+        healthChecks.cache = {
+            status: 'healthy',
+            responseTime: await measureRedisResponseTime()
+        };
+    } catch (error) {
+        healthChecks.cache = {
+            status: 'unhealthy',
+            error: error.message
+        };
+        overallHealthy = false;
+    }
+
+    // External API health check
+    try {
+        const response = await fetch('https://api.external-service.com/health', {
+            timeout: 5000
+        });
+        healthChecks.externalAPI = {
+            status: response.ok ? 'healthy' : 'degraded',
+            responseTime: response.headers.get('X-Response-Time')
+        };
+    } catch (error) {
+        healthChecks.externalAPI = {
+            status: 'unhealthy',
+            error: error.message
+        };
+        // External API failure doesn't mark service as unhealthy
+        // overallHealthy = false;
+    }
+
+    // Application-specific checks
+    healthChecks.application = {
+        status: 'healthy',
+        memoryUsage: process.memoryUsage(),
+        cpuUsage: process.cpuUsage(),
+        activeConnections: getActiveConnectionCount(),
+        queueSize: getJobQueueSize()
+    };
+
+    const statusCode = overallHealthy ? 200 : 503;
+    res.status(statusCode).json({
+        status: overallHealthy ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        checks: healthChecks,
+        uptime: process.uptime(),
+        version: process.env.npm_package_version
+    });
+});</code></pre>
+                                </div>
+
+                                <h3>Health Check Timeouts and Retries</h3>
+                                <div class="code-block">
+                                    <pre><code>class HealthChecker {
+    constructor(options = {}) {
+        this.timeout = options.timeout || 5000;
+        this.retries = options.retries || 3;
+        this.retryDelay = options.retryDelay || 1000;
+    }
+
+    async checkWithRetry(checkFunction, componentName) {
+        for (let attempt = 1; attempt <= this.retries; attempt++) {
+            try {
+                const startTime = Date.now();
+                const result = await Promise.race([
+                    checkFunction(),
+                    new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout')), this.timeout)
+                    )
+                ]);
+
+                return {
+                    status: 'healthy',
+                    responseTime: Date.now() - startTime,
+                    attempt
+                };
+            } catch (error) {
+                if (attempt === this.retries) {
+                    return {
+                        status: 'unhealthy',
+                        error: error.message,
+                        attempts: attempt
+                    };
+                }
+
+                // Wait before retry
+                await new Promise(resolve => setTimeout(resolve, this.retryDelay));
+            }
+        }
+    }
+
+    async checkDatabase() {
+        return this.checkWithRetry(
+            () => db.raw('SELECT 1'),
+            'database'
+        );
+    }
+
+    async checkRedis() {
+        return this.checkWithRetry(
+            () => redis.ping(),
+            'cache'
+        );
+    }
+}
+
+const healthChecker = new HealthChecker({
+    timeout: 5000,
+    retries: 3,
+    retryDelay: 1000
+});
+
+app.get('/health', async (req, res) => {
+    const checks = {};
+    let overallHealthy = true;
+
+    const [databaseCheck, cacheCheck] = await Promise.all([
+        healthChecker.checkDatabase(),
+        healthChecker.checkRedis()
+    ]);
+
+    checks.database = databaseCheck;
+    checks.cache = cacheCheck;
+
+    if (databaseCheck.status !== 'healthy' || cacheCheck.status !== 'healthy') {
+        overallHealthy = false;
+    }
+
+    res.status(overallHealthy ? 200 : 503).json({
+        status: overallHealthy ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        checks
+    });
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>ScoutQuest Health Check Configuration</h2>
+
+                                <h3>Server-Side Health Check Settings</h3>
+                                <div class="code-block">
+                                    <pre><code># config/production.toml
+[health_check]
+enabled = true
+interval = "30s"           # How often to check service health
+timeout = "5s"             # Health check request timeout
+retry_count = 3            # Number of retries before marking unhealthy
+success_threshold = 2      # Consecutive successes to mark healthy
+failure_threshold = 3      # Consecutive failures to mark unhealthy
+
+# Health check HTTP settings
+user_agent = "ScoutQuest-HealthChecker/1.0"
+follow_redirects = false
+expected_status_codes = [200, 204]
+
+# Advanced settings
+parallel_checks = true     # Run health checks in parallel
+max_concurrent_checks = 50 # Maximum concurrent health checks
+rate_limit_per_second = 10 # Rate limit health checks per service
+
+# Alerting
+alert_on_failure = true
+alert_webhook = "https://hooks.slack.com/services/..."
+alert_email = "alerts@company.com"</code></pre>
+                                </div>
+
+                                <h3>Client-Side Health Check Registration</h3>
+                                <div class="code-tabs">
+                                    <div class="code-tab">
+                                        <button class="tab-button active" data-tab="js-config">JavaScript</button>
+                                    </div>
+                                    <div class="code-tab">
+                                        <button class="tab-button" data-tab="rust-config">Rust</button>
+                                    </div>
+                                </div>
+
+                                <div id="js-config" class="tab-content active">
+                                    <div class="code-block">
+                                        <pre><code>const client = new ScoutQuestClient({
+    serverUrl: 'http://localhost:8080'
+});
+
+// Register with comprehensive health check configuration
+await client.registerService('api-service', 'localhost', 3000, {
+    version: '1.2.3',
+    environment: 'production',
+    team: 'backend'
+}, {
+    // Health check configuration
+    healthCheck: {
+        url: 'http://localhost:3000/health',
+        interval: 30000,     // 30 seconds
+        timeout: 5000,       // 5 seconds
+        retries: 3,
+        successThreshold: 2,
+        failureThreshold: 3,
+        initialDelay: 10000, // Wait 10s before first check
+        expectedStatusCodes: [200],
+        expectedResponseBody: { status: 'healthy' }, // Optional
+        headers: {
+            'Authorization': 'Bearer health-check-token'
+        }
+    },
+
+    // Additional endpoints
+    readinessCheck: {
+        url: 'http://localhost:3000/ready',
+        timeout: 3000
+    },
+
+    startupCheck: {
+        url: 'http://localhost:3000/startup',
+        timeout: 30000,      // Longer timeout for startup
+        maxAttempts: 10
+    }
+});</code></pre>
+                                    </div>
+                                </div>
+
+                                <div id="rust-config" class="tab-content">
+                                    <div class="code-block">
+                                        <pre><code>use scoutquest_rust::{ServiceDiscoveryClient, HealthCheckConfig};
+use std::time::Duration;
+use std::collections::HashMap;
+
+let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+
+let mut headers = HashMap::new();
+headers.insert("Authorization".to_string(), "Bearer health-check-token".to_string());
+
+let health_config = HealthCheckConfig::builder()
+    .url("http://localhost:3000/health")
+    .interval(Duration::from_secs(30))
+    .timeout(Duration::from_secs(5))
+    .retries(3)
+    .success_threshold(2)
+    .failure_threshold(3)
+    .initial_delay(Duration::from_secs(10))
+    .expected_status_codes(vec![200])
+    .headers(headers)
+    .build();
+
+let instance = client.register_service_advanced(
+    "api-service",
+    "localhost",
+    3000,
+    Some([
+        ("version".to_string(), "1.2.3".to_string()),
+        ("environment".to_string(), "production".to_string()),
+    ].into()),
+    health_config
+).await?;</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Health Check Patterns</h2>
+
+                                <h3>Graceful Degradation</h3>
+                                <div class="code-block">
+                                    <pre><code>app.get('/health', async (req, res) => {
+    const checks = {};
+    let status = 'healthy';
+    let statusCode = 200;
+
+    // Critical dependencies (must be healthy)
+    const criticalChecks = await Promise.all([
+        checkDatabase(),
+        checkAuthService()
+    ]);
+
+    // Non-critical dependencies (can be degraded)
+    const nonCriticalChecks = await Promise.all([
+        checkRecommendationService(),
+        checkAnalyticsService(),
+        checkNotificationService()
+    ]);
+
+    // Evaluate critical dependencies
+    const criticalFailures = criticalChecks.filter(check => check.status !== 'healthy');
+    if (criticalFailures.length > 0) {
+        status = 'unhealthy';
+        statusCode = 503;
+    }
+
+    // Evaluate non-critical dependencies
+    const nonCriticalFailures = nonCriticalChecks.filter(check => check.status !== 'healthy');
+    if (nonCriticalFailures.length > 0 && status === 'healthy') {
+        status = 'degraded';
+        statusCode = 200; // Still accept traffic but with reduced functionality
+    }
+
+    res.status(statusCode).json({
+        status,
+        timestamp: new Date().toISOString(),
+        checks: {
+            critical: Object.fromEntries(
+                ['database', 'auth'].map((name, i) => [name, criticalChecks[i]])
+            ),
+            nonCritical: Object.fromEntries(
+                ['recommendations', 'analytics', 'notifications'].map((name, i) => [name, nonCriticalChecks[i]])
+            )
+        }
+    });
+});</code></pre>
+                                </div>
+
+                                <h3>Circuit Breaker Integration</h3>
+                                <div class="code-block">
+                                    <pre><code>class CircuitBreakerHealthCheck {
+    constructor(options = {}) {
+        this.failureThreshold = options.failureThreshold || 5;
+        this.recoveryTimeout = options.recoveryTimeout || 60000;
+        this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+        this.failures = 0;
+        this.lastFailureTime = null;
+    }
+
+    async checkHealth(healthCheckFunction) {
+        if (this.state === 'OPEN') {
+            // Check if enough time has passed to try again
+            if (Date.now() - this.lastFailureTime > this.recoveryTimeout) {
+                this.state = 'HALF_OPEN';
+            } else {
+                return {
+                    status: 'circuit_open',
+                    message: 'Circuit breaker is open',
+                    state: this.state
+                };
+            }
+        }
+
+        try {
+            const result = await healthCheckFunction();
+
+            if (this.state === 'HALF_OPEN') {
+                // Success in half-open state closes the circuit
+                this.state = 'CLOSED';
+                this.failures = 0;
+            }
+
+            return {
+                status: 'healthy',
+                ...result,
+                circuitState: this.state
+            };
+        } catch (error) {
+            this.failures++;
+            this.lastFailureTime = Date.now();
+
+            if (this.failures >= this.failureThreshold) {
+                this.state = 'OPEN';
+            }
+
+            return {
+                status: 'unhealthy',
+                error: error.message,
+                circuitState: this.state,
+                failures: this.failures
+            };
+        }
+    }
+}
+
+const dbCircuitBreaker = new CircuitBreakerHealthCheck({
+    failureThreshold: 5,
+    recoveryTimeout: 60000
+});
+
+app.get('/health', async (req, res) => {
+    const databaseHealth = await dbCircuitBreaker.checkHealth(
+        () => db.raw('SELECT 1')
+    );
+
+    const overallHealthy = databaseHealth.status === 'healthy';
+
+    res.status(overallHealthy ? 200 : 503).json({
+        status: overallHealthy ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        checks: {
+            database: databaseHealth
+        }
+    });
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Monitoring Health Checks</h2>
+
+                                <h3>Health Check Metrics</h3>
+                                <div class="code-block">
+                                    <pre><code>const prometheus = require('prom-client');
+
+// Health check metrics
+const healthCheckDuration = new prometheus.Histogram({
+    name: 'health_check_duration_seconds',
+    help: 'Duration of health check requests',
+    labelNames: ['component', 'status']
+});
+
+const healthCheckTotal = new prometheus.Counter({
+    name: 'health_check_total',
+    help: 'Total number of health checks',
+    labelNames: ['component', 'status']
+});
+
+const healthCheckStatus = new prometheus.Gauge({
+    name: 'health_check_status',
+    help: 'Health check status (1 = healthy, 0 = unhealthy)',
+    labelNames: ['component']
+});
+
+async function instrumentedHealthCheck(component, checkFunction) {
+    const startTime = Date.now();
+
+    try {
+        const result = await checkFunction();
+        const duration = (Date.now() - startTime) / 1000;
+
+        healthCheckDuration.labels(component, 'success').observe(duration);
+        healthCheckTotal.labels(component, 'success').inc();
+        healthCheckStatus.labels(component).set(1);
+
+        return { status: 'healthy', responseTime: duration * 1000 };
+    } catch (error) {
+        const duration = (Date.now() - startTime) / 1000;
+
+        healthCheckDuration.labels(component, 'failure').observe(duration);
+        healthCheckTotal.labels(component, 'failure').inc();
+        healthCheckStatus.labels(component).set(0);
+
+        return { status: 'unhealthy', error: error.message, responseTime: duration * 1000 };
+    }
+}
+
+app.get('/health', async (req, res) => {
+    const [databaseCheck, cacheCheck] = await Promise.all([
+        instrumentedHealthCheck('database', () => db.raw('SELECT 1')),
+        instrumentedHealthCheck('cache', () => redis.ping())
+    ]);
+
+    const overallHealthy = databaseCheck.status === 'healthy' && cacheCheck.status === 'healthy';
+
+    res.status(overallHealthy ? 200 : 503).json({
+        status: overallHealthy ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        checks: {
+            database: databaseCheck,
+            cache: cacheCheck
+        }
+    });
+});</code></pre>
+                                </div>
+
+                                <h3>Health Check Alerting</h3>
+                                <div class="code-block">
+                                    <pre><code>class HealthCheckAlerting {
+    constructor(options = {}) {
+        this.alertThreshold = options.alertThreshold || 3;
+        this.recoveryThreshold = options.recoveryThreshold || 2;
+        this.alertWebhook = options.alertWebhook;
+        this.componentStates = new Map();
+    }
+
+    async processHealthCheck(component, healthResult) {
+        const currentState = this.componentStates.get(component) || {
+            consecutiveFailures: 0,
+            consecutiveSuccesses: 0,
+            alertSent: false
+        };
+
+        if (healthResult.status === 'healthy') {
+            currentState.consecutiveSuccesses++;
+            currentState.consecutiveFailures = 0;
+
+            // Send recovery alert
+            if (currentState.alertSent && currentState.consecutiveSuccesses >= this.recoveryThreshold) {
+                await this.sendRecoveryAlert(component, healthResult);
+                currentState.alertSent = false;
+            }
+        } else {
+            currentState.consecutiveFailures++;
+            currentState.consecutiveSuccesses = 0;
+
+            // Send failure alert
+            if (!currentState.alertSent && currentState.consecutiveFailures >= this.alertThreshold) {
+                await this.sendFailureAlert(component, healthResult);
+                currentState.alertSent = true;
+            }
+        }
+
+        this.componentStates.set(component, currentState);
+    }
+
+    async sendFailureAlert(component, healthResult) {
+        const alert = {
+            type: 'health_check_failure',
+            component,
+            status: healthResult.status,
+            error: healthResult.error,
+            timestamp: new Date().toISOString(),
+            severity: 'critical'
+        };
+
+        if (this.alertWebhook) {
+            try {
+                await fetch(this.alertWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(alert)
+                });
+            } catch (error) {
+                console.error('Failed to send alert:', error);
+            }
+        }
+
+        console.error(`ALERT: ${component} health check failed`, alert);
+    }
+
+    async sendRecoveryAlert(component, healthResult) {
+        const alert = {
+            type: 'health_check_recovery',
+            component,
+            status: healthResult.status,
+            timestamp: new Date().toISOString(),
+            severity: 'info'
+        };
+
+        if (this.alertWebhook) {
+            try {
+                await fetch(this.alertWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(alert)
+                });
+            } catch (error) {
+                console.error('Failed to send recovery alert:', error);
+            }
+        }
+
+        console.info(`RECOVERY: ${component} health check recovered`, alert);
+    }
+}
+
+const alerting = new HealthCheckAlerting({
+    alertThreshold: 3,
+    recoveryThreshold: 2,
+    alertWebhook: process.env.ALERT_WEBHOOK_URL
+});
+
+// Use in health check
+app.get('/health', async (req, res) => {
+    const databaseCheck = await instrumentedHealthCheck('database', () => db.raw('SELECT 1'));
+    const cacheCheck = await instrumentedHealthCheck('cache', () => redis.ping());
+
+    // Process for alerting
+    await alerting.processHealthCheck('database', databaseCheck);
+    await alerting.processHealthCheck('cache', cacheCheck);
+
+    // Rest of health check logic...
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Best Practices</h2>
+
+                                <div class="alert alert-success">
+                                    <h3>✅ Health Check Best Practices</h3>
+                                    <ul>
+                                        <li><strong>Keep it fast:</strong> Health checks should complete quickly (< 5
+                                                seconds)</li>
+                                        <li><strong>Check dependencies:</strong> Verify critical external dependencies
+                                        </li>
+                                        <li><strong>Use appropriate status codes:</strong> 200 for healthy, 503 for
+                                            unhealthy</li>
+                                        <li><strong>Include useful information:</strong> Response times, error details,
+                                            component status</li>
+                                        <li><strong>Implement graceful degradation:</strong> Distinguish between
+                                            critical and non-critical failures</li>
+                                        <li><strong>Monitor health check performance:</strong> Track metrics and set up
+                                            alerts</li>
+                                        <li><strong>Test failure scenarios:</strong> Regularly test how your service
+                                            behaves when dependencies fail</li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <h3>⚠️ Common Pitfalls</h3>
+                                    <ul>
+                                        <li><strong>Cascading failures:</strong> Don't make health checks depend on
+                                            other services' health checks</li>
+                                        <li><strong>Heavy operations:</strong> Avoid expensive operations in health
+                                            checks</li>
+                                        <li><strong>False positives:</strong> Ensure health checks accurately reflect
+                                            service health</li>
+                                        <li><strong>Resource exhaustion:</strong> Health checks shouldn't consume
+                                            significant resources</li>
+                                        <li><strong>Single points of failure:</strong> Don't rely on a single check for
+                                            critical dependencies</li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-info">
+                                    <h3>💡 Advanced Tips</h3>
+                                    <ul>
+                                        <li><strong>Implement startup checks:</strong> Separate checks for service
+                                            initialization</li>
+                                        <li><strong>Use circuit breakers:</strong> Protect health checks from cascading
+                                            failures</li>
+                                        <li><strong>Add health check versioning:</strong> Allow evolution of health
+                                            check contracts</li>
+                                        <li><strong>Include business logic checks:</strong> Verify core application
+                                            functionality</li>
+                                        <li><strong>Implement health check discovery:</strong> Let services advertise
+                                            their health endpoints</li>
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Next Steps</h2>
+                                <div class="next-steps">
+                                    <a href="monitoring.html" class="next-step">
+                                        <h3>Monitoring & Observability</h3>
+                                        <p>Learn how to monitor your ScoutQuest deployment with metrics, logging, and
+                                            tracing</p>
+                                    </a>
+                                    <a href="production.html" class="next-step">
+                                        <h3>Production Deployment</h3>
+                                        <p>Deploy ScoutQuest in production with high availability and security</p>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

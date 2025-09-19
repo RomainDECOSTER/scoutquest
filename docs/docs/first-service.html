@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your First Service - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <--inspect --trace-warnings --signal Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Quick Start</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation Guide</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link active">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">SDK Documentation</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript/TypeScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Advanced Topics</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring & Observability</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="production.html" class="docs-nav__link">Production Deployment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Your First Service</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Your First Service</h1>
+                            <p class="docs-lead">
+                                Learn how to create, register, and communicate with your first service using ScoutQuest.
+                                This tutorial covers both service registration and discovery.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Prerequisites</h2>
+                                <p>Before starting this tutorial, make sure you have:</p>
+                                <ul>
+                                    <li>ScoutQuest server running (see <a href="installation.html">Installation
+                                            Guide</a>)</li>
+                                    <li>Node.js 16+ or Rust 1.75+ installed</li>
+                                    <li>Basic understanding of HTTP APIs</li>
+                                </ul>
+
+                                <div class="alert alert-info">
+                                    <h3>Quick Server Check</h3>
+                                    <p>Verify your ScoutQuest server is running:</p>
+                                    <div class="code-block">
+                                        <pre><code>curl http://localhost:8080/health</code></pre>
+                                    </div>
+                                    <p>You should see:
+                                        <code>{"status":"healthy","timestamp":"...","version":"..."}</code></p>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Step 1: Create a Simple Web Service</h2>
+                                <p>Let's start by creating a simple web service that we'll register with ScoutQuest.</p>
+
+                                <div class="installation-tabs">
+                                    <div class="tab-buttons">
+                                        <button class="tab-btn active"
+                                            data-tab="javascript">JavaScript/TypeScript</button>
+                                        <button class="tab-btn" data-tab="rust">Rust</button>
+                                    </div>
+
+                                    <div class="tab-content active" id="javascript">
+                                        <h3>Create a Node.js Service</h3>
+                                        <p>First, install the required dependencies:</p>
+                                        <div class="code-block">
+                                            <pre><code>mkdir my-first-service
+cd my-first-service
+npm init -y
+npm install express scoutquest-js</code></pre>
+                                        </div>
+
+                                        <p>Create <code>server.js</code>:</p>
+                                        <div class="code-block">
+                                            <pre><code>const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = 3000;
+const client = new ScoutQuestClient('http://localhost:8080');
+
+app.use(express.json());
+
+// Health check endpoint (required for ScoutQuest monitoring)
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        service: 'my-first-service'
+    });
+});
+
+// Simple API endpoint
+app.get('/api/hello', (req, res) => {
+    res.json({
+        message: 'Hello from my first service!',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Get user data (example endpoint)
+app.get('/api/users/:id', (req, res) => {
+    const userId = req.params.id;
+    res.json({
+        id: userId,
+        name: `User ${userId}`,
+        email: `user${userId}@example.com`,
+        service: 'my-first-service'
+    });
+});
+
+let serviceInstance = null;
+
+// Start server and register with ScoutQuest
+app.listen(port, async () => {
+    console.log(`Service running on port ${port}`);
+
+    try {
+        // Register service with ScoutQuest
+        serviceInstance = await client.registerService('my-first-service', 'localhost', port, {
+            tags: ['api', 'tutorial', 'v1'],
+            metadata: {
+                version: '1.0.0',
+                description: 'My first ScoutQuest service',
+                endpoints: ['/api/hello', '/api/users/:id']
+            },
+            healthCheck: {
+                path: '/health',
+                interval: 30,
+                timeout: 5
+            }
+        });
+
+        console.log(`✅ Service registered with ScoutQuest!`);
+        console.log(`   Instance ID: ${serviceInstance.id}`);
+        console.log(`   URL: http://localhost:${port}`);
+        console.log(`   Health Check: http://localhost:${port}/health`);
+
+    } catch (error) {
+        console.error('❌ Failed to register service:', error.message);
+        process.exit(1);
+    }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+    console.log('🛑 Shutting down gracefully...');
+    if (serviceInstance) {
+        await client.deregisterService(serviceInstance.id);
+        console.log('✅ Service deregistered from ScoutQuest');
+    }
+    process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+    console.log('🛑 Shutting down gracefully...');
+    if (serviceInstance) {
+        await client.deregisterService(serviceInstance.id);
+        console.log('✅ Service deregistered from ScoutQuest');
+    }
+    process.exit(0);
+});</code></pre>
+                                        </div>
+
+                                        <p>Run your service:</p>
+                                        <div class="code-block">
+                                            <pre><code>node server.js</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-content" id="rust">
+                                        <h3>Create a Rust Service</h3>
+                                        <p>Create a new Rust project:</p>
+                                        <div class="code-block">
+                                            <pre><code>cargo new my-first-service
+cd my-first-service</code></pre>
+                                        </div>
+
+                                        <p>Add dependencies to <code>Cargo.toml</code>:</p>
+                                        <div class="code-block">
+                                            <pre><code>[dependencies]
+scoutquest-rust = "1.0"
+axum = "0.7"
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors"] }</code></pre>
+                                        </div>
+
+                                        <p>Create <code>src/main.rs</code>:</p>
+                                        <div class="code-block">
+                                            <pre><code>use axum::{
+    extract::Path,
+    http::StatusCode,
+    response::Json,
+    routing::{get, post},
+    Router,
+};
+use scoutquest_rust::ServiceDiscoveryClient;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use tokio::signal;
+use tower_http::cors::CorsLayer;
+
+#[derive(Serialize)]
+struct HealthResponse {
+    status: String,
+    timestamp: String,
+    service: String,
+}
+
+#[derive(Serialize)]
+struct HelloResponse {
+    message: String,
+    timestamp: String,
+}
+
+#[derive(Serialize)]
+struct UserResponse {
+    id: String,
+    name: String,
+    email: String,
+    service: String,
+}
+
+async fn health_check() -> Json<HealthResponse> {
+    Json(HealthResponse {
+        status: "healthy".to_string(),
+        timestamp: chrono::Utc::now().to_rfc3339(),
+        service: "my-first-service".to_string(),
+    })
+}
+
+async fn hello() -> Json<HelloResponse> {
+    Json(HelloResponse {
+        message: "Hello from my first service!".to_string(),
+        timestamp: chrono::Utc::now().to_rfc3339(),
+    })
+}
+
+async fn get_user(Path(user_id): Path<String>) -> Json<UserResponse> {
+    Json(UserResponse {
+        id: user_id.clone(),
+        name: format!("User {}", user_id),
+        email: format!("user{}@example.com", user_id),
+        service: "my-first-service".to_string(),
+    })
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("🚀 Starting my first service...");
+
+    // Create ScoutQuest client
+    let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+
+    // Create router
+    let app = Router::new()
+        .route("/health", get(health_check))
+        .route("/api/hello", get(hello))
+        .route("/api/users/:id", get(get_user))
+        .layer(CorsLayer::permissive());
+
+    // Start server
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
+    println!("📡 Service running on port 3000");
+
+    // Register service with ScoutQuest
+    let mut metadata = HashMap::new();
+    metadata.insert("version".to_string(), "1.0.0".to_string());
+    metadata.insert("description".to_string(), "My first ScoutQuest service".to_string());
+    metadata.insert("endpoints".to_string(), "/api/hello,/api/users/:id".to_string());
+
+    let service_instance = client.register_service(
+        "my-first-service",
+        "localhost",
+        3000,
+        Some(metadata)
+    ).await?;
+
+    println!("✅ Service registered with ScoutQuest!");
+    println!("   Instance ID: {}", service_instance.id);
+    println!("   URL: http://localhost:3000");
+    println!("   Health Check: http://localhost:3000/health");
+
+    // Start server with graceful shutdown
+    tokio::select! {
+        result = axum::serve(listener, app) => {
+            if let Err(err) = result {
+                eprintln!("❌ Server error: {}", err);
+            }
+        }
+        _ = shutdown_signal() => {
+            println!("🛑 Shutting down gracefully...");
+
+            // Deregister service
+            if let Err(err) = client.deregister_service(&service_instance.id).await {
+                eprintln!("⚠️  Failed to deregister service: {}", err);
+            } else {
+                println!("✅ Service deregistered from ScoutQuest");
+            }
+        }
+    }
+
+    Ok(())
+}
+
+async fn shutdown_signal() {
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("failed to install signal handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {},
+        _ = terminate => {},
+    }
+}</code></pre>
+                                        </div>
+
+                                        <p>Add chrono dependency for timestamps:</p>
+                                        <div class="code-block">
+                                            <pre><code>cargo add chrono --features serde</code></pre>
+                                        </div>
+
+                                        <p>Run your service:</p>
+                                        <div class="code-block">
+                                            <pre><code>cargo run</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Step 2: Test Your Service</h2>
+                                <p>Once your service is running, test it to ensure everything works correctly:</p>
+
+                                <h3>Test Direct Access</h3>
+                                <div class="code-block">
+                                    <pre><code># Health check
+curl http://localhost:3000/health
+
+# Hello endpoint
+curl http://localhost:3000/api/hello
+
+# User endpoint
+curl http://localhost:3000/api/users/123</code></pre>
+                                </div>
+
+                                <h3>Verify Registration in ScoutQuest</h3>
+                                <div class="code-block">
+                                    <pre><code># List all registered services
+curl http://localhost:8080/api/services
+
+# Get specific service instances
+curl http://localhost:8080/api/services/my-first-service/instances</code></pre>
+                                </div>
+
+                                <p>You should see your service listed with status "healthy".</p>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Step 3: Create a Client Service</h2>
+                                <p>Now let's create a second service that discovers and communicates with the first one.
+                                </p>
+
+                                <div class="installation-tabs">
+                                    <div class="tab-buttons">
+                                        <button class="tab-btn active" data-tab="client-js">JavaScript Client</button>
+                                        <button class="tab-btn" data-tab="client-rust">Rust Client</button>
+                                    </div>
+
+                                    <div class="tab-content active" id="client-js">
+                                        <p>Create <code>client.js</code>:</p>
+                                        <div class="code-block">
+                                            <pre><code>const { ScoutQuestClient } = require('scoutquest-js');
+
+async function clientDemo() {
+    const client = new ScoutQuestClient('http://localhost:8080');
+
+    console.log('🔍 ScoutQuest Client Demo');
+    console.log('========================');
+
+    try {
+        // Discover the service
+        console.log('🔍 Discovering "my-first-service"...');
+        const serviceInstance = await client.discoverService('my-first-service');
+
+        console.log('✅ Service found:');
+        console.log(`   ID: ${serviceInstance.id}`);
+        console.log(`   Address: ${serviceInstance.host}:${serviceInstance.port}`);
+        console.log(`   Status: ${serviceInstance.status}`);
+        console.log(`   Tags: ${serviceInstance.tags.join(', ')}`);
+
+        // Make HTTP calls through ScoutQuest
+        console.log('\n📡 Making HTTP calls through ScoutQuest...');
+
+        // Call hello endpoint
+        const helloResponse = await client.get('my-first-service', '/api/hello');
+        console.log('✅ Hello response:', helloResponse.data);
+
+        // Call user endpoint
+        const userResponse = await client.get('my-first-service', '/api/users/456');
+        console.log('✅ User response:', userResponse.data);
+
+        // List all services
+        console.log('\n📋 All registered services:');
+        const services = await client.listServices();
+        services.forEach(service => {
+            console.log(`   - ${service.name} (${service.instanceCount} instances)`);
+        });
+
+        // List instances of our service
+        console.log('\n🏢 Instances of "my-first-service":');
+        const instances = await client.listServiceInstances('my-first-service');
+        instances.forEach(instance => {
+            console.log(`   - ${instance.id} at ${instance.host}:${instance.port} [${instance.status}]`);
+        });
+
+    } catch (error) {
+        console.error('❌ Error:', error.message);
+    }
+}
+
+// Run the demo
+clientDemo();</code></pre>
+                                        </div>
+
+                                        <p>Run the client:</p>
+                                        <div class="code-block">
+                                            <pre><code>node client.js</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-content" id="client-rust">
+                                        <p>Create <code>src/bin/client.rs</code>:</p>
+                                        <div class="code-block">
+                                            <pre><code>use scoutquest_rust::ServiceDiscoveryClient;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("🔍 ScoutQuest Client Demo");
+    println!("========================");
+
+    let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+
+    // Discover the service
+    println!("🔍 Discovering \"my-first-service\"...");
+    match client.discover_service("my-first-service").await {
+        Ok(instance) => {
+            println!("✅ Service found:");
+            println!("   ID: {}", instance.id);
+            println!("   Address: {}:{}", instance.host, instance.port);
+            println!("   Status: {}", instance.status);
+            println!("   Tags: {:?}", instance.tags);
+
+            // Make HTTP calls through service discovery
+            println!("\n📡 Making HTTP calls...");
+
+            // Call hello endpoint
+            match client.get_service("my-first-service", "/api/hello").await {
+                Ok(response) => {
+                    println!("✅ Hello response: {}", response);
+                }
+                Err(e) => println!("❌ Hello call failed: {}", e),
+            }
+
+            // Call user endpoint
+            match client.get_service("my-first-service", "/api/users/456").await {
+                Ok(response) => {
+                    println!("✅ User response: {}", response);
+                }
+                Err(e) => println!("❌ User call failed: {}", e),
+            }
+        }
+        Err(e) => {
+            println!("❌ Service discovery failed: {}", e);
+        }
+    }
+
+    // List all services
+    println!("\n📋 All registered services:");
+    match client.list_services().await {
+        Ok(services) => {
+            for service in services {
+                println!("   - {} ({} instances)", service.name, service.instance_count);
+            }
+        }
+        Err(e) => println!("❌ Failed to list services: {}", e),
+    }
+
+    Ok(())
+}</code></pre>
+                                        </div>
+
+                                        <p>Run the client:</p>
+                                        <div class="code-block">
+                                            <pre><code>cargo run --bin client</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Step 4: Understanding What Happened</h2>
+                                <p>Congratulations! You've successfully:</p>
+
+                                <div class="alert alert-success">
+                                    <h3>✅ What You Accomplished</h3>
+                                    <ul>
+                                        <li><strong>Service Registration</strong>: Your service automatically registered
+                                            itself with ScoutQuest</li>
+                                        <li><strong>Health Monitoring</strong>: ScoutQuest monitors your service health
+                                            every 30 seconds</li>
+                                        <li><strong>Service Discovery</strong>: Your client found the service without
+                                            knowing its exact location</li>
+                                        <li><strong>Load-Balanced Communication</strong>: ScoutQuest handled routing
+                                            your HTTP requests</li>
+                                        <li><strong>Graceful Shutdown</strong>: Services properly deregistered when
+                                            stopped</li>
+                                    </ul>
+                                </div>
+
+                                <h3>Key Concepts Demonstrated</h3>
+                                <ul>
+                                    <li><strong>Service Registry</strong>: Central place where services register
+                                        themselves</li>
+                                    <li><strong>Health Checks</strong>: Automatic monitoring of service availability
+                                    </li>
+                                    <li><strong>Service Discovery</strong>: Finding services by name instead of
+                                        hardcoded addresses</li>
+                                    <li><strong>Metadata & Tags</strong>: Additional information for service filtering
+                                        and routing</li>
+                                    <li><strong>HTTP Proxying</strong>: ScoutQuest routes requests to healthy service
+                                        instances</li>
+                                </ul>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Next Steps</h2>
+                                <div class="next-steps">
+                                    <div class="next-step">
+                                        <h3>
+                                            <a href="configuration.html">Configuration</a>
+                                        </h3>
+                                        <p>Learn how to configure ScoutQuest server and customize service registration
+                                            options.</p>
+                                    </div>
+                                    <div class="next-step">
+                                        <h3>
+                                            <a href="health-checking.html">Health Checking</a>
+                                        </h3>
+                                        <p>Deep dive into health check configuration and monitoring strategies.</p>
+                                    </div>
+                                    <div class="next-step">
+                                        <h3>
+                                            <a href="js-sdk.html">SDK Documentation</a>
+                                        </h3>
+                                        <p>Explore advanced features and configuration options for your language SDK.
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Troubleshooting</h2>
+                                <div class="alert alert-warning">
+                                    <h3>Common Issues</h3>
+                                    <ul>
+                                        <li><strong>Service registration fails</strong>: Check if ScoutQuest server is
+                                            running on port 8080</li>
+                                        <li><strong>Health check failures</strong>: Ensure your <code>/health</code>
+                                            endpoint returns 200 status</li>
+                                        <li><strong>Service not found</strong>: Wait a few seconds after registration
+                                            for health checks to pass</li>
+                                        <li><strong>Connection refused</strong>: Verify firewall settings and port
+                                            availability</li>
+                                    </ul>
+                                </div>
+
+                                <p>For more detailed troubleshooting, see the <a
+                                        href="troubleshooting.html">Troubleshooting Guide</a>.</p>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <--inspect --trace-warnings --signal Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

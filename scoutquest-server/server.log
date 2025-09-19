@@ -1,0 +1,31 @@
+warning: unused variable: `state`
+   --> src/api.rs:141:31
+    |
+141 | pub async fn get_events(State(state): State<AppState>) -> Json<serde_json::Value> {
+    |                               ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `state`
+   --> src/api.rs:148:11
+    |
+148 |     State(state): State<AppState>,
+    |           ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+
+warning: `scoutquest-server` (bin "scoutquest-server") generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running `target/debug/scoutquest-server`
+[2m2025-08-28T14:11:29.406266Z[0m [32m INFO[0m [2mscoutquest_server[0m[2m:[0m 🔍 Starting SquoutQuest Server v0.1.0
+[2m2025-08-28T14:11:29.414357Z[0m [32m INFO[0m [2mtokio_cron_scheduler::job_scheduler[0m[2m:[0m Uninited
+[2m2025-08-28T14:11:29.415007Z[0m [32m INFO[0m [2mtokio_cron_scheduler::job_scheduler[0m[2m:[0m Job creator created
+[2m2025-08-28T14:11:29.415116Z[0m [32m INFO[0m [2mtokio_cron_scheduler::job_scheduler[0m[2m:[0m Job creator created
+[2m2025-08-28T14:11:29.415156Z[0m [32m INFO[0m [2mscoutquest_server::health_checker[0m[2m:[0m 🏥 Health checker started (interval: 30s)
+[2m2025-08-28T14:11:29.416951Z[0m [32m INFO[0m [2mscoutquest_server[0m[2m:[0m 🚀 SquoutQuest Server started on http://0.0.0.0:8080
+[2m2025-08-28T14:11:29.416992Z[0m [32m INFO[0m [2mscoutquest_server[0m[2m:[0m 📊 Dashboard available at http://0.0.0.0:8080/dashboard
+[2m2025-08-28T14:11:29.417005Z[0m [32m INFO[0m [2mscoutquest_server[0m[2m:[0m 🔍 API documentation at http://0.0.0.0:8080/api/v1
+[2m2025-08-28T14:11:49.918721Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance registered: 1ba2b5fb-f524-49f6-acd4-fc3eeef5874d for service express-example-service
+[2m2025-08-28T14:12:30.024591Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance deregistered: 1ba2b5fb-f524-49f6-acd4-fc3eeef5874d
+[2m2025-08-28T14:13:35.214251Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance registered: d1e6528a-7c34-4546-9371-99138e8bbc9c for service express-example-service
+[2m2025-08-28T14:14:01.378387Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance registered: 87772b73-f96d-4c6b-ba79-0ae1272aed3b for service demo-client-service
+[2m2025-08-28T14:14:04.385268Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance deregistered: 87772b73-f96d-4c6b-ba79-0ae1272aed3b
+[2m2025-08-28T14:14:24.655803Z[0m [32m INFO[0m [2mscoutquest_server::registry[0m[2m:[0m Instance deregistered: d1e6528a-7c34-4546-9371-99138e8bbc9c

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoutQuest - Universal Service Discovery</title>
+    <meta name="description"
+        content="ScoutQuest is a lightweight, fast, and reliable service discovery platform for modern microservices architectures.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://romaindecoster.github.io/scoutquest/">
+    <meta property="og:title" content="ScoutQuest - Universal Service Discovery">
+    <meta property="og:description"
+        content="Lightweight, fast, and reliable service discovery platform for modern microservices architectures.">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="ScoutQuest - Universal Service Discovery">
+    <meta property="twitter:description"
+        content="Lightweight, fast, and reliable service discovery platform for modern microservices architectures.">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <img src="assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                <h1 class="nav__title">ScoutQuest</h1>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item"><a href="#examples" class="nav__link">Examples</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero__container container">
+                <div class="hero__content">
+                    <h1 class="hero__title">
+                        Universal Service Discovery
+                        <span class="hero__title--accent">Made Simple</span>
+                    </h1>
+                    <p class="hero__description">
+                        ScoutQuest is a lightweight, fast, and reliable service discovery platform
+                        designed for modern microservices architectures. Build, deploy, and scale
+                        your services with confidence.
+                    </p>
+                    <div class="hero__buttons">
+                        <a href="#getting-started" class="btn btn--primary">Get Started</a>
+                        <a href="#features" class="btn btn--secondary">Learn More</a>
+                    </div>
+                </div>
+                <div class="hero__visual">
+                    <div class="hero__code-block">
+                        <div class="code-header">
+                            <span class="code-lang">TypeScript</span>
+                        </div>
+                        <pre><code class="language-typescript">import { ScoutQuestClient } from 'scoutquest-js';
+
+const client = new ScoutQuestClient('http://localhost:8080');
+
+// Register your service
+await client.registerService('api-service', 'localhost', 3000, {
+  tags: ['api', 'v1'],
+  metadata: { version: '1.0.0' }
+});
+
+// Discover other services
+const instance = await client.discoverService('user-service');
+
+// Make HTTP calls
+const users = await client.get('user-service', '/api/users');</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose ScoutQuest?</h2>
+                    <p class="section-subtitle">
+                        Built for developers who need reliable service discovery without the complexity
+                    </p>
+                </div>
+
+                <div class="features__grid">
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="3" />
+                                <path d="M12 1v6m0 6v6" />
+                                <path d="m4.2 4.2 4.2 4.2m5.6 0 4.2-4.2M4.2 19.8l4.2-4.2m5.6 0 4.2 4.2" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Lightning Fast</h3>
+                        <p class="feature-card__description">
+                            Built with Rust for maximum performance. Sub-millisecond response times
+                            and minimal resource usage.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Developer Friendly</h3>
+                        <p class="feature-card__description">
+                            Simple APIs, comprehensive SDKs for multiple languages, and extensive
+                            documentation to get you started quickly.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Production Ready</h3>
+                        <p class="feature-card__description">
+                            Health checking, automatic failover, graceful shutdowns, and comprehensive
+                            monitoring built-in.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" y1="22.08" x2="12" y2="12" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Multi-Language</h3>
+                        <p class="feature-card__description">
+                            Native SDKs for JavaScript/TypeScript, Rust, and more.
+                            Use ScoutQuest in any tech stack.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="18" cy="5" r="3" />
+                                <circle cx="6" cy="12" r="3" />
+                                <circle cx="18" cy="19" r="3" />
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Simplified Architecture</h3>
+                        <p class="feature-card__description">
+                            No client-side load balancing complexity. The server handles everything
+                            and returns ready-to-use service instances.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-card__title">Easy Deployment</h3>
+                        <p class="feature-card__description">
+                            Single binary deployment, Docker support, and simple configuration.
+                            Get running in minutes, not hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started Section -->
+        <section class="getting-started" id="getting-started">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Get Started in Minutes</h2>
+                    <p class="section-subtitle">
+                        Follow these simple steps to set up ScoutQuest in your environment
+                    </p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step__number">1</div>
+                        <div class="step__content">
+                            <h3 class="step__title">Install ScoutQuest Server</h3>
+                            <div class="step__code">
+                                <pre><code># Using Cargo
+cargo install scoutquest-server
+
+# Or download binary from GitHub releases
+wget https://github.com/RomainDECOSTER/scoutquest/releases/latest/download/scoutquest-server
+
+# Or use Docker
+docker run -p 8080:8080 scoutquest/server</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step__number">2</div>
+                        <div class="step__content">
+                            <h3 class="step__title">Start the Server</h3>
+                            <div class="step__code">
+                                <pre><code># Start ScoutQuest server
+scoutquest-server
+
+# Server starts on http://localhost:8080
+# Dashboard available at http://localhost:8080/dashboard</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step__number">3</div>
+                        <div class="step__content">
+                            <h3 class="step__title">Install SDK</h3>
+                            <div class="step__tabs">
+                                <button class="tab-btn active" data-tab="js">JavaScript/TypeScript</button>
+                                <button class="tab-btn" data-tab="rust">Rust</button>
+                            </div>
+                            <div class="tab-content active" id="js">
+                                <pre><code># NPM
+npm install scoutquest-js
+
+# Yarn
+yarn add scoutquest-js
+
+# PNPM
+pnpm add scoutquest-js</code></pre>
+                            </div>
+                            <div class="tab-content" id="rust">
+                                <pre><code># Add to Cargo.toml
+[dependencies]
+scoutquest-rust = "1.0"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step__number">4</div>
+                        <div class="step__content">
+                            <h3 class="step__title">Write Your First Service</h3>
+                            <div class="step__tabs">
+                                <button class="tab-btn active" data-tab="example-js">JavaScript/TypeScript</button>
+                                <button class="tab-btn" data-tab="example-rust">Rust</button>
+                            </div>
+                            <div class="tab-content active" id="example-js">
+                                <pre><code>import { ScoutQuestClient } from 'scoutquest-js';
+
+const client = new ScoutQuestClient('http://localhost:8080');
+
+// Register your service
+const instance = await client.registerService(
+  'my-service',
+  'localhost',
+  3000,
+  { tags: ['api', 'v1'] }
+);
+
+console.log(`Service registered: ${instance.id}`);</code></pre>
+                            </div>
+                            <div class="tab-content" id="example-rust">
+                                <pre><code>use scoutquest_rust::ServiceDiscoveryClient;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
+
+    let instance = client.register_service(
+        "my-service",
+        "localhost",
+        3000,
+        None
+    ).await?;
+
+    println!("Service registered: {}", instance.id);
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section class="examples" id="examples">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Examples & Use Cases</h2>
+                    <p class="section-subtitle">
+                        Real-world examples to get you started quickly
+                    </p>
+                </div>
+
+                <div class="examples__grid">
+                    <div class="example-card">
+                        <div class="example-card__header">
+                            <h3 class="example-card__title">Express.js Web Service</h3>
+                            <div class="example-card__tech">
+                                <span class="tech-tag">TypeScript</span>
+                                <span class="tech-tag">Express</span>
+                            </div>
+                        </div>
+                        <p class="example-card__description">
+                            Complete Express.js service with automatic registration, health checks,
+                            and service-to-service communication.
+                        </p>
+                        <div class="example-card__actions">
+                            <a href="https://github.com/RomainDECOSTER/scoutquest/tree/main/examples/js"
+                                class="btn btn--small btn--outline">View Code</a>
+                            <a href="#docs" class="btn btn--small">Documentation</a>
+                        </div>
+                    </div>
+
+                    <div class="example-card">
+                        <div class="example-card__header">
+                            <h3 class="example-card__title">Axum Web Service</h3>
+                            <div class="example-card__tech">
+                                <span class="tech-tag">Rust</span>
+                                <span class="tech-tag">Axum</span>
+                            </div>
+                        </div>
+                        <p class="example-card__description">
+                            High-performance Rust web service with ScoutQuest integration,
+                            health monitoring, and automatic discovery.
+                        </p>
+                        <div class="example-card__actions">
+                            <a href="https://github.com/RomainDECOSTER/scoutquest/tree/main/examples/rust"
+                                class="btn btn--small btn--outline">View Code</a>
+                            <a href="#docs" class="btn btn--small">Documentation</a>
+                        </div>
+                    </div>
+
+                    <div class="example-card">
+                        <div class="example-card__header">
+                            <h3 class="example-card__title">Client Demos</h3>
+                            <div class="example-card__tech">
+                                <span class="tech-tag">TypeScript</span>
+                                <span class="tech-tag">Rust</span>
+                            </div>
+                        </div>
+                        <p class="example-card__description">
+                            Interactive demos showing service discovery, registration,
+                            and communication patterns in multiple languages.
+                        </p>
+                        <div class="example-card__actions">
+                            <a href="https://github.com/RomainDECOSTER/scoutquest/tree/main/examples"
+                                class="btn btn--small btn--outline">View All</a>
+                            <a href="#docs" class="btn btn--small">Try Online</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section class="docs" id="docs">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Documentation</h2>
+                    <p class="section-subtitle">
+                        Everything you need to know about ScoutQuest
+                    </p>
+                </div>
+
+                <div class="docs__grid">
+                    <div class="doc-category">
+                        <h3 class="doc-category__title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            Quick Start
+                        </h3>
+                        <ul class="doc-list">
+                            <li><a href="docs/installation.html">Installation Guide</a></li>
+                            <li><a href="docs/first-service.html">Your First Service</a></li>
+                            <li><a href="docs/configuration.html">Configuration</a></li>
+                            <li><a href="docs/troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="doc-category">
+                        <h3 class="doc-category__title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                            SDK Documentation
+                        </h3>
+                        <ul class="doc-list">
+                            <li><a href="docs/js-sdk.html">JavaScript/TypeScript SDK</a></li>
+                            <li><a href="docs/rust-sdk.html">Rust SDK</a></li>
+                            <li><a href="docs/api-reference.html">REST API Reference</a></li>
+                            <li><a href="docs/websockets.html">WebSocket Events</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="doc-category">
+                        <h3 class="doc-category__title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9 5.16-.74 9-4.45 9-9V7l-10-5z" />
+                            </svg>
+                            Advanced Topics
+                        </h3>
+                        <ul class="doc-list">
+                            <li><a href="docs/health-checking.html">Health Checking</a></li>
+                            <li><a href="docs/service-discovery.html">Service Discovery Patterns</a></li>
+                            <li><a href="docs/monitoring.html">Monitoring & Observability</a></li>
+                            <li><a href="docs/production.html">Production Deployment</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="doc-category">
+                        <h3 class="doc-category__title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="3" />
+                                <path d="M12 1v6m0 6v6" />
+                                <path d="m4.2 4.2 4.2 4.2m5.6 0 4.2-4.2M4.2 19.8l4.2-4.2m5.6 0 4.2 4.2" />
+                            </svg>
+                            Examples & Tutorials
+                        </h3>
+                        <ul class="doc-list">
+                            <li><a href="docs/microservices-tutorial.html">Building Microservices</a></li>
+                            <li><a href="docs/express-tutorial.html">Express.js Integration</a></li>
+                            <li><a href="docs/rust-tutorial.html">Rust Service Tutorial</a></li>
+                            <li><a href="docs/docker-tutorial.html">Docker & Kubernetes</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/images/logo.svg" alt="ScoutQuest Logo" class="footer__logo">
+                    <h3 class="footer__title">ScoutQuest</h3>
+                    <p class="footer__description">
+                        Universal service discovery made simple for modern microservices architectures.
+                    </p>
+                </div>
+
+                <div class="footer__links">
+                    <div class="footer__column">
+                        <h4 class="footer__column-title">Product</h4>
+                        <ul class="footer__list">
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#getting-started">Get Started</a></li>
+                            <li><a href="docs/installation.html">Installation</a></li>
+                            <li><a href="#examples">Examples</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer__column">
+                        <h4 class="footer__column-title">Documentation</h4>
+                        <ul class="footer__list">
+                            <li><a href="docs/js-sdk.html">JavaScript SDK</a></li>
+                            <li><a href="docs/rust-sdk.html">Rust SDK</a></li>
+                            <li><a href="docs/api-reference.html">API Reference</a></li>
+                            <li><a href="docs/tutorials.html">Tutorials</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer__column">
+                        <h4 class="footer__column-title">Community</h4>
+                        <ul class="footer__list">
+                            <li><a href="https://github.com/RomainDECOSTER/scoutquest" target="_blank">GitHub</a></li>
+                            <li><a href="https://github.com/RomainDECOSTER/scoutquest/issues" target="_blank">Issues</a>
+                            </li>
+                            <li><a href="https://github.com/RomainDECOSTER/scoutquest/discussions"
+                                    target="_blank">Discussions</a></li>
+                            <li><a href="https://github.com/RomainDECOSTER/scoutquest/releases"
+                                    target="_blank">Releases</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <div class="footer__bottom-content">
+                    <p class="footer__copyright">
+                        © 2025 ScoutQuest. Made with ❤️ for the developer community.
+                    </p>
+                    <div class="footer__social">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" target="_blank"
+                            class="footer__social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

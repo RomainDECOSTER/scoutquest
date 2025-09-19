@@ -1,0 +1,57 @@
+{
+  "branches": [
+    "main",
+    {
+      "name": "release/**",
+      "prerelease": "beta"
+    }
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyReleaseCmd": "make verify-release",
+        "prepareCmd": "make release-prepare VERSION=${nextRelease.version}",
+        "publishCmd": "make release-publish VERSION=${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "scoutquest-server/target/release/scoutquest-server",
+            "name": "scoutquest-server-${nextRelease.version}-linux-x64",
+            "label": "ScoutQuest Server (Linux x64)"
+          },
+          {
+            "path": "CHANGELOG.md",
+            "name": "CHANGELOG.md",
+            "label": "Changelog"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "package.json",
+          "scoutquest-js/package.json",
+          "scoutquest-rust/Cargo.toml",
+          "scoutquest-server/Cargo.toml"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
+  ]
+}
