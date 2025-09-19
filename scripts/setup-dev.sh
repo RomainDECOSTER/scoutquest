@@ -2,6 +2,19 @@
 
 echo "🚀 Setting up ScoutQuest development environment..."
 
+# Utiliser Node.js 22 avec nvm si disponible
+if command -v nvm &> /dev/null; then
+    echo "📦 Setting up Node.js 22 with nvm..."
+    nvm use
+    if [ $? -ne 0 ]; then
+        echo "📥 Installing Node.js 22..."
+        nvm install 22
+        nvm use 22
+    fi
+else
+    echo "⚠️  nvm not found. Please ensure Node.js 22+ is installed."
+fi
+
 # Fonction pour installer pre-commit
 install_precommit() {
     echo "📦 Installing pre-commit..."

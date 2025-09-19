@@ -9,6 +9,29 @@ SquoutQuest is a modern Service Discovery solution designed to simplify microser
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+- **Node.js 22+** (we recommend using [nvm](https://github.com/nvm-sh/nvm))
+- **Rust 1.70+**
+- **pnpm 10+**
+
+### Installation
+
+```bash
+# Install and use Node.js 22 with nvm
+nvm install 22
+nvm use
+
+# Or if you have .nvmrc support:
+nvm use
+
+# Install dependencies
+pnpm install
+
+# Run development setup
+./scripts/setup-dev.sh
+```
+
 ### 1. Start the server
 
 ```bash
