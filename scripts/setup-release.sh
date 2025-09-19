@@ -28,8 +28,8 @@ echo "📦 Installing JavaScript SDK dependencies..."
 cd scoutquest-js && pnpm install && cd ..
 cd examples/js && pnpm install && cd ../..
 
-echo "🧪 Running initial tests..."
-make test-all
+echo "🧪 Running setup tests (unit tests only)..."
+make test-setup
 
 echo "🔨 Building all components..."
 make build-all
@@ -71,3 +71,6 @@ echo "  3. Push to main branch to trigger first release:"
 echo "     git push origin main"
 echo ""
 echo "📖 See CONTRIBUTING.md for commit conventions"
+echo ""
+echo "ℹ️  Note: Integration tests require the ScoutQuest server to be running."
+echo "   Use 'make test-all' to run all tests including integration tests."

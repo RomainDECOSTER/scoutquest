@@ -1,4 +1,4 @@
-.PHONY: help build test clean docker run-server run-example release-prepare release-publish build-all test-all docs-build docs-deploy
+.PHONY: help build test clean docker run-server run-example release-prepare release-publish build-all test-all test-setup docs-build docs-deploy
 
 # Version management
 VERSION ?= $(shell cat package.json | grep '"version"' | head -1 | awk -F: '{ print $$2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
@@ -51,6 +51,14 @@ check: ## Check code
 docs: ## Generate documentation
 	cd scoutquest-server && cargo doc --no-deps
 	cd scoutquest-rust && cargo doc --no-deps
+
+test-setup: ## Run setup tests (unit tests only, no integration tests)
+	@echo "🧪 Running setup tests (unit tests only)..."
+	@echo "🧪 Testing Rust SDK (lib only)..."
+	cd scoutquest-rust && cargo test --lib
+	@echo "🧪 Testing JavaScript SDK..."
+	cd scoutquest-js && pnpm test
+	@echo "✅ Setup tests completed (integration tests skipped)"
 
 # ============================================================================
 # RELEASE MANAGEMENT
