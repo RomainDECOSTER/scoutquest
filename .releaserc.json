@@ -2,12 +2,8 @@
   "branches": [
     "main",
     {
-      "name": "beta",
-      "prerelease": true
-    },
-    {
-      "name": "refactor/code",
-      "prerelease": "dev"
+      "name": "release/**",
+      "prerelease": "beta"
     }
   ],
   "plugins": [

@@ -1,13 +1,9 @@
 import type {
   ServiceInstance,
   Service,
-  HealthCheck,
   RegisterServiceRequest,
   DiscoveryQuery,
-  UpdateStatusRequest,
-  RegistryStats,
   ServiceEvent,
-  ServiceRegistrationOptions,
   ClientConfig,
 } from '../types';
 import {

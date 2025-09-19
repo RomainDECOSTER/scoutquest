@@ -4,9 +4,6 @@ on:
   push:
     branches: [ main ]
     paths: [ 'docs/**' ]
-  pull_request:
-    branches: [ main ]
-    paths: [ 'docs/**' ]
   workflow_dispatch:
 
 permissions:
@@ -19,7 +16,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,24 +27,28 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
         with:
-          source: ./docs
-          destination: ./_site
+          enablement: true
 
-      - name: Upload artifact
+      - name: Prepare Documentation
+        run: |
+          # Créer le dossier de build
+          mkdir -p _site
+          
+          # Copier tous les fichiers docs
+          cp -r docs/* _site/
+          
+          # Créer un .nojekyll pour éviter le processing Jekyll
+          touch _site/.nojekyll
+          
+          echo "Documentation prepared in _site/"
+          ls -la _site/
+
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
