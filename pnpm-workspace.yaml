@@ -1,3 +1,6 @@
 packages:
-  - 'scoutquest-js'
-  - 'examples/js'
+  - scoutquest-js
+  - examples/js
+
+onlyBuiltDependencies:
+  - esbuild

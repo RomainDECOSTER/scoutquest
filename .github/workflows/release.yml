@@ -31,7 +31,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -39,10 +39,7 @@ jobs:
           components: rustfmt, clippy
 
       - name: Install Dependencies
-        run: |
-          pnpm install
-          cd scoutquest-js && pnpm install
-          cd ../examples/js && pnpm install
+        run: pnpm install
 
       - name: Cache Rust dependencies
         uses: actions/cache@v4
