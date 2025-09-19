@@ -613,6 +613,21 @@ section {
     padding-left: 0.75rem;
 }
 
+.doc-list .coming-soon {
+    color: var(--text-muted);
+    padding: 0.5rem 0;
+    display: block;
+    border-radius: 0.375rem;
+    font-style: italic;
+    cursor: not-allowed;
+}
+
+.doc-list .coming-soon small {
+    color: var(--warning-color);
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
 /* Footer */
 .footer {
     background: var(--bg-dark);
