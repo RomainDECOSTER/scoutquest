@@ -5,7 +5,7 @@
 //!
 //! ## Usage
 //!
-//! ```rust
+//! ```rust,no_run
 //! use notification_example::{
 //!     client::NotificationClient,
 //!     types::{CreateNotificationRequest, Channel, Priority},

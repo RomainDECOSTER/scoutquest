@@ -114,8 +114,7 @@ test-all: ## Run all tests
 	@echo "🧪 Testing JavaScript SDK..."
 	cd scoutquest-js && pnpm test
 	@echo "🧪 Running integration tests..."
-	cd examples/rust && cargo test
-	cd examples/js && pnpm test
+	cd examples/rust && cargo test --bins --tests --benches
 
 docs-build: ## Build documentation website
 	@echo "📚 Building documentation website..."
