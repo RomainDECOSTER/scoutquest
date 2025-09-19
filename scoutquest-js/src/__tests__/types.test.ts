@@ -6,10 +6,7 @@ import type {
   ServiceEvent,
   ClientConfig,
 } from '../types';
-import {
-  InstanceStatus,
-  EventType,
-} from '../types';
+import { InstanceStatus, EventType } from '../types';
 
 describe('Types', () => {
   describe('InstanceStatus enum', () => {
@@ -79,12 +76,12 @@ describe('Types', () => {
         secure: false,
         metadata: { version: '1.0.0' },
         tags: ['api'],
-        health_check: { 
+        health_check: {
           url: '/health',
           interval_seconds: 30,
           timeout_seconds: 5,
           method: 'GET',
-          expected_status: 200
+          expected_status: 200,
         },
       };
 

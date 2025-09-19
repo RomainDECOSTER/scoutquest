@@ -55,7 +55,7 @@ describe('ScoutQuestClient', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Setup mock axios instance
     mockAxiosInstance = {
       get: jest.fn(),
@@ -68,9 +68,9 @@ describe('ScoutQuestClient', () => {
         },
       },
     };
-    
+
     mockedAxios.create.mockReturnValue(mockAxiosInstance);
-    
+
     // Mock service instance
     mockServiceInstance = {
       id: 'test-instance-1',
@@ -96,7 +96,7 @@ describe('ScoutQuestClient', () => {
     };
 
     client = new ScoutQuestClient('http://localhost:8080');
-    
+
     // Fast client for error tests (no retries, fast timeout)
     fastClient = new ScoutQuestClient('http://localhost:8080', {
       retry_attempts: 0,
@@ -347,7 +347,9 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should throw error when no service registered', async () => {
-      const clientWithoutService = new ScoutQuestClient('http://localhost:8080');
+      const clientWithoutService = new ScoutQuestClient(
+        'http://localhost:8080'
+      );
 
       await expect(
         clientWithoutService.updateStatus(InstanceStatus.Down)
@@ -378,7 +380,9 @@ describe('ScoutQuestClient', () => {
     });
 
     it('should throw error when no service registered', async () => {
-      const clientWithoutService = new ScoutQuestClient('http://localhost:8080');
+      const clientWithoutService = new ScoutQuestClient(
+        'http://localhost:8080'
+      );
 
       await expect(clientWithoutService.sendHeartbeat()).rejects.toThrow(
         ScoutQuestError
@@ -514,10 +518,22 @@ describe('ScoutQuestClient', () => {
       client.connectEventStream();
 
       expect(MockedWebSocket).toHaveBeenCalledWith('ws://localhost:8080/ws');
-      expect(mockWebSocket.on).toHaveBeenCalledWith('open', expect.any(Function));
-      expect(mockWebSocket.on).toHaveBeenCalledWith('message', expect.any(Function));
-      expect(mockWebSocket.on).toHaveBeenCalledWith('error', expect.any(Function));
-      expect(mockWebSocket.on).toHaveBeenCalledWith('close', expect.any(Function));
+      expect(mockWebSocket.on).toHaveBeenCalledWith(
+        'open',
+        expect.any(Function)
+      );
+      expect(mockWebSocket.on).toHaveBeenCalledWith(
+        'message',
+        expect.any(Function)
+      );
+      expect(mockWebSocket.on).toHaveBeenCalledWith(
+        'error',
+        expect.any(Function)
+      );
+      expect(mockWebSocket.on).toHaveBeenCalledWith(
+        'close',
+        expect.any(Function)
+      );
     });
 
     it('should disconnect from event stream', () => {
@@ -566,7 +582,7 @@ describe('ScoutQuestClient', () => {
 
       // Should not throw
       await fastClient.shutdown();
-      
+
       // Should have emitted an error
       expect(errorHandler).toHaveBeenCalled();
     });
@@ -580,7 +596,7 @@ describe('ScoutQuestClient', () => {
         retry_delay: 1, // 1ms delay instead of 1000ms
         timeout: 1000,
       });
-      
+
       mockAxiosInstance.get
         .mockRejectedValueOnce(new Error('Network error'))
         .mockRejectedValueOnce(new Error('Network error'))
