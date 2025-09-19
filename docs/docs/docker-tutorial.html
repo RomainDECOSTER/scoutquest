@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker & Kubernetes Tutorial - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <img src="../assets/images/logo.svg" alt="ScoutQuest" class="nav__logo">
+                <span class="nav__title">ScoutQuest</span>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html" class="docs-nav__link">Building
+                                        Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html" class="docs-nav__link">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link">Rust Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link docs-nav__link--active">Docker
+                                        & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <h1>Docker & Kubernetes with ScoutQuest</h1>
+                    <p class="docs-lead">
+                        Learn how to containerize your ScoutQuest services with Docker and deploy them
+                        to Kubernetes clusters with automatic service discovery and health monitoring.
+                    </p>
+
+                    <section class="docs-section">
+                        <h2>Overview</h2>
+                        <p>
+                            This tutorial covers deploying ScoutQuest in containerized environments:
+                        </p>
+                        <ul>
+                            <li>Dockerizing ScoutQuest services</li>
+                            <li>Creating Docker Compose deployments</li>
+                            <li>Deploying to Kubernetes</li>
+                            <li>Service discovery in container orchestration</li>
+                            <li>Health checks and monitoring</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Dockerizing Services</h2>
+                        <p>Let's start by containerizing a Node.js service:</p>
+
+                        <div class="code-block">
+                            <h4>Dockerfile (Node.js Service)</h4>
+                            <pre><code class="language-dockerfile"># Use Node.js 22 Alpine for smaller image size
+FROM node:22-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy application code
+COPY . .
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node healthcheck.js
+
+# Start the application
+CMD ["node", "index.js"]</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>healthcheck.js</h4>
+                            <pre><code class="language-javascript">const http = require('http');
+
+const options = {
+    hostname: 'localhost',
+    port: process.env.PORT || 3000,
+    path: '/health',
+    method: 'GET',
+    timeout: 2000
+};
+
+const request = http.request(options, (res) => {
+    if (res.statusCode === 200) {
+        process.exit(0);
+    } else {
+        process.exit(1);
+    }
+});
+
+request.on('error', () => {
+    process.exit(1);
+});
+
+request.on('timeout', () => {
+    request.destroy();
+    process.exit(1);
+});
+
+request.end();</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Dockerfile (Rust Service)</h4>
+                            <pre><code class="language-dockerfile"># Multi-stage build for Rust
+FROM rust:1.70 as builder
+
+WORKDIR /app
+COPY . .
+
+# Build the application
+RUN cargo build --release
+
+# Runtime stage
+FROM debian:bookworm-slim
+
+# Install ca-certificates for HTTPS requests
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app user
+RUN useradd -m -u 1001 appuser
+
+WORKDIR /app
+
+# Copy the binary from builder stage
+COPY --from=builder /app/target/release/rust-service /app/rust-service
+
+# Change ownership to app user
+RUN chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+CMD ["./rust-service"]</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Docker Compose Setup</h2>
+                        <p>Create a complete development environment with Docker Compose:</p>
+
+                        <div class="code-block">
+                            <h4>docker-compose.yml</h4>
+                            <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # ScoutQuest Server
+  scoutquest-server:
+    image: scoutquest/server:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - RUST_LOG=info
+      - HOST=0.0.0.0
+      - PORT=8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - scoutquest-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - PORT=3000
+      - SCOUT_URL=http://scoutquest-server:8080
+      - NODE_ENV=production
+    depends_on:
+      scoutquest-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - scoutquest-network
+
+  # Product Service
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    environment:
+      - PORT=3000
+      - SCOUT_URL=http://scoutquest-server:8080
+      - NODE_ENV=production
+    depends_on:
+      scoutquest-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - scoutquest-network
+
+  # Order Service (Rust)
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - PORT=3000
+      - SCOUT_URL=http://scoutquest-server:8080
+      - RUST_LOG=info
+    depends_on:
+      scoutquest-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - scoutquest-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - SCOUT_URL=http://scoutquest-server:8080
+      - NODE_ENV=production
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - scoutquest-network
+
+networks:
+  scoutquest-network:
+    driver: bridge</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Running with Docker Compose</h4>
+                            <pre><code class="language-bash"># Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Check service health
+docker-compose ps
+
+# Stop all services
+docker-compose down</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Kubernetes Deployment</h2>
+                        <p>Deploy ScoutQuest to Kubernetes with proper service discovery:</p>
+
+                        <div class="code-block">
+                            <h4>k8s/namespace.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: v1
+kind: Namespace
+metadata:
+  name: scoutquest
+  labels:
+    name: scoutquest</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>k8s/scoutquest-server.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoutquest-server
+  namespace: scoutquest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scoutquest-server
+  template:
+    metadata:
+      labels:
+        app: scoutquest-server
+    spec:
+      containers:
+      - name: scoutquest-server
+        image: scoutquest/server:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: HOST
+          value: "0.0.0.0"
+        - name: PORT
+          value: "8080"
+        - name: RUST_LOG
+          value: "info"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scoutquest-server
+  namespace: scoutquest
+spec:
+  selector:
+    app: scoutquest-server
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>k8s/user-service.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: scoutquest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: scoutquest/user-service:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: SCOUT_URL
+          value: "http://scoutquest-server:8080"
+        - name: NODE_ENV
+          value: "production"
+        - name: SERVICE_NAME
+          value: "user-service"
+        - name: SERVICE_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: scoutquest
+spec:
+  selector:
+    app: user-service
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>k8s/ingress.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scoutquest-ingress
+  namespace: scoutquest
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: scoutquest.local
+    http:
+      paths:
+      - path: /api/users
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 3000
+      - path: /api/products
+        pathType: Prefix
+        backend:
+          service:
+            name: product-service
+            port:
+              number: 3000
+      - path: /api/orders
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service
+            port:
+              number: 3000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 3000</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>ConfigMaps and Secrets</h2>
+                        <p>Manage configuration and secrets in Kubernetes:</p>
+
+                        <div class="code-block">
+                            <h4>k8s/configmap.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scoutquest-config
+  namespace: scoutquest
+data:
+  scout_url: "http://scoutquest-server:8080"
+  log_level: "info"
+  health_check_interval: "30"
+  service_timeout: "5000"</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>k8s/secret.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: scoutquest-secrets
+  namespace: scoutquest
+type: Opaque
+data:
+  # Base64 encoded values
+  api_key: Y2hhbmdlLW1lLXBsZWFzZQ==
+  db_password: c3VwZXItc2VjcmV0LXBhc3M=</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Using ConfigMaps and Secrets</h4>
+                            <pre><code class="language-yaml">spec:
+  containers:
+  - name: user-service
+    image: scoutquest/user-service:latest
+    envFrom:
+    - configMapRef:
+        name: scoutquest-config
+    - secretRef:
+        name: scoutquest-secrets
+    env:
+    - name: SERVICE_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Horizontal Pod Autoscaling</h2>
+                        <p>Automatically scale services based on resource usage:</p>
+
+                        <div class="code-block">
+                            <h4>k8s/hpa.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: user-service-hpa
+  namespace: scoutquest
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: user-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Monitoring and Observability</h2>
+                        <p>Set up monitoring with Prometheus and Grafana:</p>
+
+                        <div class="code-block">
+                            <h4>k8s/service-monitor.yaml</h4>
+                            <pre><code class="language-yaml">apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: scoutquest-metrics
+  namespace: scoutquest
+  labels:
+    app: scoutquest
+spec:
+  selector:
+    matchLabels:
+      app: scoutquest-server
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Adding metrics to your service</h4>
+                            <pre><code class="language-javascript">const promClient = require('prom-client');
+
+// Create metrics
+const httpRequestDuration = new promClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.1, 0.5, 1, 2, 5]
+});
+
+const serviceDiscoveryRequests = new promClient.Counter({
+  name: 'service_discovery_requests_total',
+  help: 'Total number of service discovery requests',
+  labelNames: ['service_name', 'operation']
+});
+
+// Middleware to collect metrics
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    httpRequestDuration
+      .labels(req.method, req.route?.path || req.path, res.statusCode)
+      .observe(duration);
+  });
+
+  next();
+});
+
+// Metrics endpoint
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', promClient.register.contentType);
+  res.end(await promClient.register.metrics());
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Deployment Scripts</h2>
+                        <p>Automate deployment with scripts:</p>
+
+                        <div class="code-block">
+                            <h4>scripts/deploy.sh</h4>
+                            <pre><code class="language-bash">#!/bin/bash
+
+set -e
+
+NAMESPACE="scoutquest"
+CONTEXT="production"
+
+echo "🚀 Deploying ScoutQuest to Kubernetes..."
+
+# Set kubectl context
+kubectl config use-context "$CONTEXT"
+
+# Create namespace if it doesn't exist
+kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+
+# Apply all Kubernetes manifests
+echo "📦 Applying Kubernetes manifests..."
+kubectl apply -f k8s/ -n "$NAMESPACE"
+
+# Wait for deployments to be ready
+echo "⏳ Waiting for deployments to be ready..."
+kubectl wait --for=condition=available --timeout=300s deployment/scoutquest-server -n "$NAMESPACE"
+kubectl wait --for=condition=available --timeout=300s deployment/user-service -n "$NAMESPACE"
+kubectl wait --for=condition=available --timeout=300s deployment/product-service -n "$NAMESPACE"
+kubectl wait --for=condition=available --timeout=300s deployment/order-service -n "$NAMESPACE"
+
+echo "✅ Deployment completed successfully!"
+
+# Show status
+echo "📊 Current status:"
+kubectl get pods -n "$NAMESPACE"
+kubectl get services -n "$NAMESPACE"</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>scripts/build-and-push.sh</h4>
+                            <pre><code class="language-bash">#!/bin/bash
+
+set -e
+
+REGISTRY="your-registry.com"
+TAG=${1:-latest}
+
+services=("user-service" "product-service" "order-service" "api-gateway")
+
+echo "🔨 Building and pushing Docker images..."
+
+for service in "${services[@]}"; do
+    echo "Building $service..."
+    docker build -t "$REGISTRY/scoutquest/$service:$TAG" "./$service"
+    docker push "$REGISTRY/scoutquest/$service:$TAG"
+    echo "✅ $service pushed successfully"
+done
+
+echo "🎉 All images built and pushed successfully!"</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Production Best Practices</h2>
+                        <ul>
+                            <li><strong>Multi-stage builds:</strong> Use multi-stage Dockerfiles for smaller images</li>
+                            <li><strong>Health checks:</strong> Always implement proper health checks</li>
+                            <li><strong>Resource limits:</strong> Set appropriate CPU and memory limits</li>
+                            <li><strong>Secrets management:</strong> Use Kubernetes secrets for sensitive data</li>
+                            <li><strong>Network policies:</strong> Implement network segmentation</li>
+                            <li><strong>Monitoring:</strong> Set up comprehensive monitoring and alerting</li>
+                            <li><strong>Backup strategy:</strong> Implement backup and disaster recovery</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Troubleshooting</h2>
+                        <p>Common issues and their solutions:</p>
+
+                        <div class="code-block">
+                            <h4>Check service registration</h4>
+                            <pre><code class="language-bash"># Check if services are registered
+kubectl exec -it deployment/scoutquest-server -n scoutquest -- curl localhost:8080/services
+
+# Check service logs
+kubectl logs deployment/user-service -n scoutquest --tail=50
+
+# Debug service connectivity
+kubectl exec -it deployment/user-service -n scoutquest -- nslookup scoutquest-server</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Port forwarding for local debugging</h4>
+                            <pre><code class="language-bash"># Forward ScoutQuest server port
+kubectl port-forward service/scoutquest-server 8080:8080 -n scoutquest
+
+# Forward service port
+kubectl port-forward service/user-service 3001:3000 -n scoutquest</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <ul>
+                            <li>Set up CI/CD pipelines for automated deployment</li>
+                            <li>Implement <a href="monitoring.html">comprehensive monitoring</a></li>
+                            <li>Configure service mesh (Istio/Linkerd) for advanced traffic management</li>
+                            <li>Set up centralized logging with ELK stack</li>
+                            <li>Implement canary deployments</li>
+                        </ul>
+
+                        <div class="docs-navigation">
+                            <a href="rust-tutorial.html" class="btn btn--secondary">← Previous: Rust Service
+                                Tutorial</a>
+                            <a href="production.html" class="btn btn--primary">Next: Production Deployment →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+</body>
+
+</html>

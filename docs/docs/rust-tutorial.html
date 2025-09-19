@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Service Tutorial - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <img src="../assets/images/logo.svg" alt="ScoutQuest" class="nav__logo">
+                <span class="nav__title">ScoutQuest</span>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html" class="docs-nav__link">Building
+                                        Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html" class="docs-nav__link">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link docs-nav__link--active">Rust
+                                        Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link">Docker & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <h1>Building Rust Services with ScoutQuest</h1>
+                    <p class="docs-lead">
+                        Learn how to build high-performance Rust services with ScoutQuest service discovery.
+                        This tutorial covers service registration, discovery, and communication patterns using Rust.
+                    </p>
+
+                    <section class="docs-section">
+                        <h2>Prerequisites</h2>
+                        <ul>
+                            <li>Rust 1.70+ installed</li>
+                            <li>Cargo package manager</li>
+                            <li>ScoutQuest server running</li>
+                            <li>Basic knowledge of Rust and async programming</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Project Setup</h2>
+                        <p>Create a new Rust project and add ScoutQuest dependencies:</p>
+
+                        <div class="code-block">
+                            <h4>Create new project</h4>
+                            <pre><code class="language-bash">cargo new --bin rust-service-example
+cd rust-service-example</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Cargo.toml</h4>
+                            <pre><code class="language-toml">[package]
+name = "rust-service-example"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+axum = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+scoutquest-rust = "1.0"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+anyhow = "1.0"</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Basic Rust Service</h2>
+                        <p>Let's build a user service using Axum web framework:</p>
+
+                        <div class="code-block">
+                            <h4>src/main.rs</h4>
+                            <pre><code class="language-rust">use axum::{
+    extract::{Path, State},
+    http::StatusCode,
+    response::Json,
+    routing::{get, post},
+    Router,
+};
+use scoutquest_rust::ServiceDiscoveryClient;
+use serde::{Deserialize, Serialize};
+use std::{collections::HashMap, sync::Arc};
+use tokio::sync::Mutex;
+use tower_http::cors::CorsLayer;
+use tracing::{info, warn};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct User {
+    id: u32,
+    name: String,
+    email: String,
+}
+
+#[derive(Deserialize)]
+struct CreateUser {
+    name: String,
+    email: String,
+}
+
+type UserStore = Arc<Mutex<HashMap<u32, User>>>;
+
+#[derive(Clone)]
+struct AppState {
+    users: UserStore,
+    scout_client: ServiceDiscoveryClient,
+}
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // Initialize tracing
+    tracing_subscriber::init();
+
+    // Initialize ScoutQuest client
+    let scout_client = ServiceDiscoveryClient::new("http://localhost:8080", None)?;
+
+    // Create application state
+    let state = AppState {
+        users: Arc::new(Mutex::new(create_sample_users())),
+        scout_client,
+    };
+
+    // Build our application with routes
+    let app = Router::new()
+        .route("/health", get(health_check))
+        .route("/users", get(get_users).post(create_user))
+        .route("/users/:id", get(get_user))
+        .route("/users/:id/orders", get(get_user_orders))
+        .layer(CorsLayer::permissive())
+        .with_state(state.clone());
+
+    // Start the server
+    let port = std::env::var("PORT")
+        .unwrap_or_else(|_| "3001".to_string())
+        .parse::<u16>()?;
+
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
+
+    info!("🚀 User service starting on port {}", port);
+
+    // Register with ScoutQuest
+    tokio::spawn(register_service(state.scout_client.clone(), port));
+
+    // Start serving
+    axum::serve(listener, app).await?;
+
+    Ok(())
+}
+
+async fn register_service(client: ServiceDiscoveryClient, port: u16) {
+    match client.register_service(
+        "user-service",
+        "localhost",
+        port,
+        Some(vec!["api".to_string(), "users".to_string(), "v1".to_string()]),
+        Some([("version".to_string(), "1.0.0".to_string())].into()),
+    ).await {
+        Ok(_) => info!("✅ Registered with ScoutQuest"),
+        Err(e) => warn!("❌ Failed to register with ScoutQuest: {}", e),
+    }
+}
+
+fn create_sample_users() -> HashMap<u32, User> {
+    let mut users = HashMap::new();
+    users.insert(1, User {
+        id: 1,
+        name: "John Doe".to_string(),
+        email: "john@example.com".to_string(),
+    });
+    users.insert(2, User {
+        id: 2,
+        name: "Jane Smith".to_string(),
+        email: "jane@example.com".to_string(),
+    });
+    users
+}
+
+async fn health_check() -> Json<serde_json::Value> {
+    Json(serde_json::json!({
+        "status": "healthy",
+        "service": "user-service",
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    }))
+}
+
+async fn get_users(State(state): State<AppState>) -> Json<Vec<User>> {
+    let users = state.users.lock().await;
+    let user_list: Vec<User> = users.values().cloned().collect();
+    Json(user_list)
+}
+
+async fn get_user(
+    Path(id): Path<u32>,
+    State(state): State<AppState>,
+) -> Result<Json<User>, StatusCode> {
+    let users = state.users.lock().await;
+    match users.get(&id) {
+        Some(user) => Ok(Json(user.clone())),
+        None => Err(StatusCode::NOT_FOUND),
+    }
+}
+
+async fn create_user(
+    State(state): State<AppState>,
+    Json(payload): Json<CreateUser>,
+) -> Result<Json<User>, StatusCode> {
+    let mut users = state.users.lock().await;
+    let id = users.len() as u32 + 1;
+
+    let user = User {
+        id,
+        name: payload.name,
+        email: payload.email,
+    };
+
+    users.insert(id, user.clone());
+    Ok(Json(user))
+}
+
+async fn get_user_orders(
+    Path(user_id): Path<u32>,
+    State(state): State<AppState>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // Check if user exists
+    let users = state.users.lock().await;
+    if !users.contains_key(&user_id) {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    drop(users);
+
+    // Call order service using ScoutQuest
+    match state.scout_client.get::<serde_json::Value>(
+        "order-service",
+        &format!("/orders/user/{}", user_id)
+    ).await {
+        Ok(orders) => Ok(Json(orders)),
+        Err(_) => Err(StatusCode::SERVICE_UNAVAILABLE),
+    }
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Service Communication</h2>
+                        <p>Create a service that communicates with other services:</p>
+
+                        <div class="code-block">
+                            <h4>Order Service Example</h4>
+                            <pre><code class="language-rust">use axum::{extract::State, response::Json, routing::post, Router};
+use scoutquest_rust::ServiceDiscoveryClient;
+use serde::{Deserialize, Serialize};
+use std::sync::Arc;
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Order {
+    id: u32,
+    user_id: u32,
+    product_id: u32,
+    quantity: u32,
+    total: f64,
+    status: String,
+}
+
+#[derive(Deserialize)]
+struct CreateOrder {
+    user_id: u32,
+    product_id: u32,
+    quantity: u32,
+}
+
+#[derive(Deserialize)]
+struct User {
+    id: u32,
+    name: String,
+    email: String,
+}
+
+#[derive(Deserialize)]
+struct Product {
+    id: u32,
+    name: String,
+    price: f64,
+    stock: u32,
+}
+
+async fn create_order(
+    State(client): State<Arc<ServiceDiscoveryClient>>,
+    Json(payload): Json<CreateOrder>,
+) -> Result<Json<Order>, axum::http::StatusCode> {
+    // Verify user exists
+    let user: User = match client.get("user-service", &format!("/users/{}", payload.user_id)).await {
+        Ok(user) => user,
+        Err(_) => return Err(axum::http::StatusCode::BAD_REQUEST),
+    };
+
+    // Verify product exists and has sufficient stock
+    let product: Product = match client.get("product-service", &format!("/products/{}", payload.product_id)).await {
+        Ok(product) => product,
+        Err(_) => return Err(axum::http::StatusCode::BAD_REQUEST),
+    };
+
+    if product.stock < payload.quantity {
+        return Err(axum::http::StatusCode::BAD_REQUEST);
+    }
+
+    // Update product stock
+    let updated_stock = serde_json::json!({ "stock": product.stock - payload.quantity });
+    if let Err(_) = client.put("product-service", &format!("/products/{}/stock", payload.product_id), &updated_stock).await {
+        return Err(axum::http::StatusCode::INTERNAL_SERVER_ERROR);
+    }
+
+    // Create order
+    let order = Order {
+        id: 1, // In real app, use proper ID generation
+        user_id: payload.user_id,
+        product_id: payload.product_id,
+        quantity: payload.quantity,
+        total: product.price * payload.quantity as f64,
+        status: "confirmed".to_string(),
+    };
+
+    Ok(Json(order))
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Error Handling and Resilience</h2>
+                        <p>Implement proper error handling and resilience patterns:</p>
+
+                        <div class="code-block">
+                            <h4>Custom Error Types</h4>
+                            <pre><code class="language-rust">use axum::{http::StatusCode, response::{IntoResponse, Response}, Json};
+use serde_json::json;
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum ServiceError {
+    #[error("Service not found: {0}")]
+    ServiceNotFound(String),
+
+    #[error("Service unavailable: {0}")]
+    ServiceUnavailable(String),
+
+    #[error("Invalid request: {0}")]
+    BadRequest(String),
+
+    #[error("Internal error: {0}")]
+    Internal(String),
+}
+
+impl IntoResponse for ServiceError {
+    fn into_response(self) -> Response {
+        let (status, error_message) = match self {
+            ServiceError::ServiceNotFound(msg) => (StatusCode::NOT_FOUND, msg),
+            ServiceError::ServiceUnavailable(msg) => (StatusCode::SERVICE_UNAVAILABLE, msg),
+            ServiceError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
+            ServiceError::Internal(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
+        };
+
+        let body = Json(json!({
+            "error": error_message,
+            "status": status.as_u16()
+        }));
+
+        (status, body).into_response()
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Retry Logic</h4>
+                            <pre><code class="language-rust">use std::time::Duration;
+use tokio::time::sleep;
+
+pub struct RetryConfig {
+    pub max_attempts: u32,
+    pub base_delay: Duration,
+    pub max_delay: Duration,
+}
+
+impl Default for RetryConfig {
+    fn default() -> Self {
+        Self {
+            max_attempts: 3,
+            base_delay: Duration::from_millis(100),
+            max_delay: Duration::from_secs(5),
+        }
+    }
+}
+
+pub async fn with_retry<T, E, F, Fut>(
+    operation: F,
+    config: RetryConfig,
+) -> Result<T, E>
+where
+    F: Fn() -> Fut,
+    Fut: std::future::Future<Output = Result<T, E>>,
+    E: std::fmt::Debug,
+{
+    let mut attempt = 0;
+    let mut delay = config.base_delay;
+
+    loop {
+        attempt += 1;
+
+        match operation().await {
+            Ok(result) => return Ok(result),
+            Err(e) if attempt >= config.max_attempts => return Err(e),
+            Err(e) => {
+                tracing::warn!("Attempt {} failed: {:?}, retrying in {:?}", attempt, e, delay);
+                sleep(delay).await;
+                delay = std::cmp::min(delay * 2, config.max_delay);
+            }
+        }
+    }
+}
+
+// Usage example
+async fn call_service_with_retry(
+    client: &ServiceDiscoveryClient,
+    service: &str,
+    path: &str,
+) -> Result<serde_json::Value, ServiceError> {
+    with_retry(
+        || client.get::<serde_json::Value>(service, path),
+        RetryConfig::default(),
+    )
+    .await
+    .map_err(|e| ServiceError::ServiceUnavailable(e.to_string()))
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Health Monitoring</h2>
+                        <p>Implement comprehensive health checks:</p>
+
+                        <div class="code-block">
+                            <h4>Advanced Health Check</h4>
+                            <pre><code class="language-rust">use serde_json::{json, Value};
+use std::collections::HashMap;
+
+#[derive(Debug)]
+pub struct HealthCheck {
+    name: String,
+    check_fn: Box<dyn Fn() -> std::pin::Pin<Box<dyn std::future::Future<Output = bool> + Send>> + Send + Sync>,
+}
+
+impl HealthCheck {
+    pub fn new<F, Fut>(name: String, check_fn: F) -> Self
+    where
+        F: Fn() -> Fut + Send + Sync + 'static,
+        Fut: std::future::Future<Output = bool> + Send + 'static,
+    {
+        Self {
+            name,
+            check_fn: Box::new(move || Box::pin(check_fn())),
+        }
+    }
+}
+
+pub struct HealthChecker {
+    checks: Vec<HealthCheck>,
+}
+
+impl HealthChecker {
+    pub fn new() -> Self {
+        Self {
+            checks: Vec::new(),
+        }
+    }
+
+    pub fn add_check(&mut self, check: HealthCheck) {
+        self.checks.push(check);
+    }
+
+    pub async fn check_health(&self) -> Value {
+        let mut results = HashMap::new();
+        let mut overall_healthy = true;
+
+        for check in &self.checks {
+            let healthy = (check.check_fn)().await;
+            if !healthy {
+                overall_healthy = false;
+            }
+            results.insert(check.name.clone(), healthy);
+        }
+
+        json!({
+            "status": if overall_healthy { "healthy" } else { "unhealthy" },
+            "checks": results,
+            "timestamp": chrono::Utc::now().to_rfc3339()
+        })
+    }
+}
+
+// Usage
+async fn setup_health_checker(scout_client: ServiceDiscoveryClient) -> HealthChecker {
+    let mut checker = HealthChecker::new();
+
+    // Database connectivity check
+    checker.add_check(HealthCheck::new(
+        "database".to_string(),
+        || async {
+            // Check database connection
+            true // Placeholder
+        }
+    ));
+
+    // Service discovery check
+    checker.add_check(HealthCheck::new(
+        "service_discovery".to_string(),
+        move || {
+            let client = scout_client.clone();
+            async move {
+                client.list_services().await.is_ok()
+            }
+        }
+    ));
+
+    checker
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Testing Rust Services</h2>
+                        <p>Write comprehensive tests for your Rust services:</p>
+
+                        <div class="code-block">
+                            <h4>tests/integration_tests.rs</h4>
+                            <pre><code class="language-rust">use axum::{body::Body, http::{Request, StatusCode}};
+use scoutquest_rust::ServiceDiscoveryClient;
+use serde_json::json;
+use tower::ServiceExt;
+
+#[tokio::test]
+async fn test_user_service_integration() {
+    // Setup test environment
+    let scout_client = ServiceDiscoveryClient::new("http://localhost:8080", None)
+        .expect("Failed to create ScoutQuest client");
+
+    let app_state = AppState {
+        users: Arc::new(Mutex::new(create_sample_users())),
+        scout_client,
+    };
+
+    let app = create_app(app_state);
+
+    // Test health check
+    let response = app
+        .clone()
+        .oneshot(Request::builder().uri("/health").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+
+    // Test get users
+    let response = app
+        .clone()
+        .oneshot(Request::builder().uri("/users").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+
+    // Test create user
+    let new_user = json!({
+        "name": "Test User",
+        "email": "test@example.com"
+    });
+
+    let response = app
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri("/users")
+                .header("content-type", "application/json")
+                .body(Body::from(serde_json::to_vec(&new_user).unwrap()))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+}
+
+#[tokio::test]
+async fn test_service_discovery() {
+    let client = ServiceDiscoveryClient::new("http://localhost:8080", None)
+        .expect("Failed to create client");
+
+    // Register test service
+    let result = client
+        .register_service(
+            "test-service",
+            "localhost",
+            3999,
+            Some(vec!["test".to_string()]),
+            None,
+        )
+        .await;
+
+    assert!(result.is_ok());
+
+    // List services
+    let services = client.list_services().await.expect("Failed to list services");
+    assert!(services.iter().any(|s| s.name == "test-service"));
+
+    // Cleanup
+    let _ = client.deregister_service("test-service").await;
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Running the Service</h2>
+                        <p>Build and run your Rust service:</p>
+
+                        <div class="code-block">
+                            <h4>Development</h4>
+                            <pre><code class="language-bash"># Run in development mode with auto-reload
+cargo install cargo-watch
+cargo watch -x run
+
+# Or just run once
+cargo run</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Production Build</h4>
+                            <pre><code class="language-bash"># Build optimized release
+cargo build --release
+
+# Run the optimized binary
+./target/release/rust-service-example</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Environment Configuration</h4>
+                            <pre><code class="language-bash"># Set environment variables
+export SCOUT_URL=http://localhost:8080
+export PORT=3001
+export RUST_LOG=info
+
+cargo run</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Performance Considerations</h2>
+                        <ul>
+                            <li><strong>Connection Pooling:</strong> Reuse HTTP connections for service calls</li>
+                            <li><strong>Async/Await:</strong> Use Tokio for high-concurrency applications</li>
+                            <li><strong>Memory Management:</strong> Leverage Rust's zero-cost abstractions</li>
+                            <li><strong>Caching:</strong> Cache service discovery results when appropriate</li>
+                            <li><strong>Metrics:</strong> Use libraries like `metrics` for observability</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <ul>
+                            <li>Deploy your service with <a href="docker-tutorial.html">Docker containers</a></li>
+                            <li>Set up <a href="monitoring.html">monitoring and observability</a></li>
+                            <li>Implement <a href="health-checking.html">advanced health checking</a></li>
+                            <li>Explore the full <a href="microservices-tutorial.html">microservices tutorial</a></li>
+                        </ul>
+
+                        <div class="docs-navigation">
+                            <a href="express-tutorial.html" class="btn btn--secondary">← Previous: Express.js
+                                Integration</a>
+                            <a href="docker-tutorial.html" class="btn btn--primary">Next: Docker & Kubernetes →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#gradient)" stroke="white" stroke-width="4"/>
+
+  <!-- Radar/Scout icon -->
+  <g transform="translate(32,32)">
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="2" fill="white"/>
+
+    <!-- Radar rings -->
+    <circle cx="0" cy="0" r="8" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+    <circle cx="0" cy="0" r="14" fill="none" stroke="white" stroke-width="1.5" opacity="0.5"/>
+    <circle cx="0" cy="0" r="20" fill="none" stroke="white" stroke-width="1.5" opacity="0.3"/>
+
+    <!-- Sweep line -->
+    <line x1="0" y1="0" x2="0" y2="-18" stroke="white" stroke-width="2" stroke-linecap="round">
+      <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="rotate"
+        from="0 0 0"
+        to="360 0 0"
+        dur="4s"
+        repeatCount="indefinite"/>
+    </line>
+
+    <!-- Service discovery points -->
+    <circle cx="6" cy="-10" r="1.5" fill="white" opacity="0.9"/>
+    <circle cx="-8" cy="12" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="12" cy="8" r="1.5" fill="white" opacity="0.7"/>
+    <circle cx="-14" cy="-6" r="1.5" fill="white" opacity="0.6"/>
+  </g>
+</svg>
