@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
-    
+
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
@@ -28,18 +28,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // Smooth Scrolling for Anchor Links
 document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('a[href^="#"]');
-    
+
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-            
+
             if (targetSection) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = targetSection.offsetTop - headerHeight - 20;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -53,22 +53,22 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
-    
+
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const targetTab = this.getAttribute('data-tab');
-            
+
             // Find the parent step to scope tab switching
             const parentStep = this.closest('.step__content');
             if (!parentStep) return;
-            
+
             const stepTabButtons = parentStep.querySelectorAll('.tab-btn');
             const stepTabContents = parentStep.querySelectorAll('.tab-content');
-            
+
             // Remove active class from all tab buttons and contents in this step
             stepTabButtons.forEach(btn => btn.classList.remove('active'));
             stepTabContents.forEach(content => content.classList.remove('active'));
-            
+
             // Add active class to clicked button and corresponding content
             this.classList.add('active');
             const targetContent = parentStep.querySelector(`#${targetTab}`);
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Header Background on Scroll
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
-    
+
     function updateHeader() {
         if (window.scrollY > 100) {
             header.style.background = 'rgba(255, 255, 255, 0.98)';
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             header.style.boxShadow = 'none';
         }
     }
-    
+
     window.addEventListener('scroll', updateHeader);
     updateHeader(); // Initial call
 });
@@ -101,18 +101,18 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav__link[href^="#"]');
-    
+
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const currentSection = entry.target.getAttribute('id');
-                    
+
                     // Remove active class from all nav links
                     navLinks.forEach(link => {
                         link.classList.remove('active');
                     });
-                    
+
                     // Add active class to current section's nav link
                     const activeLink = document.querySelector(`.nav__link[href="#${currentSection}"]`);
                     if (activeLink) {
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rootMargin: `-${document.querySelector('.header').offsetHeight}px 0px 0px 0px`
         }
     );
-    
+
     sections.forEach(section => {
         observer.observe(section);
     });
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Animate Elements on Scroll
 document.addEventListener('DOMContentLoaded', function() {
     const animateElements = document.querySelectorAll('.feature-card, .example-card, .doc-category, .step');
-    
+
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rootMargin: '0px 0px -50px 0px'
         }
     );
-    
+
     // Set initial state and observe
     animateElements.forEach((element, index) => {
         element.style.opacity = '0';
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Copy Code Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const codeBlocks = document.querySelectorAll('pre code');
-    
+
     codeBlocks.forEach(block => {
         const pre = block.parentElement;
         const button = document.createElement('button');
@@ -191,15 +191,15 @@ document.addEventListener('DOMContentLoaded', function() {
             gap: 0.25rem;
             transition: background 0.2s ease;
         `;
-        
+
         button.addEventListener('mouseenter', () => {
             button.style.background = 'rgba(255, 255, 255, 0.2)';
         });
-        
+
         button.addEventListener('mouseleave', () => {
             button.style.background = 'rgba(255, 255, 255, 0.1)';
         });
-        
+
         button.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(block.textContent);
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Failed to copy code:', err);
             }
         });
-        
+
         // Make pre relative positioned for absolute button
         pre.style.position = 'relative';
         pre.appendChild(button);
@@ -239,24 +239,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 navMenu.classList.remove('active');
             }
         }
-        
+
         // Keyboard navigation for tabs
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             const focusedElement = document.activeElement;
             if (focusedElement && focusedElement.classList.contains('tab-btn')) {
                 const parentStep = focusedElement.closest('.step__content');
                 if (!parentStep) return;
-                
+
                 const tabButtons = Array.from(parentStep.querySelectorAll('.tab-btn'));
                 const currentIndex = tabButtons.indexOf(focusedElement);
-                
+
                 let nextIndex;
                 if (e.key === 'ArrowLeft') {
                     nextIndex = currentIndex > 0 ? currentIndex - 1 : tabButtons.length - 1;
                 } else {
                     nextIndex = currentIndex < tabButtons.length - 1 ? currentIndex + 1 : 0;
                 }
-                
+
                 tabButtons[nextIndex].focus();
                 tabButtons[nextIndex].click();
                 e.preventDefault();
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-        
+
         const lazyImages = document.querySelectorAll('img[data-src]');
         lazyImages.forEach(img => imageObserver.observe(img));
     }
@@ -291,26 +291,26 @@ document.addEventListener('DOMContentLoaded', function() {
 function initSearch() {
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
-    
+
     if (!searchInput || !searchResults) return;
-    
+
     let searchTimeout;
-    
+
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
         const query = this.value.trim();
-        
+
         if (query.length < 2) {
             searchResults.innerHTML = '';
             searchResults.style.display = 'none';
             return;
         }
-        
+
         searchTimeout = setTimeout(() => {
             performSearch(query);
         }, 300);
     });
-    
+
     function performSearch(query) {
         // This would be replaced with actual search logic
         // For now, just a placeholder
@@ -331,14 +331,14 @@ document.addEventListener('DOMContentLoaded', initSearch);
 function initThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
     if (!themeToggle) return;
-    
+
     const currentTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', currentTheme);
-    
+
     themeToggle.addEventListener('click', function() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
+
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
     });

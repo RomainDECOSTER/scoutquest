@@ -35,7 +35,7 @@ use scoutquest_rust::*;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create client
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Register a service
     let options = ServiceRegistrationOptions::new()
         .with_tags(vec!["api".to_string(), "v1".to_string()])
@@ -44,15 +44,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             metadata.insert("version".to_string(), "1.2.3".to_string());
             metadata
         });
-    
+
     client.register_service("user-service", "localhost", 3000, Some(options)).await?;
-    
+
     // Discover services
     let instances = client.discover_service("payment-service", None).await?;
-    
+
     // Make HTTP calls to discovered services
     let response: serde_json::Value = client.get("payment-service", "/api/balance").await?;
-    
+
     // Graceful shutdown
     client.deregister().await?;
     Ok(())
@@ -149,7 +149,7 @@ let client = ServiceDiscoveryClient::with_config(
 See the [`examples/`](examples/) directory for complete examples:
 
 - **Basic Usage**: [`examples/basic_usage.rs`](examples/basic_usage.rs)
-- **HTTP Client**: [`examples/http_client.rs`](examples/http_client.rs)  
+- **HTTP Client**: [`examples/http_client.rs`](examples/http_client.rs)
 - **Load Balancing**: [`examples/load_balancing.rs`](examples/load_balancing.rs)
 
 Run examples with:
@@ -186,7 +186,7 @@ Run the test suite:
 # Unit tests
 cargo test
 
-# Integration tests  
+# Integration tests
 cargo test --test integration_tests
 
 # All tests with output

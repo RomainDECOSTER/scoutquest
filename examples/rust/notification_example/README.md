@@ -80,7 +80,7 @@ use notification_example::{
 async fn main() -> anyhow::Result<()> {
     // Create a client
     let client = NotificationClient::new("http://localhost:8080", None)?;
-    
+
     // Create a notification
     let request = CreateNotificationRequest {
         recipient: "user@example.com".to_string(),
@@ -91,10 +91,10 @@ async fn main() -> anyhow::Result<()> {
         scheduled_at: None,
         metadata: None,
     };
-    
+
     let notification = client.create_notification(request).await?;
     println!("Notification created: {}", notification.id);
-    
+
     Ok(())
 }
 ```

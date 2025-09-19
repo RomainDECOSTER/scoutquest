@@ -1,5 +1,5 @@
 //! # Shared types for the notification service
-//! 
+//!
 //! This module contains all data types shared between client and server.
 
 use chrono::{DateTime, Utc};

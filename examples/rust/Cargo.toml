@@ -3,4 +3,4 @@ members = [
     "axum_example",
     "notification_example",
 ]
-resolver = "2" 
+resolver = "2"

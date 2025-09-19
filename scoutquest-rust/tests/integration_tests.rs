@@ -140,19 +140,19 @@ mod tests {
         Mock::given(method("GET"))
             .and(path("/api/discovery/filtered-service"))
             .respond_with(ResponseTemplate::new(200).set_body_json(json!(
-                {
-                    "id": "healthy-1",
-                    "service_name": "filtered-service",
-                    "host": "localhost",
-                    "port": 5000,
-                    "secure": false,
-                    "status": "Up",
-                    "metadata": {},
-                    "tags": ["production", "api"],
-                    "registered_at": "2024-01-01T00:00:00Z",
-                    "last_heartbeat": "2024-01-01T00:00:00Z",
-                    "last_status_change": "2024-01-01T00:00:00Z"
-                })))
+            {
+                "id": "healthy-1",
+                "service_name": "filtered-service",
+                "host": "localhost",
+                "port": 5000,
+                "secure": false,
+                "status": "Up",
+                "metadata": {},
+                "tags": ["production", "api"],
+                "registered_at": "2024-01-01T00:00:00Z",
+                "last_heartbeat": "2024-01-01T00:00:00Z",
+                "last_status_change": "2024-01-01T00:00:00Z"
+            })))
             .mount(&mock_server)
             .await;
 
@@ -275,9 +275,7 @@ mod tests {
 
         // Mock deregistration
         Mock::given(method("DELETE"))
-            .and(path(
-                "/api/services/test-service/instances/test-deregister",
-            ))
+            .and(path("/api/services/test-service/instances/test-deregister"))
             .respond_with(ResponseTemplate::new(200))
             .mount(&mock_server)
             .await;

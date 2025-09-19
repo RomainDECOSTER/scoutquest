@@ -7,7 +7,7 @@ import { ScoutQuestClient } from 'scoutquest-js';
 async function simpleExample() {
   // Initialize the client
   const client = new ScoutQuestClient('http://localhost:8080');
-  
+
   try {
     console.log('🚀 ScoutQuest Simple Example');
     console.log('============================\n');
@@ -15,8 +15,8 @@ async function simpleExample() {
     // 1. Register a service
     console.log('📝 Registering service...');
     const instance = await client.registerService(
-      'simple-example-service', 
-      'localhost', 
+      'simple-example-service',
+      'localhost',
       3000,
       {
         tags: ['example', 'simple'],

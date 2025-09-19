@@ -242,9 +242,9 @@ curl -X POST http://localhost:8080/api/services \
                                     </ul>
                                     <div class="code-block">
                                         <pre><code>// Force fresh discovery (bypass cache)
-const options = { 
+const options = {
   bypassCache: true,
-  loadBalancingStrategy: 'round_robin' 
+  loadBalancingStrategy: 'round_robin'
 };
 const instance = await client.discoverServiceWithOptions('user-service', options);</code></pre>
                                     </div>
@@ -461,8 +461,8 @@ SELECT * FROM services;
 SELECT * FROM service_instances;
 
 # Check health check status
-SELECT si.*, hc.status, hc.last_check 
-FROM service_instances si 
+SELECT si.*, hc.status, hc.last_check
+FROM service_instances si
 LEFT JOIN health_checks hc ON si.id = hc.service_instance_id;</code></pre>
                                 </div>
 
@@ -570,7 +570,7 @@ Content-Type: application/json
 app.get('/health', async (req, res) => {
   const checks = {};
   let healthy = true;
-  
+
   // Database check
   try {
     await db.query('SELECT 1');
@@ -579,7 +579,7 @@ app.get('/health', async (req, res) => {
     checks.database = 'unhealthy';
     healthy = false;
   }
-  
+
   // Redis check
   try {
     await redis.ping();
@@ -588,7 +588,7 @@ app.get('/health', async (req, res) => {
     checks.redis = 'unhealthy';
     healthy = false;
   }
-  
+
   const status = healthy ? 200 : 503;
   res.status(status).json({
     status: healthy ? 'healthy' : 'unhealthy',
@@ -619,7 +619,7 @@ async fn advanced_health_check(
 ) -> Result<Json<Value>, StatusCode> {
     let mut checks = serde_json::Map::new();
     let mut healthy = true;
-    
+
     // Database check
     match sqlx::query("SELECT 1").fetch_one(&db_pool).await {
         Ok(_) => checks.insert("database".to_string(), json!("healthy")),
@@ -628,7 +628,7 @@ async fn advanced_health_check(
             healthy = false;
         }
     };
-    
+
     // Redis check
     let redis_status = match redis_pool.get() {
         Ok(mut conn) => {
@@ -640,9 +640,9 @@ async fn advanced_health_check(
         Err(_) => { healthy = false; "unhealthy" }
     };
     checks.insert("redis".to_string(), json!(redis_status));
-    
+
     let status_code = if healthy { StatusCode::OK } else { StatusCode::SERVICE_UNAVAILABLE };
-    
+
     Ok(Json(json!({
         "status": if healthy { "healthy" } else { "unhealthy" },
         "checks": checks,

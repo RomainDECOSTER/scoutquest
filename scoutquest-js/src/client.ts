@@ -18,25 +18,25 @@ import { ScoutQuestError } from './errors';
 
 /**
  * ScoutQuest Service Discovery Client for Node.js
- * 
+ *
  * Provides service registration, discovery, load balancing, and HTTP client functionality
  * for microservices using the ScoutQuest service discovery system.
- * 
+ *
  * @example
  * ```typescript
  * import { ScoutQuestClient } from '@scoutquest/sdk';
- * 
+ *
  * const client = new ScoutQuestClient('http://localhost:8080');
- * 
+ *
  * // Register a service
  * await client.registerService('my-service', 'localhost', 3000, {
  *   tags: ['api', 'v1'],
  *   metadata: { version: '1.0.0' }
  * });
- * 
+ *
  * // Discover services
  * const instances = await client.discoverService('other-service');
- * 
+ *
  * // Make HTTP calls to discovered services
  * const response = await client.get('other-service', '/api/users');
  * ```
@@ -51,15 +51,15 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Creates a new ScoutQuest client instance.
-   * 
+   *
    * @param discoveryUrl - Base URL of the ScoutQuest discovery server
    * @param config - Optional client configuration
    */
   constructor(discoveryUrl: string, config: ClientConfig = {}) {
     super();
-    
+
     this.discoveryUrl = discoveryUrl.replace(/\/+$/, ''); // Remove trailing slashes
-    
+
     // Set default configuration
     this.config = {
       timeout: config.timeout ?? 30000,
@@ -90,7 +90,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Registers a service instance with the discovery server.
-   * 
+   *
    * @param serviceName - Name of the service
    * @param host - Host address
    * @param port - Port number
@@ -152,7 +152,9 @@ export class ScoutQuestClient extends EventEmitter {
     try {
       await this.retryRequest(() =>
         this.httpClient.delete(
-          `/api/services/${this.registeredInstance!.service_name}/instances/${this.registeredInstance!.id}`
+          `/api/services/${this.registeredInstance!.service_name}/instances/${
+            this.registeredInstance!.id
+          }`
         )
       );
 
@@ -164,7 +166,9 @@ export class ScoutQuestClient extends EventEmitter {
         throw error;
       }
       throw new ScoutQuestError(
-        `Failed to deregister service: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        `Failed to deregister service: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
         'DEREGISTRATION_FAILED'
       );
     }
@@ -173,7 +177,7 @@ export class ScoutQuestClient extends EventEmitter {
   /**
    * Discovers and selects a service instance. The server handles load balancing
    * and returns the best available instance.
-   * 
+   *
    * @param serviceName - Name of the service to discover
    * @param query - Optional discovery parameters
    * @returns Promise resolving to a selected service instance
@@ -200,7 +204,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Lists all instances of a service (for debugging/monitoring purposes).
-   * 
+   *
    * @param serviceName - Name of the service
    * @param query - Optional discovery parameters
    * @returns Promise resolving to all service instances
@@ -211,9 +215,12 @@ export class ScoutQuestClient extends EventEmitter {
   ): Promise<ServiceInstance[]> {
     try {
       const response = await this.retryRequest(() =>
-        this.httpClient.get<DiscoveryResponse>(`/api/services/${serviceName}/instances`, {
-          params: query,
-        })
+        this.httpClient.get<DiscoveryResponse>(
+          `/api/services/${serviceName}/instances`,
+          {
+            params: query,
+          }
+        )
       );
 
       return response.data.instances;
@@ -223,9 +230,9 @@ export class ScoutQuestClient extends EventEmitter {
       }
       throw error;
     }
-  }  /**
+  } /**
    * Gets a specific service by name.
-   * 
+   *
    * @param serviceName - Name of the service
    * @returns Promise resolving to the service information
    */
@@ -246,7 +253,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Lists all registered services.
-   * 
+   *
    * @returns Promise resolving to an array of all services
    */
   async listServices(): Promise<Service[]> {
@@ -259,7 +266,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Deletes a service and all its instances.
-   * 
+   *
    * @param serviceName - Name of the service to delete
    */
   async deleteService(serviceName: string): Promise<void> {
@@ -277,7 +284,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Updates the status of the registered service instance.
-   * 
+   *
    * @param status - New status
    */
   async updateStatus(status: InstanceStatus): Promise<void> {
@@ -292,7 +299,9 @@ export class ScoutQuestClient extends EventEmitter {
 
     await this.retryRequest(() =>
       this.httpClient.put(
-        `/api/services/${this.registeredInstance!.service_name}/instances/${this.registeredInstance!.id}/status`,
+        `/api/services/${this.registeredInstance!.service_name}/instances/${
+          this.registeredInstance!.id
+        }/status`,
         request
       )
     );
@@ -314,7 +323,9 @@ export class ScoutQuestClient extends EventEmitter {
 
     await this.retryRequest(() =>
       this.httpClient.post(
-        `/api/services/${this.registeredInstance!.service_name}/instances/${this.registeredInstance!.id}/heartbeat`
+        `/api/services/${this.registeredInstance!.service_name}/instances/${
+          this.registeredInstance!.id
+        }/heartbeat`
       )
     );
 
@@ -323,7 +334,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Gets registry statistics.
-   * 
+   *
    * @returns Promise resolving to registry stats
    */
   async getStats(): Promise<RegistryStats> {
@@ -336,16 +347,15 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Makes a GET request to a discovered service.
-   * 
+   *
    * @param serviceName - Name of the target service
    * @param path - API path
    * @returns Promise resolving to the response data
    */
-  async get<T = any>(
-    serviceName: string,
-    path: string
-  ): Promise<T> {
-    const instance = await this.discoverService(serviceName, { healthy_only: true });
+  async get<T = any>(serviceName: string, path: string): Promise<T> {
+    const instance = await this.discoverService(serviceName, {
+      healthy_only: true,
+    });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -357,7 +367,7 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Makes a POST request to a discovered service.
-   * 
+   *
    * @param serviceName - Name of the target service
    * @param path - API path
    * @param data - Request body data
@@ -368,7 +378,9 @@ export class ScoutQuestClient extends EventEmitter {
     path: string,
     data?: any
   ): Promise<T> {
-    const instance = await this.discoverService(serviceName, { healthy_only: true });
+    const instance = await this.discoverService(serviceName, {
+      healthy_only: true,
+    });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -376,9 +388,9 @@ export class ScoutQuestClient extends EventEmitter {
     );
 
     return response.data;
-  }  /**
+  } /**
    * Makes a PUT request to a discovered service.
-   * 
+   *
    * @param serviceName - Name of the target service
    * @param path - API path
    * @param data - Request body data
@@ -389,7 +401,9 @@ export class ScoutQuestClient extends EventEmitter {
     path: string,
     data?: any
   ): Promise<T> {
-    const instance = await this.discoverService(serviceName, { healthy_only: true });
+    const instance = await this.discoverService(serviceName, {
+      healthy_only: true,
+    });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -401,16 +415,15 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Makes a DELETE request to a discovered service.
-   * 
+   *
    * @param serviceName - Name of the target service
    * @param path - API path
    * @returns Promise resolving to the response data
    */
-  async delete<T = any>(
-    serviceName: string,
-    path: string
-  ): Promise<T> {
-    const instance = await this.discoverService(serviceName, { healthy_only: true });
+  async delete<T = any>(serviceName: string, path: string): Promise<T> {
+    const instance = await this.discoverService(serviceName, {
+      healthy_only: true,
+    });
     const url = this.buildUrl(instance, path);
 
     const response = await this.retryRequest(() =>
@@ -422,48 +435,53 @@ export class ScoutQuestClient extends EventEmitter {
 
   /**
    * Connects to the event stream via WebSocket to receive real-time service events.
-   * 
+   *
    * @param serviceName - Optional service name to watch specific service events
    */
   connectEventStream(serviceName?: string): void {
     const wsUrl = this.discoveryUrl.replace(/^http/, 'ws') + '/ws';
-    
+
     this.websocket = new WebSocket(wsUrl);
-    
+
     this.websocket.on('open', () => {
       this.emit('connected');
-      
+
       // Subscribe to specific service if provided
       if (serviceName) {
-        this.websocket?.send(JSON.stringify({
-          type: 'subscribe',
-          service: serviceName,
-        }));
+        this.websocket?.send(
+          JSON.stringify({
+            type: 'subscribe',
+            service: serviceName,
+          })
+        );
       }
     });
-    
+
     this.websocket.on('message', (data: any) => {
       try {
         const event: ServiceEvent = JSON.parse(data.toString());
         this.emit('serviceEvent', event);
         this.emit(event.event_type, event);
       } catch (error) {
-        this.emit('error', new ScoutQuestError(
-          'Failed to parse WebSocket message',
-          'WEBSOCKET_PARSE_ERROR',
-          undefined,
-          error
-        ));
+        this.emit(
+          'error',
+          new ScoutQuestError(
+            'Failed to parse WebSocket message',
+            'WEBSOCKET_PARSE_ERROR',
+            undefined,
+            error
+          )
+        );
       }
     });
-    
+
     this.websocket.on('error', (error: any) => {
-      this.emit('error', ScoutQuestError.network(
-        'WebSocket connection error',
-        error
-      ));
+      this.emit(
+        'error',
+        ScoutQuestError.network('WebSocket connection error', error)
+      );
     });
-    
+
     this.websocket.on('close', () => {
       this.emit('disconnected');
     });
@@ -511,7 +529,7 @@ export class ScoutQuestClient extends EventEmitter {
    */
   private startHeartbeat(interval: number): void {
     this.stopHeartbeat();
-    
+
     this.heartbeatInterval = setInterval(async () => {
       try {
         await this.sendHeartbeat();
@@ -577,7 +595,11 @@ export class ScoutQuestClient extends EventEmitter {
 
         // Don't retry on certain error types
         if (error instanceof ScoutQuestError) {
-          if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
+          if (
+            error.statusCode &&
+            error.statusCode >= 400 &&
+            error.statusCode < 500
+          ) {
             throw error; // Client errors shouldn't be retried
           }
         }
@@ -589,7 +611,7 @@ export class ScoutQuestClient extends EventEmitter {
 
         // Wait before retrying with exponential backoff
         const delay = this.config.retry_delay * Math.pow(2, attempt);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
 

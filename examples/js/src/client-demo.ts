@@ -22,7 +22,7 @@ class ClientDemo {
 
   async demonstrateServiceDiscovery(): Promise<void> {
     console.log('🔍 === Service Discovery Demo ===');
-    
+
     try {
       // List all available services
       console.log('\n📋 Listing all services:');
@@ -36,7 +36,7 @@ class ClientDemo {
       if (services.length > 0) {
         const serviceName = services[0].name;
         console.log(`\n🎯 Discovering service: ${serviceName}`);
-        
+
         try {
           const instance = await this.client.discoverService(serviceName);
           console.log('Service instance found:');
@@ -150,14 +150,14 @@ class ClientDemo {
       // Get all services and filter by tags
       console.log('\n🔍 Getting all services and filtering by tags...');
       const allServices = await this.client.listServices();
-      
+
       const tags = ['api', 'web', 'database', 'cache'];
 
       for (const tag of tags) {
-        const servicesWithTag = allServices.filter((service: any) => 
+        const servicesWithTag = allServices.filter((service: any) =>
           service.tags.includes(tag)
         );
-        
+
         if (servicesWithTag.length > 0) {
           console.log(`✅ Found ${servicesWithTag.length} service(s) with tag '${tag}':`);
           servicesWithTag.forEach((service: any) => {

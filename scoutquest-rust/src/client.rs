@@ -23,13 +23,13 @@ use url::Url;
 /// #[tokio::main]
 /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ///     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-///     
+///
 ///     // Register a service
 ///     client.register_service("my-service", "localhost", 3000, None).await?;
-///     
+///
 ///     // Discover services
 ///     let instance = client.discover_service("other-service", None).await?;
-///     
+///
 ///     Ok(())
 /// }
 /// ```
@@ -415,13 +415,8 @@ impl ServiceDiscoveryClient {
     where
         T: serde::de::DeserializeOwned,
     {
-        self.call_service(
-            service_name,
-            path,
-            Method::GET,
-            None,
-        )
-        .await
+        self.call_service(service_name, path, Method::GET, None)
+            .await
     }
 
     /// Makes an HTTP POST request to a discovered service.
@@ -439,13 +434,8 @@ impl ServiceDiscoveryClient {
     where
         T: serde::de::DeserializeOwned,
     {
-        self.call_service(
-            service_name,
-            path,
-            Method::POST,
-            Some(body),
-        )
-        .await
+        self.call_service(service_name, path, Method::POST, Some(body))
+            .await
     }
 
     /// Makes an HTTP PUT request to a discovered service.
@@ -463,13 +453,8 @@ impl ServiceDiscoveryClient {
     where
         T: serde::de::DeserializeOwned,
     {
-        self.call_service(
-            service_name,
-            path,
-            Method::PUT,
-            Some(body),
-        )
-        .await
+        self.call_service(service_name, path, Method::PUT, Some(body))
+            .await
     }
 
     /// Makes an HTTP DELETE request to a discovered service.
@@ -484,12 +469,7 @@ impl ServiceDiscoveryClient {
     /// Returns an empty result on success.
     pub async fn delete(&self, service_name: &str, path: &str) -> Result<()> {
         let _: Value = self
-            .call_service(
-                service_name,
-                path,
-                Method::DELETE,
-                None,
-            )
+            .call_service(service_name, path, Method::DELETE, None)
             .await?;
         Ok(())
     }

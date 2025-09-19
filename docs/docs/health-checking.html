@@ -173,7 +173,7 @@ app.get('/health', (req, res) => {
 app.get('/ready', (req, res) => {
     // Check if service is ready to serve requests
     const isReady = checkDatabaseConnection() && checkExternalAPIs();
-    
+
     if (isReady) {
         res.status(200).json({
             status: 'ready',
@@ -192,7 +192,7 @@ async function startServer() {
     const port = 3000;
     app.listen(port, async () => {
         console.log(`Server running on port ${port}`);
-        
+
         // Register with ScoutQuest
         await client.registerService('user-service', 'localhost', port, {
             version: '1.0.0',
@@ -224,15 +224,15 @@ use tokio::net::TcpListener;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Arc::new(ServiceDiscoveryClient::new("http://localhost:8080")?);
-    
+
     let app = Router::new()
         .route("/health", get(health_check))
         .route("/ready", get(readiness_check))
         .layer(Extension(client.clone()));
-    
+
     let listener = TcpListener::bind("0.0.0.0:3000").await?;
     println!("Server running on port 3000");
-    
+
     // Register service with health check
     client.register_service_with_health(
         "user-service",
@@ -241,7 +241,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some([("version".to_string(), "1.0.0".to_string())].into()),
         "http://localhost:3000/health"
     ).await?;
-    
+
     axum::serve(listener, app).await?;
     Ok(())
 }
@@ -262,7 +262,7 @@ async fn readiness_check() -> Result<Json<Value>, StatusCode> {
     // Check dependencies
     let database_ready = check_database().await;
     let cache_ready = check_cache().await;
-    
+
     if database_ready && cache_ready {
         Ok(Json(json!({
             "status": "ready",
@@ -279,7 +279,7 @@ async fn check_database() -> bool {
 }
 
 async fn check_cache() -> bool {
-    // Implement cache connectivity check  
+    // Implement cache connectivity check
     true
 }</code></pre>
                                     </div>
@@ -295,7 +295,7 @@ async fn check_cache() -> bool {
 app.get('/health', async (req, res) => {
     const healthChecks = {};
     let overallHealthy = true;
-    
+
     // Database health check
     try {
         await db.raw('SELECT 1');
@@ -310,7 +310,7 @@ app.get('/health', async (req, res) => {
         };
         overallHealthy = false;
     }
-    
+
     // Redis health check
     try {
         await redis.ping();
@@ -325,7 +325,7 @@ app.get('/health', async (req, res) => {
         };
         overallHealthy = false;
     }
-    
+
     // External API health check
     try {
         const response = await fetch('https://api.external-service.com/health', {
@@ -343,7 +343,7 @@ app.get('/health', async (req, res) => {
         // External API failure doesn't mark service as unhealthy
         // overallHealthy = false;
     }
-    
+
     // Application-specific checks
     healthChecks.application = {
         status: 'healthy',
@@ -352,7 +352,7 @@ app.get('/health', async (req, res) => {
         activeConnections: getActiveConnectionCount(),
         queueSize: getJobQueueSize()
     };
-    
+
     const statusCode = overallHealthy ? 200 : 503;
     res.status(statusCode).json({
         status: overallHealthy ? 'healthy' : 'unhealthy',
@@ -372,18 +372,18 @@ app.get('/health', async (req, res) => {
         this.retries = options.retries || 3;
         this.retryDelay = options.retryDelay || 1000;
     }
-    
+
     async checkWithRetry(checkFunction, componentName) {
         for (let attempt = 1; attempt <= this.retries; attempt++) {
             try {
                 const startTime = Date.now();
                 const result = await Promise.race([
                     checkFunction(),
-                    new Promise((_, reject) => 
+                    new Promise((_, reject) =>
                         setTimeout(() => reject(new Error('Timeout')), this.timeout)
                     )
                 ]);
-                
+
                 return {
                     status: 'healthy',
                     responseTime: Date.now() - startTime,
@@ -397,20 +397,20 @@ app.get('/health', async (req, res) => {
                         attempts: attempt
                     };
                 }
-                
+
                 // Wait before retry
                 await new Promise(resolve => setTimeout(resolve, this.retryDelay));
             }
         }
     }
-    
+
     async checkDatabase() {
         return this.checkWithRetry(
             () => db.raw('SELECT 1'),
             'database'
         );
     }
-    
+
     async checkRedis() {
         return this.checkWithRetry(
             () => redis.ping(),
@@ -428,19 +428,19 @@ const healthChecker = new HealthChecker({
 app.get('/health', async (req, res) => {
     const checks = {};
     let overallHealthy = true;
-    
+
     const [databaseCheck, cacheCheck] = await Promise.all([
         healthChecker.checkDatabase(),
         healthChecker.checkRedis()
     ]);
-    
+
     checks.database = databaseCheck;
     checks.cache = cacheCheck;
-    
+
     if (databaseCheck.status !== 'healthy' || cacheCheck.status !== 'healthy') {
         overallHealthy = false;
     }
-    
+
     res.status(overallHealthy ? 200 : 503).json({
         status: overallHealthy ? 'healthy' : 'unhealthy',
         timestamp: new Date().toISOString(),
@@ -517,13 +517,13 @@ await client.registerService('api-service', 'localhost', 3000, {
             'Authorization': 'Bearer health-check-token'
         }
     },
-    
+
     // Additional endpoints
     readinessCheck: {
         url: 'http://localhost:3000/ready',
         timeout: 3000
     },
-    
+
     startupCheck: {
         url: 'http://localhost:3000/startup',
         timeout: 30000,      // Longer timeout for startup
@@ -558,7 +558,7 @@ let health_config = HealthCheckConfig::builder()
 
 let instance = client.register_service_advanced(
     "api-service",
-    "localhost", 
+    "localhost",
     3000,
     Some([
         ("version".to_string(), "1.2.3".to_string()),
@@ -579,34 +579,34 @@ let instance = client.register_service_advanced(
     const checks = {};
     let status = 'healthy';
     let statusCode = 200;
-    
+
     // Critical dependencies (must be healthy)
     const criticalChecks = await Promise.all([
         checkDatabase(),
         checkAuthService()
     ]);
-    
+
     // Non-critical dependencies (can be degraded)
     const nonCriticalChecks = await Promise.all([
         checkRecommendationService(),
         checkAnalyticsService(),
         checkNotificationService()
     ]);
-    
+
     // Evaluate critical dependencies
     const criticalFailures = criticalChecks.filter(check => check.status !== 'healthy');
     if (criticalFailures.length > 0) {
         status = 'unhealthy';
         statusCode = 503;
     }
-    
+
     // Evaluate non-critical dependencies
     const nonCriticalFailures = nonCriticalChecks.filter(check => check.status !== 'healthy');
     if (nonCriticalFailures.length > 0 && status === 'healthy') {
         status = 'degraded';
         statusCode = 200; // Still accept traffic but with reduced functionality
     }
-    
+
     res.status(statusCode).json({
         status,
         timestamp: new Date().toISOString(),
@@ -632,7 +632,7 @@ let instance = client.register_service_advanced(
         this.failures = 0;
         this.lastFailureTime = null;
     }
-    
+
     async checkHealth(healthCheckFunction) {
         if (this.state === 'OPEN') {
             // Check if enough time has passed to try again
@@ -646,16 +646,16 @@ let instance = client.register_service_advanced(
                 };
             }
         }
-        
+
         try {
             const result = await healthCheckFunction();
-            
+
             if (this.state === 'HALF_OPEN') {
                 // Success in half-open state closes the circuit
                 this.state = 'CLOSED';
                 this.failures = 0;
             }
-            
+
             return {
                 status: 'healthy',
                 ...result,
@@ -664,11 +664,11 @@ let instance = client.register_service_advanced(
         } catch (error) {
             this.failures++;
             this.lastFailureTime = Date.now();
-            
+
             if (this.failures >= this.failureThreshold) {
                 this.state = 'OPEN';
             }
-            
+
             return {
                 status: 'unhealthy',
                 error: error.message,
@@ -688,9 +688,9 @@ app.get('/health', async (req, res) => {
     const databaseHealth = await dbCircuitBreaker.checkHealth(
         () => db.raw('SELECT 1')
     );
-    
+
     const overallHealthy = databaseHealth.status === 'healthy';
-    
+
     res.status(overallHealthy ? 200 : 503).json({
         status: overallHealthy ? 'healthy' : 'unhealthy',
         timestamp: new Date().toISOString(),
@@ -730,23 +730,23 @@ const healthCheckStatus = new prometheus.Gauge({
 
 async function instrumentedHealthCheck(component, checkFunction) {
     const startTime = Date.now();
-    
+
     try {
         const result = await checkFunction();
         const duration = (Date.now() - startTime) / 1000;
-        
+
         healthCheckDuration.labels(component, 'success').observe(duration);
         healthCheckTotal.labels(component, 'success').inc();
         healthCheckStatus.labels(component).set(1);
-        
+
         return { status: 'healthy', responseTime: duration * 1000 };
     } catch (error) {
         const duration = (Date.now() - startTime) / 1000;
-        
+
         healthCheckDuration.labels(component, 'failure').observe(duration);
         healthCheckTotal.labels(component, 'failure').inc();
         healthCheckStatus.labels(component).set(0);
-        
+
         return { status: 'unhealthy', error: error.message, responseTime: duration * 1000 };
     }
 }
@@ -756,9 +756,9 @@ app.get('/health', async (req, res) => {
         instrumentedHealthCheck('database', () => db.raw('SELECT 1')),
         instrumentedHealthCheck('cache', () => redis.ping())
     ]);
-    
+
     const overallHealthy = databaseCheck.status === 'healthy' && cacheCheck.status === 'healthy';
-    
+
     res.status(overallHealthy ? 200 : 503).json({
         status: overallHealthy ? 'healthy' : 'unhealthy',
         timestamp: new Date().toISOString(),
@@ -779,18 +779,18 @@ app.get('/health', async (req, res) => {
         this.alertWebhook = options.alertWebhook;
         this.componentStates = new Map();
     }
-    
+
     async processHealthCheck(component, healthResult) {
         const currentState = this.componentStates.get(component) || {
             consecutiveFailures: 0,
             consecutiveSuccesses: 0,
             alertSent: false
         };
-        
+
         if (healthResult.status === 'healthy') {
             currentState.consecutiveSuccesses++;
             currentState.consecutiveFailures = 0;
-            
+
             // Send recovery alert
             if (currentState.alertSent && currentState.consecutiveSuccesses >= this.recoveryThreshold) {
                 await this.sendRecoveryAlert(component, healthResult);
@@ -799,17 +799,17 @@ app.get('/health', async (req, res) => {
         } else {
             currentState.consecutiveFailures++;
             currentState.consecutiveSuccesses = 0;
-            
+
             // Send failure alert
             if (!currentState.alertSent && currentState.consecutiveFailures >= this.alertThreshold) {
                 await this.sendFailureAlert(component, healthResult);
                 currentState.alertSent = true;
             }
         }
-        
+
         this.componentStates.set(component, currentState);
     }
-    
+
     async sendFailureAlert(component, healthResult) {
         const alert = {
             type: 'health_check_failure',
@@ -819,7 +819,7 @@ app.get('/health', async (req, res) => {
             timestamp: new Date().toISOString(),
             severity: 'critical'
         };
-        
+
         if (this.alertWebhook) {
             try {
                 await fetch(this.alertWebhook, {
@@ -831,10 +831,10 @@ app.get('/health', async (req, res) => {
                 console.error('Failed to send alert:', error);
             }
         }
-        
+
         console.error(`ALERT: ${component} health check failed`, alert);
     }
-    
+
     async sendRecoveryAlert(component, healthResult) {
         const alert = {
             type: 'health_check_recovery',
@@ -843,7 +843,7 @@ app.get('/health', async (req, res) => {
             timestamp: new Date().toISOString(),
             severity: 'info'
         };
-        
+
         if (this.alertWebhook) {
             try {
                 await fetch(this.alertWebhook, {
@@ -855,7 +855,7 @@ app.get('/health', async (req, res) => {
                 console.error('Failed to send recovery alert:', error);
             }
         }
-        
+
         console.info(`RECOVERY: ${component} health check recovered`, alert);
     }
 }
@@ -870,11 +870,11 @@ const alerting = new HealthCheckAlerting({
 app.get('/health', async (req, res) => {
     const databaseCheck = await instrumentedHealthCheck('database', () => db.raw('SELECT 1'));
     const cacheCheck = await instrumentedHealthCheck('cache', () => redis.ping());
-    
+
     // Process for alerting
     await alerting.processHealthCheck('database', databaseCheck);
     await alerting.processHealthCheck('cache', cacheCheck);
-    
+
     // Rest of health check logic...
 });</code></pre>
                                 </div>

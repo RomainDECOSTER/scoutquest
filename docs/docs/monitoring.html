@@ -216,15 +216,15 @@ const activeConnections = new prometheus.Gauge({
 });
 
 const app = express();
-const client = new ScoutQuestClient({ 
+const client = new ScoutQuestClient({
     serverUrl: 'http://localhost:8080',
-    enableMetrics: true 
+    enableMetrics: true
 });
 
 // Middleware to collect HTTP metrics
 app.use((req, res, next) => {
     const startTime = Date.now();
-    
+
     res.on('finish', () => {
         const duration = (Date.now() - startTime) / 1000;
         const labels = {
@@ -232,34 +232,34 @@ app.use((req, res, next) => {
             route: req.route?.path || req.path,
             status_code: res.statusCode
         };
-        
+
         httpRequestsTotal.inc(labels);
         httpRequestDuration.observe(labels, duration);
     });
-    
+
     next();
 });
 
 // Instrument service discovery calls
 async function instrumentedServiceCall(serviceName, path) {
     const startTime = Date.now();
-    
+
     try {
         const result = await client.getService(serviceName, path);
         const duration = (Date.now() - startTime) / 1000;
-        
+
         serviceDiscoveryDuration
             .labels(serviceName, 'get_service')
             .observe(duration);
-            
+
         return result;
     } catch (error) {
         const duration = (Date.now() - startTime) / 1000;
-        
+
         serviceDiscoveryDuration
             .labels(serviceName, 'get_service_error')
             .observe(duration);
-            
+
         throw error;
     }
 }
@@ -303,32 +303,32 @@ struct Metrics {
 impl Metrics {
     fn new() -> Result<Self, Box<dyn std::error::Error>> {
         let registry = Registry::new();
-        
+
         let http_requests_total = Counter::with_opts(
             opts!("http_requests_total", "Total number of HTTP requests")
                 .variable_labels(vec!["method".to_string(), "route".to_string(), "status_code".to_string()])
         )?;
-        
+
         let http_request_duration = Histogram::with_opts(
             prometheus::HistogramOpts::new("http_request_duration_seconds", "Duration of HTTP requests")
                 .variable_labels(vec!["method".to_string(), "route".to_string()])
                 .buckets(vec![0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0])
         )?;
-        
+
         let service_discovery_duration = Histogram::with_opts(
             prometheus::HistogramOpts::new("service_discovery_duration_seconds", "Service discovery request duration")
                 .variable_labels(vec!["service_name".to_string(), "operation".to_string()])
         )?;
-        
+
         let active_connections = Gauge::with_opts(
             opts!("active_connections", "Number of active connections")
         )?;
-        
+
         registry.register(Box::new(http_requests_total.clone()))?;
         registry.register(Box::new(http_request_duration.clone()))?;
         registry.register(Box::new(service_discovery_duration.clone()))?;
         registry.register(Box::new(active_connections.clone()))?;
-        
+
         Ok(Metrics {
             http_requests_total,
             http_request_duration,
@@ -337,7 +337,7 @@ impl Metrics {
             registry,
         })
     }
-    
+
     async fn instrumented_service_call(
         &self,
         client: &ServiceDiscoveryClient,
@@ -345,7 +345,7 @@ impl Metrics {
         path: &str
     ) -> Result<String, Box<dyn std::error::Error>> {
         let start = Instant::now();
-        
+
         match client.get_service(service_name, path).await {
             Ok(result) => {
                 self.service_discovery_duration
@@ -366,10 +366,10 @@ impl Metrics {
 async fn metrics_handler(Extension(metrics): Extension<Metrics>) -> Response {
     let encoder = TextEncoder::new();
     let metric_families = metrics.registry.gather();
-    
+
     let mut buffer = Vec::new();
     encoder.encode(&metric_families, &mut buffer).unwrap();
-    
+
     Response::builder()
         .status(StatusCode::OK)
         .header("Content-Type", encoder.format_type())
@@ -381,7 +381,7 @@ async fn metrics_handler(Extension(metrics): Extension<Metrics>) -> Response {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let metrics = Arc::new(Metrics::new()?);
     let client = Arc::new(ServiceDiscoveryClient::new("http://localhost:8080")?);
-    
+
     // Background task to update connection metrics
     let metrics_clone = metrics.clone();
     tokio::spawn(async move {
@@ -392,15 +392,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             metrics_clone.active_connections.set(connections as f64);
         }
     });
-    
+
     let app = Router::new()
         .route("/metrics", get(metrics_handler))
         .layer(Extension(metrics))
         .layer(Extension(client));
-    
+
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
     axum::serve(listener, app).await?;
-    
+
     Ok(())
 }
 
@@ -428,7 +428,7 @@ scrape_configs:
       - targets: ['localhost:8080']
     scrape_interval: 30s
     metrics_path: /metrics
-    
+
   # Application services
   - job_name: 'application-services'
     consul_sd_configs:
@@ -441,7 +441,7 @@ scrape_configs:
       - source_labels: [__meta_consul_service_address]
         target_label: __address__
         replacement: '${1}:${__meta_consul_service_port}'
-        
+
   # Service discovery via ScoutQuest API
   - job_name: 'scoutquest-discovered-services'
     http_sd_configs:
@@ -507,7 +507,7 @@ const logger = winston.createLogger({
 });
 
 // ScoutQuest client with logging
-const client = new ScoutQuestClient({ 
+const client = new ScoutQuestClient({
     serverUrl: 'http://localhost:8080',
     logger: logger.child({ component: 'scoutquest-client' })
 });
@@ -519,12 +519,12 @@ async function discoverServiceWithLogging(serviceName, traceId) {
         traceId,
         operation: 'service_discovery'
     });
-    
+
     try {
         const startTime = Date.now();
         const instance = await client.discoverService(serviceName);
         const duration = Date.now() - startTime;
-        
+
         logger.info('Service discovered successfully', {
             serviceName,
             traceId,
@@ -534,7 +534,7 @@ async function discoverServiceWithLogging(serviceName, traceId) {
             duration,
             operation: 'service_discovery'
         });
-        
+
         return instance;
     } catch (error) {
         logger.error('Service discovery failed', {
@@ -552,10 +552,10 @@ async function discoverServiceWithLogging(serviceName, traceId) {
 function requestLoggingMiddleware(req, res, next) {
     const startTime = Date.now();
     const traceId = req.headers['x-trace-id'] || generateTraceId();
-    
+
     // Add trace ID to request for use in handlers
     req.traceId = traceId;
-    
+
     logger.info('HTTP request started', {
         method: req.method,
         url: req.url,
@@ -563,10 +563,10 @@ function requestLoggingMiddleware(req, res, next) {
         traceId,
         operation: 'http_request'
     });
-    
+
     res.on('finish', () => {
         const duration = Date.now() - startTime;
-        
+
         logger.info('HTTP request completed', {
             method: req.method,
             url: req.url,
@@ -576,12 +576,12 @@ function requestLoggingMiddleware(req, res, next) {
             operation: 'http_request'
         });
     });
-    
+
     next();
 }
 
 function generateTraceId() {
-    return Math.random().toString(36).substring(2, 15) + 
+    return Math.random().toString(36).substring(2, 15) +
            Math.random().toString(36).substring(2, 15);
 }
 
@@ -609,7 +609,7 @@ pub fn init_logging() -> Result<(), Box<dyn std::error::Error>> {
                 .with_span_list(true)
         )
         .init();
-    
+
     Ok(())
 }
 
@@ -626,7 +626,7 @@ impl ServiceLogger {
             version: version.to_string(),
         }
     }
-    
+
     #[instrument(skip(self), fields(service = %self.service_name, version = %self.version))]
     pub async fn discover_service_with_logging(
         &self,
@@ -640,13 +640,13 @@ impl ServiceLogger {
             operation = "service_discovery",
             "Discovering service"
         );
-        
+
         let start_time = std::time::Instant::now();
-        
+
         match client.discover_service(service_name).await {
             Ok(instance) => {
                 let duration = start_time.elapsed();
-                
+
                 info!(
                     service_name = %service_name,
                     trace_id = %trace_id,
@@ -657,12 +657,12 @@ impl ServiceLogger {
                     operation = "service_discovery",
                     "Service discovered successfully"
                 );
-                
+
                 Ok(instance)
             }
             Err(e) => {
                 let duration = start_time.elapsed();
-                
+
                 error!(
                     service_name = %service_name,
                     trace_id = %trace_id,
@@ -671,12 +671,12 @@ impl ServiceLogger {
                     operation = "service_discovery",
                     "Service discovery failed"
                 );
-                
+
                 Err(e.into())
             }
         }
     }
-    
+
     #[instrument(skip(self), fields(service = %self.service_name))]
     pub fn log_service_registration(&self, instance_id: &str, host: &str, port: u16) {
         info!(
@@ -687,7 +687,7 @@ impl ServiceLogger {
             "Service registered successfully"
         );
     }
-    
+
     #[instrument(skip(self), fields(service = %self.service_name))]
     pub fn log_health_check_result(&self, status: &str, response_time_ms: u64) {
         info!(
@@ -717,11 +717,11 @@ pub async fn request_tracing_middleware(
             );
             request.headers().get("x-trace-id").unwrap().to_str().unwrap()
         });
-    
+
     let method = request.method().clone();
     let uri = request.uri().clone();
     let start_time = std::time::Instant::now();
-    
+
     info!(
         method = %method,
         uri = %uri,
@@ -729,12 +729,12 @@ pub async fn request_tracing_middleware(
         operation = "http_request",
         "HTTP request started"
     );
-    
+
     let response = next.run(request).await;
-    
+
     let duration = start_time.elapsed();
     let status = response.status();
-    
+
     info!(
         method = %method,
         uri = %uri,
@@ -744,23 +744,23 @@ pub async fn request_tracing_middleware(
         operation = "http_request",
         "HTTP request completed"
     );
-    
+
     response
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     init_logging()?;
-    
+
     let service_logger = ServiceLogger::new("user-service", "1.0.0");
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Example usage
     let trace_id = Uuid::new_v4().to_string();
     let instance = service_logger
         .discover_service_with_logging(&client, "auth-service", &trace_id)
         .await?;
-    
+
     Ok(())
 }</code></pre>
                                     </div>
@@ -901,30 +901,30 @@ const { ScoutQuestClient } = require('scoutquest-js');
 class TracingScoutQuestClient extends ScoutQuestClient {
     async discoverService(serviceName, options = {}) {
         const tracer = opentelemetry.trace.getTracer('scoutquest-client');
-        
+
         return tracer.startActiveSpan(`discover_service:${serviceName}`, async (span) => {
             span.setAttributes({
                 'service.discovery.service_name': serviceName,
                 'service.discovery.client_version': '1.0.0',
             });
-            
+
             try {
                 const result = await super.discoverService(serviceName, options);
-                
+
                 span.setAttributes({
                     'service.discovery.instance_id': result.id,
                     'service.discovery.host': result.host,
                     'service.discovery.port': result.port,
                     'service.discovery.status': 'success',
                 });
-                
+
                 span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
                 return result;
             } catch (error) {
                 span.recordException(error);
-                span.setStatus({ 
+                span.setStatus({
                     code: opentelemetry.SpanStatusCode.ERROR,
-                    message: error.message 
+                    message: error.message
                 });
                 throw error;
             } finally {
@@ -932,10 +932,10 @@ class TracingScoutQuestClient extends ScoutQuestClient {
             }
         });
     }
-    
+
     async getService(serviceName, path, options = {}) {
         const tracer = opentelemetry.trace.getTracer('scoutquest-client');
-        
+
         return tracer.startActiveSpan(`get_service:${serviceName}${path}`, async (span) => {
             span.setAttributes({
                 'http.method': 'GET',
@@ -943,15 +943,15 @@ class TracingScoutQuestClient extends ScoutQuestClient {
                 'service.name': serviceName,
                 'service.discovery.method': 'get_service',
             });
-            
+
             try {
                 const result = await super.getService(serviceName, path, options);
-                
+
                 span.setAttributes({
                     'http.status_code': 200,
                     'service.discovery.status': 'success',
                 });
-                
+
                 span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
                 return result;
             } catch (error) {
@@ -960,9 +960,9 @@ class TracingScoutQuestClient extends ScoutQuestClient {
                     'http.status_code': error.statusCode || 0,
                     'service.discovery.status': 'error',
                 });
-                span.setStatus({ 
+                span.setStatus({
                     code: opentelemetry.SpanStatusCode.ERROR,
-                    message: error.message 
+                    message: error.message
                 });
                 throw error;
             } finally {
@@ -975,19 +975,19 @@ class TracingScoutQuestClient extends ScoutQuestClient {
 // Business logic with custom spans
 async function processUserOrder(userId, orderId) {
     const tracer = opentelemetry.trace.getTracer('user-service');
-    
+
     return tracer.startActiveSpan('process_user_order', async (span) => {
         span.setAttributes({
             'user.id': userId,
             'order.id': orderId,
             'business.operation': 'process_order',
         });
-        
+
         try {
-            const client = new TracingScoutQuestClient({ 
-                serverUrl: 'http://localhost:8080' 
+            const client = new TracingScoutQuestClient({
+                serverUrl: 'http://localhost:8080'
             });
-            
+
             // These calls will be automatically traced
             const user = await client.getService('user-service', `/users/${userId}`);
             const order = await client.getService('order-service', `/orders/${orderId}`);
@@ -996,22 +996,22 @@ async function processUserOrder(userId, orderId) {
                 orderId,
                 amount: order.total
             });
-            
+
             span.setAttributes({
                 'user.email': user.email,
                 'order.amount': order.total,
                 'payment.id': payment.id,
             });
-            
+
             span.addEvent('Order processed successfully');
             span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
-            
+
             return { success: true, paymentId: payment.id };
         } catch (error) {
             span.recordException(error);
-            span.setStatus({ 
+            span.setStatus({
                 code: opentelemetry.SpanStatusCode.ERROR,
-                message: error.message 
+                message: error.message
             });
             throw error;
         } finally {
@@ -1039,7 +1039,7 @@ fn init_tracer() -> Result<sdktrace::Tracer, TraceError> {
     let jaeger_exporter = JaegerTraceExporter::builder()
         .with_agent_endpoint("http://localhost:14268/api/traces")
         .build()?;
-    
+
     let tracer = opentelemetry_sdk::trace::TracerProvider::builder()
         .with_batch_exporter(jaeger_exporter, opentelemetry_sdk::runtime::Tokio)
         .with_resource(Resource::new(vec![
@@ -1049,20 +1049,20 @@ fn init_tracer() -> Result<sdktrace::Tracer, TraceError> {
         ]))
         .build()
         .tracer("user-service");
-    
+
     Ok(tracer)
 }
 
 // Initialize tracing with OpenTelemetry
 pub fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
     let tracer = init_tracer()?;
-    
+
     tracing_subscriber::registry()
         .with(tracing_subscriber::EnvFilter::from_default_env())
         .with(tracing_subscriber::fmt::layer())
         .with(OpenTelemetryLayer::new(tracer))
         .init();
-    
+
     Ok(())
 }
 
@@ -1077,7 +1077,7 @@ impl TracingServiceDiscoveryClient {
             client: ServiceDiscoveryClient::new(server_url)?,
         })
     }
-    
+
     #[instrument(
         skip(self),
         fields(
@@ -1090,39 +1090,39 @@ impl TracingServiceDiscoveryClient {
         service_name: &str,
     ) -> Result<scoutquest_rust::ServiceInstance, Box<dyn std::error::Error>> {
         let span = Span::current();
-        
+
         span.record("service.discovery.service_name", service_name);
-        
+
         match self.client.discover_service(service_name).await {
             Ok(instance) => {
                 span.record("service.discovery.instance_id", &instance.id);
                 span.record("service.discovery.host", &instance.host);
                 span.record("service.discovery.port", instance.port);
                 span.record("service.discovery.status", "success");
-                
+
                 info!(
                     service_name = %service_name,
                     instance_id = %instance.id,
                     "Service discovered successfully"
                 );
-                
+
                 Ok(instance)
             }
             Err(e) => {
                 span.record("service.discovery.status", "error");
                 span.record("error.message", &e.to_string());
-                
+
                 tracing::error!(
                     service_name = %service_name,
                     error = %e,
                     "Service discovery failed"
                 );
-                
+
                 Err(e.into())
             }
         }
     }
-    
+
     #[instrument(
         skip(self),
         fields(
@@ -1138,32 +1138,32 @@ impl TracingServiceDiscoveryClient {
         path: &str,
     ) -> Result<String, Box<dyn std::error::Error>> {
         let span = Span::current();
-        
+
         match self.client.get_service(service_name, path).await {
             Ok(response) => {
                 span.record("http.status_code", 200);
                 span.record("service.discovery.status", "success");
-                
+
                 info!(
                     service_name = %service_name,
                     path = %path,
                     "Service call successful"
                 );
-                
+
                 Ok(response)
             }
             Err(e) => {
                 span.record("http.status_code", 500);
                 span.record("service.discovery.status", "error");
                 span.record("error.message", &e.to_string());
-                
+
                 tracing::error!(
                     service_name = %service_name,
                     path = %path,
                     error = %e,
                     "Service call failed"
                 );
-                
+
                 Err(e.into())
             }
         }
@@ -1184,40 +1184,40 @@ pub async fn process_user_order(
     order_id: &str,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let span = Span::current();
-    
+
     info!("Processing user order");
-    
+
     // These calls will be automatically traced
     let user_response = client
         .get_service("user-service", &format!("/users/{}", user_id))
         .await?;
-    
+
     let order_response = client
         .get_service("order-service", &format!("/orders/{}", order_id))
         .await?;
-    
+
     // Add custom attributes to span
     span.record("user.data", &user_response[..100.min(user_response.len())]);
     span.record("order.data", &order_response[..100.min(order_response.len())]);
-    
+
     info!("Order processed successfully");
-    
+
     Ok("Order processed".to_string())
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     init_tracing()?;
-    
+
     let client = TracingServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Example usage
     let result = process_user_order(&client, "user123", "order456").await?;
     println!("Result: {}", result);
-    
+
     // Ensure all spans are exported
     global::shutdown_tracer_provider();
-    
+
     Ok(())
 }</code></pre>
                                     </div>
@@ -1335,11 +1335,11 @@ groups:
           summary: "Service {{ $labels.service_name }} has no healthy instances"
           description: "Service {{ $labels.service_name }} has been down for more than 2 minutes"
           runbook_url: "https://docs.company.com/runbooks/service-down"
-      
+
       - alert: ServiceDegraded
         expr: |
           (
-            scoutquest_instances_total{status="unhealthy"} / 
+            scoutquest_instances_total{status="unhealthy"} /
             (scoutquest_instances_total{status="healthy"} + scoutquest_instances_total{status="unhealthy"})
           ) > 0.3
         for: 5m
@@ -1349,7 +1349,7 @@ groups:
         annotations:
           summary: "Service {{ $labels.service_name }} is degraded"
           description: "More than 30% of {{ $labels.service_name }} instances are unhealthy"
-      
+
       # ScoutQuest server health
       - alert: ScoutQuestServerDown
         expr: up{job="scoutquest-server"} == 0
@@ -1360,10 +1360,10 @@ groups:
         annotations:
           summary: "ScoutQuest server is down"
           description: "ScoutQuest service discovery server has been down for more than 1 minute"
-      
+
       - alert: HighServiceDiscoveryLatency
         expr: |
-          histogram_quantile(0.95, 
+          histogram_quantile(0.95,
             rate(scoutquest_service_discovery_duration_seconds_bucket[5m])
           ) > 0.5
         for: 5m
@@ -1373,7 +1373,7 @@ groups:
         annotations:
           summary: "High service discovery latency"
           description: "95th percentile service discovery latency is {{ $value }}s"
-      
+
       - alert: HighErrorRate
         expr: |
           (
@@ -1387,7 +1387,7 @@ groups:
         annotations:
           summary: "High error rate in ScoutQuest server"
           description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
-      
+
       # Health check alerts
       - alert: HealthCheckFailures
         expr: |
@@ -1399,11 +1399,11 @@ groups:
         annotations:
           summary: "High health check failure rate"
           description: "Health check failure rate for {{ $labels.service_name }} is {{ $value | humanizePercentage }}"
-      
+
       # Resource utilization
       - alert: HighMemoryUsage
         expr: |
-          process_resident_memory_bytes{job="scoutquest-server"} / 
+          process_resident_memory_bytes{job="scoutquest-server"} /
           (1024 * 1024 * 1024) > 1
         for: 10m
         labels:
@@ -1412,7 +1412,7 @@ groups:
         annotations:
           summary: "High memory usage in ScoutQuest server"
           description: "Memory usage is {{ $value | humanize }}GB"
-      
+
       - alert: HighCPUUsage
         expr: |
           rate(process_cpu_seconds_total{job="scoutquest-server"}[5m]) > 0.8
@@ -1445,11 +1445,11 @@ route:
       receiver: 'critical-alerts'
       group_wait: 10s
       repeat_interval: 5m
-    
+
     - match:
         component: scoutquest-server
       receiver: 'scoutquest-team'
-    
+
     - match:
         component: service-discovery
       receiver: 'platform-team'
@@ -1479,11 +1479,11 @@ receivers:
           {{ if .Annotations.runbook_url }}*Runbook:* {{ .Annotations.runbook_url }}{{ end }}
           {{ end }}
         send_resolved: true
-    
+
     email_configs:
       - to: 'oncall@company.com'
         subject: 'CRITICAL: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
-        
+
   - name: 'scoutquest-team'
     slack_configs:
       - channel: '#scoutquest-alerts'

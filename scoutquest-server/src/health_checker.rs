@@ -32,7 +32,7 @@ impl HealthChecker {
         let client = self.http_client.clone();
         let interval = self.config.interval_seconds;
 
-        let health_job = Job::new_async(&format!("0/{} * * * * *", interval), move |_uuid, _l| {
+        let health_job = Job::new_async(format!("0/{} * * * * *", interval), move |_uuid, _l| {
             let registry = registry.clone();
             let client = client.clone();
 

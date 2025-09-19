@@ -1,5 +1,5 @@
 //! # Notification server
-//! 
+//!
 //! Service that automatically registers with ScoutQuest and provides a REST API
 //! for notification management.
 
@@ -102,7 +102,7 @@ async fn register_service(state: &AppState) -> Result<()> {
         state.port,
         Some(options)
     ).await?;
-    
+
     println!("✅ Service successfully registered with ScoutQuest");
     Ok(())
 }
@@ -130,7 +130,7 @@ async fn create_notification_handler(
 ) -> Result<Json<Notification>, StatusCode> {
     let id = Uuid::new_v4();
     let now = Utc::now();
-    
+
     let notification = Notification {
         id,
         recipient: request.recipient,
@@ -179,14 +179,14 @@ async fn send_notification_handler(
     Path(id): Path<Uuid>,
 ) -> Result<Json<ActionResponse>, StatusCode> {
     let mut notifications = state.notifications.write().unwrap();
-    
+
     match notifications.get_mut(&id) {
         Some(notification) => {
             if notification.status == NotificationStatus::Pending {
                 notification.status = NotificationStatus::Sent;
                 notification.updated_at = Utc::now();
                 println!("📤 Notification sent: {}", id);
-                
+
                 Ok(Json(ActionResponse {
                     success: true,
                     message: "Notification sent successfully".to_string(),
@@ -208,14 +208,14 @@ async fn cancel_notification_handler(
     Path(id): Path<Uuid>,
 ) -> Result<Json<ActionResponse>, StatusCode> {
     let mut notifications = state.notifications.write().unwrap();
-    
+
     match notifications.get_mut(&id) {
         Some(notification) => {
             if matches!(notification.status, NotificationStatus::Pending | NotificationStatus::Sent) {
                 notification.status = NotificationStatus::Cancelled;
                 notification.updated_at = Utc::now();
                 println!("🚫 Notification cancelled: {}", id);
-                
+
                 Ok(Json(ActionResponse {
                     success: true,
                     message: "Notification cancelled successfully".to_string(),

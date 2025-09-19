@@ -1,5 +1,5 @@
 //! # Notification Server Binary
-//! 
+//!
 //! Starts the notification server that automatically registers with ScoutQuest.
 
 use anyhow::Result;

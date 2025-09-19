@@ -14,7 +14,7 @@ See `config/README.md` for detailed configuration documentation.
 
 Available configuration files:
 - `config/default.toml` - Default configuration for development
-- `config/production.toml` - Production-ready configuration  
+- `config/production.toml` - Production-ready configuration
 - `config/example.toml` - Example configuration with detailed comments
 
 ## Usage

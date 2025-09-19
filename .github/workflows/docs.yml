@@ -34,13 +34,13 @@ jobs:
         run: |
           # Créer le dossier de build
           mkdir -p _site
-          
+
           # Copier tous les fichiers docs
           cp -r docs/* _site/
-          
+
           # Créer un .nojekyll pour éviter le processing Jekyll
           touch _site/.nojekyll
-          
+
           echo "Documentation prepared in _site/"
           ls -la _site/
 

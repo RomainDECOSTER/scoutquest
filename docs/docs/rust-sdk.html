@@ -166,29 +166,29 @@ use std::collections::HashMap;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create client
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Register your service
     let mut metadata = HashMap::new();
     metadata.insert("version".to_string(), "1.0.0".to_string());
     metadata.insert("environment".to_string(), "production".to_string());
-    
+
     let instance = client.register_service(
         "my-service",
-        "localhost", 
+        "localhost",
         3000,
         Some(metadata)
     ).await?;
-    
+
     println!("Service registered with ID: {}", instance.id);
-    
+
     // Discover other services
     let user_service = client.discover_service("user-service").await?;
     println!("User service found at: {}:{}", user_service.host, user_service.port);
-    
+
     // Make HTTP calls through ScoutQuest
     let response = client.get_service("user-service", "/api/users").await?;
     println!("Users response: {}", response);
-    
+
     Ok(())
 }</code></pre>
                                 </div>
@@ -278,9 +278,9 @@ metadata.insert("environment".to_string(), "production".to_string());
 metadata.insert("region".to_string(), "us-east-1".to_string());
 
 let instance = client.register_service(
-    "api-service", 
-    "localhost", 
-    3000, 
+    "api-service",
+    "localhost",
+    3000,
     Some(metadata)
 ).await?;</code></pre>
                                 </div>
@@ -352,7 +352,7 @@ for service in services {
 // List instances of a specific service
 let instances = client.list_service_instances("user-service").await?;
 for instance in instances {
-    println!("Instance: {} at {}:{} [{}]", 
+    println!("Instance: {} at {}:{} [{}]",
         instance.id, instance.host, instance.port, instance.status);
 }</code></pre>
                                 </div>
@@ -421,7 +421,7 @@ println!("Users: {}", response);
 // GET with path parameters
 let user_id = "123";
 let response = client.get_service(
-    "user-service", 
+    "user-service",
     &format!("/api/users/{}", user_id)
 ).await?;
 
@@ -527,7 +527,7 @@ while let Some(chunk) = stream.next().await {
                                 <h3>Error Types</h3>
                                 <div class="code-block">
                                     <pre><code>use scoutquest_rust::{
-    ServiceDiscoveryClient, 
+    ServiceDiscoveryClient,
     ScoutQuestError,
     ServiceNotFoundError,
     ServiceUnavailableError,
@@ -579,13 +579,13 @@ impl ErrorHandler for MyErrorHandler {
             retry_count = context.retry_count,
             "ScoutQuest operation failed"
         );
-        
+
         // Send to monitoring system
-        metrics::counter!("scoutquest_errors_total", 1, 
+        metrics::counter!("scoutquest_errors_total", 1,
             "error_type" => error.error_type(),
             "service" => context.service_name.clone()
         );
-        
+
         // Custom retry logic
         match error {
             ScoutQuestError::Network(_) if context.retry_count < 3 => true, // Retry
@@ -652,12 +652,12 @@ impl HealthCheck for AppHealthChecker {
     async fn check_health(&self) -> HealthStatus {
         let db_ok = *self.database_healthy.read().await;
         let cache_ok = *self.cache_healthy.read().await;
-        
+
         if db_ok && cache_ok {
             HealthStatus::Healthy
         } else {
             HealthStatus::Unhealthy(format!(
-                "DB: {}, Cache: {}", 
+                "DB: {}, Cache: {}",
                 if db_ok { "OK" } else { "FAIL" },
                 if cache_ok { "OK" } else { "FAIL" }
             ))
@@ -716,7 +716,7 @@ impl HealthCheck for RedisHealthCheck {
             Ok(conn) => conn,
             Err(e) => return HealthStatus::Unhealthy(format!("Redis connection failed: {}", e)),
         };
-        
+
         match redis::cmd("PING").query_async::<_, String>(&mut conn).await {
             Ok(_) => HealthStatus::Healthy,
             Err(e) => HealthStatus::Unhealthy(format!("Redis ping failed: {}", e)),
@@ -775,10 +775,10 @@ async fn fetch_user_data(client: &ServiceDiscoveryClient, user_id: &str) -> Resu
     info_span!("fetch_user_data", user_id = %user_id)
         .in_scope(|| async move {
             let response = client.get_service(
-                "user-service", 
+                "user-service",
                 &format!("/api/users/{}", user_id)
             ).await?;
-            
+
             tracing::info!("Successfully fetched user data");
             Ok(response)
         })
@@ -803,7 +803,7 @@ impl Middleware for LoggingMiddleware {
             "Making service request"
         );
     }
-    
+
     async fn after_response(&self, request: &HttpRequest, response: &HttpResponse, ctx: &MiddlewareContext) {
         tracing::info!(
             service = %request.service_name(),
@@ -861,21 +861,21 @@ async fn get_user_profile(
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Register this service
     let _instance = client.register_service("api-gateway", "localhost", 3000, None).await?;
-    
+
     let state = AppState {
         scoutquest: Arc::new(client),
     };
-    
+
     let app = Router::new()
         .route("/users/:id/profile", get(get_user_profile))
         .layer(Extension(state));
-    
+
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
     axum::serve(listener, app).await?;
-    
+
     Ok(())
 }</code></pre>
                                 </div>
@@ -904,7 +904,7 @@ impl my_service_server::MyService for MyGrpcService {
         request: Request<GetUserRequest>,
     ) -> Result<Response<GetUserResponse>, Status> {
         let user_id = request.into_inner().user_id;
-        
+
         // Discover and call HTTP service
         match self.scoutquest.get_service(
             "user-service",
@@ -913,7 +913,7 @@ impl my_service_server::MyService for MyGrpcService {
             Ok(response) => {
                 let user_data: UserData = serde_json::from_str(&response)
                     .map_err(|e| Status::internal(format!("JSON parse error: {}", e)))?;
-                    
+
                 Ok(Response::new(GetUserResponse {
                     user: Some(user_data.into()),
                 }))

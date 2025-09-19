@@ -1,5 +1,5 @@
 //! # Client for the notification service
-//! 
+//!
 //! This module provides a simple client to interact with the notification service
 //! via the ScoutQuest service discovery system.
 
@@ -11,7 +11,7 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 /// Client for the notification service
-/// 
+///
 /// Uses ScoutQuest to discover and communicate with the service.
 #[derive(Clone)]
 pub struct NotificationClient {
@@ -21,7 +21,7 @@ pub struct NotificationClient {
 
 impl NotificationClient {
     /// Creates a new notification client
-    /// 
+    ///
     /// # Arguments
     /// * `scoutquest_url` - URL of the ScoutQuest server
     /// * `service_name` - Name of the notification service (default: "notification-service")
@@ -45,7 +45,7 @@ impl NotificationClient {
     /// Retrieves a notification by its ID
     pub async fn get_notification(&self, id: Uuid) -> Result<Option<Notification>> {
         let path = format!("/api/notifications/{}", id);
-        
+
         match self.scoutquest.get::<Notification>(&self.service_name, &path).await {
             Ok(notification) => Ok(Some(notification)),
             Err(_) => {

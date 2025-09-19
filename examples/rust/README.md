@@ -53,7 +53,7 @@ Each example is a separate Rust project with its own dependencies and README.
    # Simple Axum service
    cd axum_example
    cargo run --bin axum_service
-   
+
    # Or the complete notification service
    cd notification_example
    cargo run --bin notification_server
@@ -126,4 +126,4 @@ View the SquoutQuest dashboard at: http://localhost:8080/dashboard
 You should see your service registered with:
 - Name: `task-service`
 - Tags: `api`, `tasks`, `microservice`, `productivity`, `backend`
-- Health check: `http://localhost:4000/health` 
+- Health check: `http://localhost:4000/health`

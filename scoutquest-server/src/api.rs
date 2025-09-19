@@ -138,14 +138,14 @@ pub async fn get_services_by_tag(
     Json(services)
 }
 
-pub async fn get_events(State(state): State<AppState>) -> Json<serde_json::Value> {
+pub async fn get_events(State(_state): State<AppState>) -> Json<serde_json::Value> {
     Json(serde_json::json!({
         "message": "Real-time events available via WebSocket at /ws"
     }))
 }
 
 pub async fn watch_service(
-    State(state): State<AppState>,
+    State(_state): State<AppState>,
     Path(name): Path<String>,
 ) -> Json<serde_json::Value> {
     Json(serde_json::json!({

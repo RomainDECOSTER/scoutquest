@@ -295,8 +295,8 @@ const client = new ScoutQuestClient('http://localhost:8080');
 
 // Register your service
 const instance = await client.registerService(
-  'my-service', 
-  'localhost', 
+  'my-service',
+  'localhost',
   3000,
   { tags: ['api', 'v1'] }
 );
@@ -309,14 +309,14 @@ console.log(`Service registered: ${instance.id}`);</code></pre>
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     let instance = client.register_service(
         "my-service",
-        "localhost", 
+        "localhost",
         3000,
         None
     ).await?;
-    
+
     println!("Service registered: {}", instance.id);
     Ok(())
 }</code></pre>

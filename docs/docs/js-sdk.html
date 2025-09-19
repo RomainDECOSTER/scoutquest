@@ -220,23 +220,23 @@ const client = new ScoutQuestClient('http://localhost:8080', {
   timeout: 10000,
   retries: 5,
   retryDelay: 2000,
-  
+
   // Custom retry logic
   retryCondition: (error) => {
     return error.response?.status >= 500 || error.code === 'ECONNRESET';
   },
-  
+
   // Request/Response interceptors
   requestInterceptor: (config) => {
     config.headers['X-Request-ID'] = generateRequestId();
     return config;
   },
-  
+
   responseInterceptor: (response) => {
     console.log(`Request to ${response.config.url} took ${response.duration}ms`);
     return response;
   },
-  
+
   // Error handling
   errorHandler: (error) => {
     console.error('ScoutQuest error:', error);
@@ -334,8 +334,8 @@ const instance = await client.discoverService('user-service', {
 const instance = await client.discoverService('user-service', {
   filter: (instances) => {
     // Custom filtering logic
-    return instances.filter(inst => 
-      inst.metadata.load < 0.8 && 
+    return instances.filter(inst =>
+      inst.metadata.load < 0.8 &&
       inst.metadata.responseTime < 100
     );
   }
@@ -416,11 +416,11 @@ const response = await client.request('user-service', {
                                 <h2>Error Handling</h2>
 
                                 <div class="code-block">
-                                    <pre><code>import { 
-  ScoutQuestClient, 
-  ServiceNotFoundError, 
+                                    <pre><code>import {
+  ScoutQuestClient,
+  ServiceNotFoundError,
   ServiceUnavailableError,
-  ScoutQuestError 
+  ScoutQuestError
 } from 'scoutquest-js';
 
 try {
@@ -454,15 +454,15 @@ try {
       endpoint: context.endpoint,
       timestamp: new Date().toISOString()
     });
-    
+
     // Send to monitoring system
     monitoring.recordError(error, context);
-    
+
     // Custom retry logic
     if (error.code === 'ECONNRESET' && context.retryCount < 3) {
       return { shouldRetry: true, delay: 2000 };
     }
-    
+
     return { shouldRetry: false };
   }
 });</code></pre>
@@ -476,7 +476,7 @@ try {
 
                                 <h3>Type Definitions</h3>
                                 <div class="code-block">
-                                    <pre><code>import { 
+                                    <pre><code>import {
   ScoutQuestClient,
   ServiceInstance,
   ServiceRegistration,

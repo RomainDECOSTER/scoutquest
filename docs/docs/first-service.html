@@ -176,8 +176,8 @@ app.use(express.json());
 
 // Health check endpoint (required for ScoutQuest monitoring)
 app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'healthy', 
+    res.json({
+        status: 'healthy',
         timestamp: new Date().toISOString(),
         service: 'my-first-service'
     });
@@ -185,7 +185,7 @@ app.get('/health', (req, res) => {
 
 // Simple API endpoint
 app.get('/api/hello', (req, res) => {
-    res.json({ 
+    res.json({
         message: 'Hello from my first service!',
         timestamp: new Date().toISOString()
     });
@@ -207,7 +207,7 @@ let serviceInstance = null;
 // Start server and register with ScoutQuest
 app.listen(port, async () => {
     console.log(`Service running on port ${port}`);
-    
+
     try {
         // Register service with ScoutQuest
         serviceInstance = await client.registerService('my-first-service', 'localhost', port, {
@@ -223,12 +223,12 @@ app.listen(port, async () => {
                 timeout: 5
             }
         });
-        
+
         console.log(`✅ Service registered with ScoutQuest!`);
         console.log(`   Instance ID: ${serviceInstance.id}`);
         console.log(`   URL: http://localhost:${port}`);
         console.log(`   Health Check: http://localhost:${port}/health`);
-        
+
     } catch (error) {
         console.error('❌ Failed to register service:', error.message);
         process.exit(1);
@@ -344,10 +344,10 @@ async fn get_user(Path(user_id): Path<String>) -> Json<UserResponse> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🚀 Starting my first service...");
-    
+
     // Create ScoutQuest client
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Create router
     let app = Router::new()
         .route("/health", get(health_check))
@@ -386,7 +386,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         _ = shutdown_signal() => {
             println!("🛑 Shutting down gracefully...");
-            
+
             // Deregister service
             if let Err(err) = client.deregister_service(&service_instance.id).await {
                 eprintln!("⚠️  Failed to deregister service: {}", err);
@@ -483,46 +483,46 @@ curl http://localhost:8080/api/services/my-first-service/instances</code></pre>
 
 async function clientDemo() {
     const client = new ScoutQuestClient('http://localhost:8080');
-    
+
     console.log('🔍 ScoutQuest Client Demo');
     console.log('========================');
-    
+
     try {
         // Discover the service
         console.log('🔍 Discovering "my-first-service"...');
         const serviceInstance = await client.discoverService('my-first-service');
-        
+
         console.log('✅ Service found:');
         console.log(`   ID: ${serviceInstance.id}`);
         console.log(`   Address: ${serviceInstance.host}:${serviceInstance.port}`);
         console.log(`   Status: ${serviceInstance.status}`);
         console.log(`   Tags: ${serviceInstance.tags.join(', ')}`);
-        
+
         // Make HTTP calls through ScoutQuest
         console.log('\n📡 Making HTTP calls through ScoutQuest...');
-        
+
         // Call hello endpoint
         const helloResponse = await client.get('my-first-service', '/api/hello');
         console.log('✅ Hello response:', helloResponse.data);
-        
+
         // Call user endpoint
         const userResponse = await client.get('my-first-service', '/api/users/456');
         console.log('✅ User response:', userResponse.data);
-        
+
         // List all services
         console.log('\n📋 All registered services:');
         const services = await client.listServices();
         services.forEach(service => {
             console.log(`   - ${service.name} (${service.instanceCount} instances)`);
         });
-        
+
         // List instances of our service
         console.log('\n🏢 Instances of "my-first-service":');
         const instances = await client.listServiceInstances('my-first-service');
         instances.forEach(instance => {
             console.log(`   - ${instance.id} at ${instance.host}:${instance.port} [${instance.status}]`);
         });
-        
+
     } catch (error) {
         console.error('❌ Error:', error.message);
     }
@@ -547,9 +547,9 @@ clientDemo();</code></pre>
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🔍 ScoutQuest Client Demo");
     println!("========================");
-    
+
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Discover the service
     println!("🔍 Discovering \"my-first-service\"...");
     match client.discover_service("my-first-service").await {
@@ -559,10 +559,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("   Address: {}:{}", instance.host, instance.port);
             println!("   Status: {}", instance.status);
             println!("   Tags: {:?}", instance.tags);
-            
+
             // Make HTTP calls through service discovery
             println!("\n📡 Making HTTP calls...");
-            
+
             // Call hello endpoint
             match client.get_service("my-first-service", "/api/hello").await {
                 Ok(response) => {
@@ -570,7 +570,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
                 Err(e) => println!("❌ Hello call failed: {}", e),
             }
-            
+
             // Call user endpoint
             match client.get_service("my-first-service", "/api/users/456").await {
                 Ok(response) => {
@@ -583,7 +583,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("❌ Service discovery failed: {}", e);
         }
     }
-    
+
     // List all services
     println!("\n📋 All registered services:");
     match client.list_services().await {
@@ -594,7 +594,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Err(e) => println!("❌ Failed to list services: {}", e),
     }
-    
+
     Ok(())
 }</code></pre>
                                         </div>

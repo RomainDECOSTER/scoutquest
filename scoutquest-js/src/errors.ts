@@ -91,7 +91,7 @@ export class ScoutQuestError extends Error {
     details?: any
   ): ScoutQuestError {
     let code = 'HTTP_ERROR';
-    
+
     switch (status) {
       case 400:
         code = 'BAD_REQUEST';

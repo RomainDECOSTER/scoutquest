@@ -3,7 +3,7 @@
 ## Commit Types
 
 - `feat`: New features (triggers minor version bump)
-- `fix`: Bug fixes (triggers patch version bump) 
+- `fix`: Bug fixes (triggers patch version bump)
 - `perf`: Performance improvements (triggers patch version bump)
 - `docs`: Documentation changes
 - `style`: Code style changes (formatting, etc.)
@@ -28,7 +28,7 @@ BREAKING CHANGE: LoadBalancer class removed from all SDKs
 Use these scopes to identify which component is affected:
 
 - `server`: ScoutQuest server changes
-- `js-sdk`: JavaScript/TypeScript SDK changes  
+- `js-sdk`: JavaScript/TypeScript SDK changes
 - `rust-sdk`: Rust SDK changes
 - `docs`: Documentation website changes
 - `examples`: Example applications changes

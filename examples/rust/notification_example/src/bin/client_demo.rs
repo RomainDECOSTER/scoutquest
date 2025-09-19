@@ -1,5 +1,5 @@
 //! # Client Demo Binary
-//! 
+//!
 //! Demonstration of the notification client usage.
 
 use anyhow::Result;
@@ -118,8 +118,8 @@ async fn run_full_demo(client: &NotificationClient) -> Result<()> {
     println!("✅ {} notifications found (total: {})", list.notifications.len(), list.total);
 
     for notification in &list.notifications {
-        println!("   📝 {}: {:?} -> {} [{:?}]", 
-            notification.id, 
+        println!("   📝 {}: {:?} -> {} [{:?}]",
+            notification.id,
             notification.channel,
             notification.recipient,
             notification.status
@@ -183,13 +183,13 @@ async fn create_test_notification(client: &NotificationClient) -> Result<()> {
 async fn list_notifications(client: &NotificationClient) -> Result<()> {
     println!("\n📋 Notification list...");
     let list = client.list_notifications(None).await?;
-    
+
     if list.notifications.is_empty() {
         println!("No notifications found.");
     } else {
         println!("{} notification(s) found:", list.notifications.len());
         for notification in list.notifications {
-            println!("  📝 {} | {} | {:?} | {:?} | {}", 
+            println!("  📝 {} | {} | {:?} | {:?} | {}",
                 notification.id,
                 notification.recipient,
                 notification.channel,

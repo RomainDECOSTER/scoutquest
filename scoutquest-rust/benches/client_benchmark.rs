@@ -35,9 +35,7 @@ fn benchmark_service_discovery(c: &mut Criterion) {
 
     // Benchmark getting service URL
     c.bench_function("get_service_url", |b| {
-        b.iter(|| {
-            instances[0].get_url("/api/test")
-        })
+        b.iter(|| instances[0].get_url("/api/test"))
     });
 }
 

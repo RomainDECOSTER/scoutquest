@@ -108,7 +108,7 @@ use scoutquest_rust::*;
 
 async fn robust_service_call() -> Result<serde_json::Value, Box<dyn std::error::Error>> {
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     match client.get::<serde_json::Value>("user-service", "/api/users").await {
         Ok(response) => Ok(response),
         Err(ScoutQuestError::ServiceNotFound { service_name }) => {
@@ -164,7 +164,7 @@ impl CircuitBreaker {
             timeout,
         }
     }
-    
+
     pub fn is_open(&self) -> bool {
         let count = self.failure_count.load(Ordering::Relaxed);
         if count >= self.threshold {
@@ -175,11 +175,11 @@ impl CircuitBreaker {
         }
         false
     }
-    
+
     pub fn record_success(&self) {
         self.failure_count.store(0, Ordering::Relaxed);
     }
-    
+
     pub fn record_failure(&self) {
         self.failure_count.fetch_add(1, Ordering::Relaxed);
         *self.last_failure.lock().unwrap() = Some(Instant::now());
@@ -226,7 +226,7 @@ impl ServiceCache {
             ttl,
         }
     }
-    
+
     pub async fn get_or_discover(
         &self,
         client: &ServiceDiscoveryClient,
@@ -241,16 +241,16 @@ impl ServiceCache {
                 }
             }
         }
-        
+
         // Cache miss or expired, fetch from discovery
         let instances = client.discover_service(service_name, None).await?;
-        
+
         // Update cache
         {
             let mut cache = self.cache.write().unwrap();
             cache.insert(service_name.to_string(), (instances.clone(), Instant::now()));
         }
-        
+
         Ok(instances)
     }
 }
@@ -268,17 +268,17 @@ use std::time::Duration;
 pub fn create_production_client() -> Result<ServiceDiscoveryClient, ScoutQuestError> {
     let discovery_url = env::var("SCOUTQUEST_URL")
         .unwrap_or_else(|_| "http://localhost:8080".to_string());
-    
+
     let timeout_secs: u64 = env::var("SCOUTQUEST_TIMEOUT")
         .unwrap_or_else(|_| "30".to_string())
         .parse()
         .unwrap_or(30);
-    
+
     let retry_attempts: usize = env::var("SCOUTQUEST_RETRIES")
         .unwrap_or_else(|_| "3".to_string())
         .parse()
         .unwrap_or(3);
-    
+
     ServiceDiscoveryClient::with_config(
         &discovery_url,
         Duration::from_secs(timeout_secs),
@@ -297,10 +297,10 @@ use tokio::signal;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // Register service
     client.register_service("my-service", "localhost", 8080, None).await?;
-    
+
     // Set up graceful shutdown
     tokio::select! {
         _ = signal::ctrl_c() => {
@@ -310,12 +310,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Received SIGTERM");
         }
     }
-    
+
     // Graceful cleanup
     println!("Deregistering service...");
     client.deregister().await?;
     println!("Service deregistered successfully");
-    
+
     Ok(())
 }
 ```
@@ -338,13 +338,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_max_level(tracing::Level::INFO)
         .with_target(false)
         .init();
-    
+
     let client = ServiceDiscoveryClient::new("http://localhost:8080")?;
-    
+
     // All SDK operations will emit structured logs
     let instance = client.register_service("my-service", "localhost", 8080, None).await?;
     info!(service_id = %instance.id, "Service registered successfully");
-    
+
     Ok(())
 }
 ```
@@ -372,19 +372,19 @@ impl Metrics {
             errors: Arc::new(AtomicU64::new(0)),
         }
     }
-    
+
     pub fn record_discovery_call(&self) {
         self.discovery_calls.fetch_add(1, Ordering::Relaxed);
     }
-    
+
     pub fn record_registration_call(&self) {
         self.registration_calls.fetch_add(1, Ordering::Relaxed);
     }
-    
+
     pub fn record_http_call(&self) {
         self.http_calls.fetch_add(1, Ordering::Relaxed);
     }
-    
+
     pub fn record_error(&self) {
         self.errors.fetch_add(1, Ordering::Relaxed);
     }

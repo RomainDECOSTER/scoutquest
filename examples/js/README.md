@@ -164,7 +164,7 @@ pnpm clean
 The examples demonstrate the simplified ScoutQuest architecture where:
 
 1. **No Client-side Load Balancing**: The server handles load balancing and returns a ready-to-use service instance
-2. **Service Discovery**: `discoverService()` returns a single `ServiceInstance` 
+2. **Service Discovery**: `discoverService()` returns a single `ServiceInstance`
 3. **Simple Communication**: Direct HTTP calls using `get()`, `post()`, `put()`, `delete()` methods
 4. **Automatic Registration**: Services register themselves on startup
 5. **Graceful Shutdown**: Services deregister on shutdown

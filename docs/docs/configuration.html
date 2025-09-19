@@ -302,18 +302,18 @@ volumes:
 export const scoutquestConfig = {
   // Server connection
   serverUrl: process.env.SCOUTQUEST_URL || 'http://localhost:8080',
-  
+
   // HTTP client settings
   timeout: 30000,
   retryCount: 3,
   retryDelay: 1000,
-  
+
   // Request configuration
   headers: {
     'User-Agent': 'MyApp/1.0.0',
     'X-Client-Version': '1.0.0'
   },
-  
+
   // Service discovery options
   discovery: {
     cacheEnabled: true,
@@ -321,7 +321,7 @@ export const scoutquestConfig = {
     healthCheckEnabled: true,
     preferLocalInstances: false
   },
-  
+
   // Circuit breaker settings
   circuitBreaker: {
     enabled: true,
@@ -329,7 +329,7 @@ export const scoutquestConfig = {
     resetTimeout: 30000,
     monitoringPeriod: 10000
   },
-  
+
   // Logging
   logging: {
     level: 'info',
@@ -418,22 +418,22 @@ impl ScoutQuestConfig {
         let config: Self = toml::from_str(&content)?;
         Ok(config)
     }
-    
+
     pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
         let mut config = Self::default();
-        
+
         if let Ok(url) = std::env::var("SCOUTQUEST_URL") {
             config.server_url = url;
         }
-        
+
         if let Ok(timeout) = std::env::var("SCOUTQUEST_TIMEOUT") {
             config.timeout = Duration::from_secs(timeout.parse()?);
         }
-        
+
         if let Ok(retry_count) = std::env::var("SCOUTQUEST_RETRY_COUNT") {
             config.retry_count = retry_count.parse()?;
         }
-        
+
         Ok(config)
     }
 }</code></pre>

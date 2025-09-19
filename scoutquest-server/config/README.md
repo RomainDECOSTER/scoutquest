@@ -156,4 +156,4 @@ max_failures = 2
 enable_auth = true
 api_key = "your-secure-api-key-here"
 rate_limit_per_minute = 500
-``` 
+```

@@ -40,7 +40,7 @@ class ExpressScoutQuestExample {
     this.app = express();
     this.port = port;
     this.discoveryClient = new ScoutQuestClient(scoutquestUrl);
-    
+
     this.setupMiddleware();
     this.setupRoutes();
   }
@@ -48,13 +48,13 @@ class ExpressScoutQuestExample {
   private setupMiddleware(): void {
     // Security middleware
     this.app.use(helmet());
-    
+
     // CORS middleware
     this.app.use(cors());
-    
+
     // Logging middleware
     this.app.use(morgan('combined'));
-    
+
     // Body parsing middleware
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
@@ -63,26 +63,26 @@ class ExpressScoutQuestExample {
   private setupRoutes(): void {
     // Health check endpoint
     this.app.get('/health', this.healthCheck.bind(this));
-    
+
     // Welcome endpoint
     this.app.get('/', this.welcome.bind(this));
-    
+
     // Tasks endpoints (mock data)
     this.app.get('/api/tasks', this.getTasks.bind(this));
     this.app.post('/api/tasks', this.createTask.bind(this));
     this.app.get('/api/tasks/:id', this.getTask.bind(this));
-    
+
     // Service discovery endpoints
     this.app.get('/api/services', this.getServices.bind(this));
     this.app.get('/api/services/:name', this.getServiceInstance.bind(this));
-    
+
     // Service-to-service communication examples
     this.app.get('/api/call-user-service', this.callUserService.bind(this));
     this.app.get('/api/call-product-service', this.callProductService.bind(this));
-    
+
     // Service monitoring
     this.app.get('/api/monitoring', this.getMonitoring.bind(this));
-    
+
     // Error handling
     this.app.use(this.errorHandler.bind(this));
   }
@@ -345,7 +345,7 @@ class ExpressScoutQuestExample {
 
   private async shutdown(): Promise<void> {
     console.log('🔄 Graceful shutdown initiated...');
-    
+
     try {
       await this.discoveryClient.deregisterService();
       console.log('✅ Service deregistered from ScoutQuest');

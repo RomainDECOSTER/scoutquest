@@ -4,6 +4,7 @@
   "description": "Fast and reliable service discovery for microservices",
   "private": true,
   "scripts": {
+    "prepare": "command -v pre-commit >/dev/null 2>&1 && pre-commit install || echo '💡 Run ./scripts/setup-dev.sh to install pre-commit hooks'",
     "release": "pnpm semantic-release",
     "release:dry-run": "pnpm semantic-release --dry-run",
     "build": "make build-all",

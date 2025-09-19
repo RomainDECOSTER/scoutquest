@@ -244,7 +244,10 @@ fn setup_logging(config: &LoggingConfig) -> anyhow::Result<()> {
                 .with(tracing_subscriber::fmt::layer().json())
                 .init();
         }
-        "pretty" | _ => {
+        "pretty" => {
+            registry.with(tracing_subscriber::fmt::layer()).init();
+        }
+        _ => {
             registry.with(tracing_subscriber::fmt::layer()).init();
         }
     }

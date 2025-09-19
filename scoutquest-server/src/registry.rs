@@ -15,6 +15,12 @@ pub struct ServiceRegistry {
     event_sender: broadcast::Sender<ServiceEvent>,
 }
 
+impl Default for ServiceRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ServiceRegistry {
     pub fn new() -> Self {
         let (event_sender, _) = broadcast::channel(1000);

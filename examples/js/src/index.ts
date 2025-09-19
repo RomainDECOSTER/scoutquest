@@ -1,6 +1,6 @@
 /**
  * @fileoverview ScoutQuest JavaScript/TypeScript Examples
- * 
+ *
  * This package contains comprehensive examples demonstrating how to use
  * the ScoutQuest SDK for service discovery in Node.js applications.
  */
