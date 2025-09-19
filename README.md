@@ -4,6 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/scoutquest/scoutquest/workflows/CI/badge.svg)](https://github.com/scoutquest/scoutquest/actions)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://romaindecoster.github.io/scoutquest/)
 
 SquoutQuest is a modern Service Discovery solution designed to simplify microservices management in polyglot environments.
 
@@ -66,6 +67,10 @@ scoutquest/
 See files in `scoutquest-server/config/` for configuration options.
 
 ## 📚 Documentation
+
+📖 **[Complete Documentation](https://romaindecoster.github.io/scoutquest/)** - Official documentation website
+
+### API References
 
 - [Server Guide](scoutquest-server/README.md)
 - [Rust SDK Guide](scoutquest-rust/README.md)

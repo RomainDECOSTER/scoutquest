@@ -147,10 +147,10 @@ define update_version
 	sed -i.bak 's/"version": "[^"]*"/"version": "$(1)"/' package.json && rm package.json.bak
 	@# Update JS SDK package.json
 	sed -i.bak 's/"version": "[^"]*"/"version": "$(1)"/' scoutquest-js/package.json && rm scoutquest-js/package.json.bak
-	@# Update Rust SDK Cargo.toml
-	sed -i.bak 's/version = "[^"]*"/version = "$(1)"/' scoutquest-rust/Cargo.toml && rm scoutquest-rust/Cargo.toml.bak
-	@# Update Server Cargo.toml
-	sed -i.bak 's/version = "[^"]*"/version = "$(1)"/' scoutquest-server/Cargo.toml && rm scoutquest-server/Cargo.toml.bak
+	@# Update Rust SDK Cargo.toml (only package version in [package] section)
+	sed -i.bak '/^\[package\]/,/^\[/ s/^version = "[^"]*"/version = "$(1)"/' scoutquest-rust/Cargo.toml && rm scoutquest-rust/Cargo.toml.bak
+	@# Update Server Cargo.toml (only package version in [package] section)
+	sed -i.bak '/^\[package\]/,/^\[/ s/^version = "[^"]*"/version = "$(1)"/' scoutquest-server/Cargo.toml && rm scoutquest-server/Cargo.toml.bak
 	@echo "✅ Version updated to $(1) in all components"
 endef
 

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Microservices Tutorial - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <img src="../assets/images/logo.svg" alt="ScoutQuest" class="nav__logo">
+                <span class="nav__title">ScoutQuest</span>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html"
+                                        class="docs-nav__link docs-nav__link--active">Building Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html" class="docs-nav__link">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link">Rust Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link">Docker & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <h1>Building Microservices with ScoutQuest</h1>
+                    <p class="docs-lead">
+                        Learn how to build a complete microservices architecture using ScoutQuest for service discovery.
+                        This tutorial will guide you through creating, registering, and connecting multiple services.
+                    </p>
+
+                    <section class="docs-section">
+                        <h2>Overview</h2>
+                        <p>
+                            In this tutorial, you'll build a complete microservices system consisting of:
+                        </p>
+                        <ul>
+                            <li><strong>User Service</strong> - Manages user data and authentication</li>
+                            <li><strong>Product Service</strong> - Handles product catalog</li>
+                            <li><strong>Order Service</strong> - Processes orders and communicates with other services
+                            </li>
+                            <li><strong>API Gateway</strong> - Routes requests to appropriate services</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Prerequisites</h2>
+                        <ul>
+                            <li>Node.js 18+ or Rust 1.70+</li>
+                            <li>ScoutQuest server running (see <a href="installation.html">Installation Guide</a>)</li>
+                            <li>Basic understanding of microservices concepts</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 1: User Service</h2>
+                        <p>Let's start by creating a simple user service using Express.js:</p>
+
+                        <div class="code-block">
+                            <h4>user-service/index.js</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = process.env.PORT || 3001;
+
+// Initialize ScoutQuest client
+const scout = new ScoutQuestClient(process.env.SCOUT_URL || 'http://localhost:8080');
+
+app.use(express.json());
+
+// Sample user data
+const users = [
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+];
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', service: 'user-service' });
+});
+
+// User endpoints
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+app.get('/users/:id', (req, res) => {
+    const user = users.find(u => u.id === parseInt(req.params.id));
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+});
+
+app.post('/users', (req, res) => {
+    const newUser = {
+        id: users.length + 1,
+        name: req.body.name,
+        email: req.body.email
+    };
+    users.push(newUser);
+    res.status(201).json(newUser);
+});
+
+app.listen(port, async () => {
+    console.log(`User service listening on port ${port}`);
+
+    try {
+        // Register with ScoutQuest
+        await scout.registerService('user-service', 'localhost', port, {
+            tags: ['api', 'users', 'v1'],
+            metadata: {
+                version: '1.0.0',
+                description: 'User management service'
+            },
+            healthCheck: {
+                path: '/health',
+                interval: 30
+            }
+        });
+        console.log('✅ Registered with ScoutQuest');
+    } catch (error) {
+        console.error('❌ Failed to register with ScoutQuest:', error);
+    }
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 2: Product Service</h2>
+                        <p>Create a product service that manages the product catalog:</p>
+
+                        <div class="code-block">
+                            <h4>product-service/index.js</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = process.env.PORT || 3002;
+const scout = new ScoutQuestClient(process.env.SCOUT_URL || 'http://localhost:8080');
+
+app.use(express.json());
+
+// Sample product data
+const products = [
+    { id: 1, name: 'Laptop', price: 999.99, stock: 10 },
+    { id: 2, name: 'Phone', price: 699.99, stock: 25 },
+    { id: 3, name: 'Tablet', price: 399.99, stock: 15 }
+];
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', service: 'product-service' });
+});
+
+app.get('/products', (req, res) => {
+    res.json(products);
+});
+
+app.get('/products/:id', (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+});
+
+app.put('/products/:id/stock', (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+
+    product.stock = req.body.stock;
+    res.json(product);
+});
+
+app.listen(port, async () => {
+    console.log(`Product service listening on port ${port}`);
+
+    try {
+        await scout.registerService('product-service', 'localhost', port, {
+            tags: ['api', 'products', 'v1'],
+            metadata: {
+                version: '1.0.0',
+                description: 'Product catalog service'
+            },
+            healthCheck: {
+                path: '/health',
+                interval: 30
+            }
+        });
+        console.log('✅ Registered with ScoutQuest');
+    } catch (error) {
+        console.error('❌ Failed to register with ScoutQuest:', error);
+    }
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 3: Order Service</h2>
+                        <p>Create an order service that communicates with other services:</p>
+
+                        <div class="code-block">
+                            <h4>order-service/index.js</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = process.env.PORT || 3003;
+const scout = new ScoutQuestClient(process.env.SCOUT_URL || 'http://localhost:8080');
+
+app.use(express.json());
+
+let orders = [];
+let orderIdCounter = 1;
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', service: 'order-service' });
+});
+
+app.get('/orders', (req, res) => {
+    res.json(orders);
+});
+
+app.post('/orders', async (req, res) => {
+    try {
+        const { userId, productId, quantity } = req.body;
+
+        // Verify user exists
+        const user = await scout.get('user-service', `/users/${userId}`);
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid user' });
+        }
+
+        // Verify product exists and has stock
+        const product = await scout.get('product-service', `/products/${productId}`);
+        if (!product) {
+            return res.status(400).json({ error: 'Invalid product' });
+        }
+
+        if (product.stock < quantity) {
+            return res.status(400).json({ error: 'Insufficient stock' });
+        }
+
+        // Update product stock
+        await scout.put('product-service', `/products/${productId}/stock`, {
+            stock: product.stock - quantity
+        });
+
+        // Create order
+        const order = {
+            id: orderIdCounter++,
+            userId,
+            productId,
+            quantity,
+            total: product.price * quantity,
+            status: 'confirmed',
+            createdAt: new Date().toISOString()
+        };
+
+        orders.push(order);
+        res.status(201).json(order);
+
+    } catch (error) {
+        console.error('Order creation failed:', error);
+        res.status(500).json({ error: 'Failed to create order' });
+    }
+});
+
+app.listen(port, async () => {
+    console.log(`Order service listening on port ${port}`);
+
+    try {
+        await scout.registerService('order-service', 'localhost', port, {
+            tags: ['api', 'orders', 'v1'],
+            metadata: {
+                version: '1.0.0',
+                description: 'Order processing service'
+            },
+            healthCheck: {
+                path: '/health',
+                interval: 30
+            }
+        });
+        console.log('✅ Registered with ScoutQuest');
+    } catch (error) {
+        console.error('❌ Failed to register with ScoutQuest:', error);
+    }
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 4: API Gateway</h2>
+                        <p>Create an API gateway that routes requests to the appropriate services:</p>
+
+                        <div class="code-block">
+                            <h4>api-gateway/index.js</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = process.env.PORT || 3000;
+const scout = new ScoutQuestClient(process.env.SCOUT_URL || 'http://localhost:8080');
+
+app.use(express.json());
+
+// Middleware for service discovery and proxying
+const proxyToService = (serviceName, pathPrefix = '') => {
+    return async (req, res, next) => {
+        try {
+            const method = req.method.toLowerCase();
+            const path = req.path.replace(pathPrefix, '');
+
+            let response;
+            switch (method) {
+                case 'get':
+                    response = await scout.get(serviceName, path);
+                    break;
+                case 'post':
+                    response = await scout.post(serviceName, path, req.body);
+                    break;
+                case 'put':
+                    response = await scout.put(serviceName, path, req.body);
+                    break;
+                case 'delete':
+                    response = await scout.delete(serviceName, path);
+                    break;
+                default:
+                    return res.status(405).json({ error: 'Method not allowed' });
+            }
+
+            res.json(response);
+        } catch (error) {
+            console.error(`Proxy error for ${serviceName}:`, error);
+            res.status(error.response?.status || 500).json({
+                error: error.message || 'Service unavailable'
+            });
+        }
+    };
+};
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', service: 'api-gateway' });
+});
+
+// Route to services
+app.use('/api/users*', proxyToService('user-service', '/api'));
+app.use('/api/products*', proxyToService('product-service', '/api'));
+app.use('/api/orders*', proxyToService('order-service', '/api'));
+
+// Service discovery endpoint
+app.get('/services', async (req, res) => {
+    try {
+        const services = await scout.listServices();
+        res.json(services);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch services' });
+    }
+});
+
+app.listen(port, async () => {
+    console.log(`API Gateway listening on port ${port}`);
+
+    try {
+        await scout.registerService('api-gateway', 'localhost', port, {
+            tags: ['gateway', 'api', 'v1'],
+            metadata: {
+                version: '1.0.0',
+                description: 'API Gateway service'
+            },
+            healthCheck: {
+                path: '/health',
+                interval: 30
+            }
+        });
+        console.log('✅ Registered with ScoutQuest');
+    } catch (error) {
+        console.error('❌ Failed to register with ScoutQuest:', error);
+    }
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 5: Running the System</h2>
+                        <p>Create a script to start all services:</p>
+
+                        <div class="code-block">
+                            <h4>package.json</h4>
+                            <pre><code class="language-json">{
+  "name": "microservices-tutorial",
+  "version": "1.0.0",
+  "scripts": {
+    "start:user": "cd user-service && node index.js",
+    "start:product": "cd product-service && node index.js",
+    "start:order": "cd order-service && node index.js",
+    "start:gateway": "cd api-gateway && node index.js",
+    "start:all": "concurrently \"npm run start:user\" \"npm run start:product\" \"npm run start:order\" \"npm run start:gateway\""
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "scoutquest-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}</code></pre>
+                        </div>
+
+                        <p>Start all services:</p>
+                        <div class="code-block">
+                            <pre><code class="language-bash"># Install dependencies
+npm install
+
+# Start all services
+npm run start:all</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Step 6: Testing the System</h2>
+                        <p>Test your microservices system with these API calls:</p>
+
+                        <div class="code-block">
+                            <h4>Create a user</h4>
+                            <pre><code class="language-bash">curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice Johnson", "email": "alice@example.com"}'</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Get products</h4>
+                            <pre><code class="language-bash">curl http://localhost:3000/api/products</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Create an order</h4>
+                            <pre><code class="language-bash">curl -X POST http://localhost:3000/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 1, "productId": 1, "quantity": 2}'</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Check service registry</h4>
+                            <pre><code class="language-bash">curl http://localhost:3000/services</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Best Practices</h2>
+                        <ul>
+                            <li><strong>Health Checks:</strong> Always implement health check endpoints</li>
+                            <li><strong>Error Handling:</strong> Handle service unavailability gracefully</li>
+                            <li><strong>Circuit Breakers:</strong> Implement circuit breakers for resilience</li>
+                            <li><strong>Monitoring:</strong> Add logging and metrics to all services</li>
+                            <li><strong>Configuration:</strong> Use environment variables for service configuration</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <ul>
+                            <li>Add authentication and authorization</li>
+                            <li>Implement distributed tracing</li>
+                            <li>Add message queuing for async communication</li>
+                            <li>Deploy with Docker and Kubernetes</li>
+                            <li>Set up monitoring and alerting</li>
+                        </ul>
+
+                        <div class="docs-navigation">
+                            <a href="express-tutorial.html" class="btn btn--primary">Next: Express.js Integration →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+</body>
+
+</html>
