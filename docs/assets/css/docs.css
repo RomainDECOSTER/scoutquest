@@ -157,8 +157,12 @@
     line-height: 1.7;
 }
 
+.docs-content section {
+    padding: 0;
+}
+
 .docs-section {
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 }
 
 .docs-section h2 {
@@ -607,4 +611,81 @@ td {
         white-space: pre;
         word-break: normal;
     }
+}
+
+/* Service Discovery Patterns specific styles */
+.pattern-comparison {
+    margin: 2rem 0;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-light);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.comparison-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 1rem 0.75rem;
+    text-align: left;
+}
+
+.comparison-table td {
+    padding: 0.875rem 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: var(--bg-secondary);
+}
+
+.next-step-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-light);
+    text-decoration: none;
+    transition: var(--transition-normal);
+    color: inherit;
+}
+
+.next-step-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+    background: white;
+}
+
+.next-step-card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.next-step-card p {
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.docs-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
 }
