@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.0.0...v1.1.0) (2025-09-20)
+
+
+### Features
+
+* improve .gitignore ([32900b3](https://github.com/RomainDECOSTER/scoutquest/commit/32900b374c240518eb342196c531669f74e68638))
+
 # 1.0.0 (2025-09-20)
 
 
