@@ -19,7 +19,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/target/release/scoutquest-server .
-COPY config/default.toml ./config.toml
 
 
 ENV RUST_LOG=info
