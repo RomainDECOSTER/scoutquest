@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.1...v1.2.2) (2025-09-20)
+
+
+### Bug Fixes
+
+* **docker:** resolve config file path in multi-stage build ([5fff8ec](https://github.com/RomainDECOSTER/scoutquest/commit/5fff8ec6637fa9cf05e2a0b5bf84494aa8301ba8))
+
 ## [1.2.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.0...v1.2.1) (2025-09-20)
 
 
