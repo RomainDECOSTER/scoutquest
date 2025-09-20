@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.2...v1.2.3) (2025-09-20)
+
+
+### Bug Fixes
+
+* **docker:** remove config file copy - use application defaults ([1cbb93a](https://github.com/RomainDECOSTER/scoutquest/commit/1cbb93a425e2c0cb856ed06934de623f91fda8bd))
+
 ## [1.2.2](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.1...v1.2.2) (2025-09-20)
 
 
