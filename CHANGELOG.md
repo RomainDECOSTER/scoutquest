@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.1.0...v1.1.1) (2025-09-20)
+
+
+### Bug Fixes
+
+* **docker:** update Rust version and remove SDK Dockerfile ([c620dba](https://github.com/RomainDECOSTER/scoutquest/commit/c620dba2ce01b01c5980409d67c983abb6e86af5))
+
 # [1.1.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.0.0...v1.1.0) (2025-09-20)
 
 
