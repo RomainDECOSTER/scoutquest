@@ -1,4 +1,4 @@
-FROM rust:1.75 AS builder
+FROM rust:1.89 AS builder
 
 WORKDIR /app
 COPY . .
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/target/release/scoutquest-server .
-COPY ../config/default.toml ./config.toml
+COPY config/default.toml ./config.toml
 
 
 ENV RUST_LOG=info
