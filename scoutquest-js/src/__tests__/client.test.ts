@@ -105,6 +105,18 @@ describe('ScoutQuestClient', () => {
     });
   });
 
+  afterEach(async () => {
+    // Clean up clients and any active connections
+    if (client) {
+      client.disconnectEventStream();
+      await client.shutdown().catch(() => {}); // Ignore errors during cleanup
+    }
+    if (fastClient) {
+      fastClient.disconnectEventStream();
+      await fastClient.shutdown().catch(() => {}); // Ignore errors during cleanup
+    }
+  });
+
   describe('constructor', () => {
     it('should create client with default config', () => {
       const client = new ScoutQuestClient('http://localhost:8080');

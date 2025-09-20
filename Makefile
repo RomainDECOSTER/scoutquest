@@ -119,8 +119,9 @@ test-all: ## Run all tests
 docs-build: ## Build documentation website
 	@echo "📚 Building documentation website..."
 	@# Documentation is already built as static HTML
+	rm -rf docs/dist
 	mkdir -p docs/dist
-	cp -r docs/* docs/dist/
+	cp -r docs/assets docs/docs docs/index.html docs/README.md docs/dist/ 2>/dev/null || true
 	@echo "📚 Documentation built in docs/dist/"
 
 docs-deploy: ## Deploy documentation to GitHub Pages

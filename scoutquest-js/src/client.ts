@@ -491,6 +491,7 @@ export class ScoutQuestClient extends EventEmitter {
    * Disconnects from the event stream.
    */
   disconnectEventStream(): void {
+    this.stopHeartbeat();
     if (this.websocket) {
       this.websocket.close();
       this.websocket = undefined;
