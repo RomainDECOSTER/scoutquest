@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.1.1...v1.2.0) (2025-09-20)
+
+
+### Features
+
+* add version badge and optimize Docker build ([c932e13](https://github.com/RomainDECOSTER/scoutquest/commit/c932e13a7adf8752a51d89d412438475ef8a0cf7))
+
 ## [1.1.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.1.0...v1.1.1) (2025-09-20)
 
 
