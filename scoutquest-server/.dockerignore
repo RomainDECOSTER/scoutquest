@@ -1,0 +1,34 @@
+# Build artifacts
+target/
+Cargo.lock
+
+# Git and CI
+.git
+.github
+.gitignore
+
+# Logs
+*.log
+server.log
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~

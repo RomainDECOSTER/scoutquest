@@ -1,7 +1,13 @@
 FROM rust:1.89 AS builder
 
 WORKDIR /app
-COPY . .
+
+# Copy Cargo files first for better layer caching
+COPY Cargo.toml ./
+COPY src ./src
+COPY config ./config
+
+# Build the server
 RUN cargo build --release
 
 FROM debian:bookworm-slim
@@ -13,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/target/release/scoutquest-server .
-COPY config/default.toml ./config.toml
+COPY --from=builder /app/config/default.toml ./config.toml
 
 
 ENV RUST_LOG=info

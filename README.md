@@ -3,8 +3,13 @@
 **Universal Service Discovery for microservices architectures**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://github.com/scoutquest/scoutquest/workflows/CI/badge.svg)](https://github.com/scoutquest/scoutquest/actions)
+[![Latest Release](https://img.shields.io/github/v/release/RomainDECOSTER/scoutquest?label=version)](https://github.com/RomainDECOSTER/scoutquest/releases/latest)
+[![Build Status](https://github.com/RomainDECOSTER/scoutquest/workflows/CI/badge.svg)](https://github.com/RomainDECOSTER/scoutquest/actions)
+[![Release](https://github.com/RomainDECOSTER/scoutquest/workflows/Release/badge.svg)](https://github.com/RomainDECOSTER/scoutquest/actions)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://romaindecoster.github.io/scoutquest/)
+[![npm version](https://badge.fury.io/js/@scoutquest%2Fsdk.svg)](https://badge.fury.io/js/@scoutquest%2Fsdk)
+[![Crates.io](https://img.shields.io/crates/v/scoutquest-rust.svg)](https://crates.io/crates/scoutquest-rust)
+[![Docker Hub](https://img.shields.io/docker/v/scoutquest/server?label=docker)](https://hub.docker.com/r/scoutquest/server)
 
 SquoutQuest is a modern Service Discovery solution designed to simplify microservices management in polyglot environments.
 
