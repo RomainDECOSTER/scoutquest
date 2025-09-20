@@ -7,7 +7,7 @@ COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY config ./config
 
-# Build the server
+# Build with optimizations for CI environment
 RUN cargo build --release
 
 FROM debian:bookworm-slim
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/target/release/scoutquest-server .
-COPY --from=builder /app/config/default.toml ./config.toml
+COPY config/default.toml ./config.toml
 
 
 ENV RUST_LOG=info
