@@ -3,7 +3,7 @@ FROM rust:1.89 AS builder
 WORKDIR /app
 
 # Copy Cargo files first for better layer caching
-COPY Cargo.toml ./
+COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY config ./config
 
