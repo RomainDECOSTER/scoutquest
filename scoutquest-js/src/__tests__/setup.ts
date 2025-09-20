@@ -12,6 +12,14 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+afterAll(async () => {
+  // Wait for any pending async operations to complete
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  // Clean up all timers and handles
+  jest.clearAllTimers();
+  jest.useRealTimers();
+});
+
 // Mock console methods to reduce noise in tests
 global.console = {
   ...console,
