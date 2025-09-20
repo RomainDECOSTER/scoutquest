@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.0...v1.2.1) (2025-09-20)
+
+
+### Bug Fixes
+
+* resolve Docker build issues in semantic-release workflow ([aab5aec](https://github.com/RomainDECOSTER/scoutquest/commit/aab5aec9c8eed784532792c392fcce37e690b77d))
+
 # [1.2.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.1.1...v1.2.0) (2025-09-20)
 
 
