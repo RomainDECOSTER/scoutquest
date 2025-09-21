@@ -1,0 +1,44 @@
+# ScoutQuest Server Configuration with TLS
+# This example shows how to enable TLS with automatic certificate generation
+
+[server]
+host = "0.0.0.0"
+port = 8443
+enable_cors = true
+cors_origins = ["*"]
+
+[logging]
+level = "info"
+format = "pretty"
+
+[health_check]
+interval_seconds = 30
+timeout_seconds = 10
+max_failures = 3
+
+[security]
+enable_auth = false
+api_key = ""
+rate_limit_per_minute = 1000
+
+# ScoutQuest TLS Configuration - Zero Config TLS
+[scoutquest.tls]
+# Enable TLS/HTTPS support
+enabled = true
+
+# Certificate directory (ScoutQuest manages certificates here)
+cert_dir = "./certs"
+
+# Auto-generate self-signed certificates if none exist
+auto_generate = true
+
+# Verify peer certificates (for client authentication)
+verify_peer = true
+
+# TLS protocol versions
+min_version = "1.2"
+max_version = "1.3"
+
+# HTTPS redirect (redirect HTTP to HTTPS)
+redirect_http = false
+http_port = 3001
