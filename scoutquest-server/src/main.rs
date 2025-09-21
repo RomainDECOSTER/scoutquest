@@ -13,10 +13,13 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilte
 
 mod api;
 mod health_checker;
+pub mod middleware;
 mod models;
 mod registry;
 
 use health_checker::HealthChecker;
+use middleware::ip_restriction::{ip_restriction_layer, IpRestrictionMiddleware};
+pub use models::*;
 use registry::ServiceRegistry;
 
 /// SquoutQuest server configuration
@@ -26,6 +29,7 @@ pub struct AppConfig {
     pub logging: LoggingConfig,
     pub health_check: HealthCheckConfig,
     pub security: SecurityConfig,
+    pub network: Option<NetworkConfig>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -56,6 +60,15 @@ pub struct SecurityConfig {
     pub rate_limit_per_minute: u32,
 }
 
+#[derive(Debug, Deserialize, Clone, Serialize)]
+pub struct NetworkConfig {
+    pub enabled: bool,
+    pub allowed_cidrs: Vec<String>,
+    pub denied_cidrs: Option<Vec<String>>,
+    pub deny_action: String,
+    pub trust_proxy_headers: bool,
+}
+
 impl Default for AppConfig {
     fn default() -> Self {
         Self {
@@ -79,6 +92,7 @@ impl Default for AppConfig {
                 api_key: None,
                 rate_limit_per_minute: 1000,
             },
+            network: None,
         }
     }
 }
@@ -137,6 +151,36 @@ async fn main() -> anyhow::Result<()> {
         config: config.clone(),
     };
 
+    // Create IP restriction middleware if enabled
+    let ip_restriction_middleware = if let Some(network_config) = &config.network {
+        match IpRestrictionMiddleware::new(network_config) {
+            Ok(middleware) => {
+                if network_config.enabled {
+                    tracing::info!("🛡️ Network IP restrictions enabled");
+                    tracing::info!("   Allowed CIDRs: {:?}", network_config.allowed_cidrs);
+                    if let Some(denied) = &network_config.denied_cidrs {
+                        tracing::info!("   Denied CIDRs: {:?}", denied);
+                    }
+                    tracing::info!("   Action: {}", network_config.deny_action);
+                    tracing::info!(
+                        "   Trust proxy headers: {}",
+                        network_config.trust_proxy_headers
+                    );
+                } else {
+                    tracing::info!("🛡️ Network IP restrictions disabled");
+                }
+                Some(Arc::new(middleware))
+            }
+            Err(e) => {
+                tracing::error!("❌ Failed to initialize IP restriction middleware: {}", e);
+                return Err(e);
+            }
+        }
+    } else {
+        tracing::info!("🛡️ Network IP restrictions not configured (disabled)");
+        None
+    };
+
     let cors = if config.server.enable_cors {
         if config.server.cors_origins.contains(&"*".to_string()) {
             CorsLayer::new()
@@ -168,16 +212,24 @@ async fn main() -> anyhow::Result<()> {
         CorsLayer::new()
     };
 
-    let app = Router::new()
+    let mut app = Router::new()
         .nest("/api", api_routes())
         .route("/health", get(health_endpoint))
         .route("/metrics", get(metrics_endpoint))
         .route("/dashboard", get(dashboard))
         .route("/info", get(info_endpoint))
         .route("/ws", get(websocket_handler))
-        .layer(TraceLayer::new_for_http())
-        .layer(cors)
-        .with_state(app_state);
+        .layer(TraceLayer::new_for_http());
+
+    // Add IP restriction middleware if configured
+    if let Some(ip_middleware) = ip_restriction_middleware {
+        app = app.layer(axum::middleware::from_fn_with_state(
+            ip_middleware,
+            ip_restriction_layer,
+        ));
+    }
+
+    let app = app.layer(cors).with_state(app_state);
 
     let host = args.host.as_deref().unwrap_or(&config.server.host);
     let port = args.port.unwrap_or(config.server.port);

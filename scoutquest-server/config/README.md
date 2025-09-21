@@ -66,6 +66,17 @@ Security configuration.
 | `api_key` | `""` | API key for authentication |
 | `rate_limit_per_minute` | `1000` | Rate limiting per IP |
 
+### [network]
+Network access restrictions by CIDR ranges.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `enabled` | `false` | Enable network access restrictions |
+| `allowed_cidrs` | `["0.0.0.0/0"]` | Whitelist CIDR ranges (IPv4/IPv6) |
+| `denied_cidrs` | `[]` | Blacklist CIDR ranges (takes priority) |
+| `deny_action` | `"reject"` | Action for denied IPs: "reject" or "log_only" |
+| `trust_proxy_headers` | `true` | Trust X-Forwarded-For and X-Real-IP headers |
+
 ## Environment Variables
 
 You can override configuration using environment variables:
@@ -116,6 +127,48 @@ Settings are loaded in this order (later overrides earlier):
 3. **Environment variables** (prefixed with `SCOUTQUEST_`)
 4. **Command line arguments** (highest priority)
 
+## Network Security Examples
+
+### Kubernetes Deployment
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16"]  # Only cluster pods
+deny_action = "reject"
+```
+
+### Docker Compose
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["172.17.0.0/16", "172.20.0.0/16"]  # Docker networks
+deny_action = "reject"
+```
+
+### Development Mode
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["0.0.0.0/0"]  # Allow all
+deny_action = "log_only"       # Just log, don't block
+```
+
+### High Security Production
+```toml
+[network]
+enabled = true
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes cluster
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for health checks
+]
+denied_cidrs = [
+    "10.42.99.0/24"    # Block specific suspicious subnet
+]
+deny_action = "reject"
+trust_proxy_headers = true
+```
+
 ## Production Configuration
 
 For production environments, consider:
@@ -124,6 +177,8 @@ For production environments, consider:
    - Set `enable_auth = true`
    - Use a strong `api_key`
    - Restrict `cors_origins` to specific domains
+   - **Enable network restrictions** with `[network]` section
+   - Use specific CIDR ranges, avoid `0.0.0.0/0`
 
 2. **Performance**:
    - Use `format = "json"` for better log aggregation
@@ -133,6 +188,13 @@ For production environments, consider:
 3. **Monitoring**:
    - Set `level = "warn"` or `"error"` to reduce log noise
    - Use structured logging with `format = "json"`
+   - Monitor network access logs for security
+
+4. **Network Security**:
+   - Always enable network restrictions in production
+   - Use specific CIDR ranges for your infrastructure
+   - Consider using `deny_action = "reject"` for strict security
+   - Set `trust_proxy_headers = true` if behind a load balancer
 
 ## Example Production Configuration
 
