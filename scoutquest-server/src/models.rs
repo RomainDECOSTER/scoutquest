@@ -18,12 +18,6 @@ pub struct ServiceInstance {
     pub last_status_change: DateTime<Utc>,
 }
 
-/// ScoutQuest-specific configuration section
-#[derive(Debug, Deserialize, Clone, Serialize)]
-pub struct ScoutQuestConfig {
-    pub tls: Option<ScoutQuestTlsConfig>,
-}
-
 /// TLS configuration for ScoutQuest server
 #[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct ScoutQuestTlsConfig {

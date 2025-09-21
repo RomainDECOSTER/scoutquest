@@ -21,8 +21,8 @@ enable_auth = true
 api_key = "your-production-api-key"
 rate_limit_per_minute = 500
 
-# ScoutQuest TLS Configuration - Production with Custom Certificates
-[scoutquest.tls]
+# TLS Configuration - Production with Custom Certificates
+[tls]
 # Enable TLS/HTTPS support
 enabled = true
 

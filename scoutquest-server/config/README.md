@@ -224,7 +224,7 @@ rate_limit_per_minute = 500
 
 ScoutQuest Server now supports native TLS/HTTPS with automatic certificate generation and management.
 
-### [scoutquest.tls]
+### [tls]
 TLS/SSL configuration for HTTPS support.
 
 | Setting | Default | Description |
@@ -246,7 +246,7 @@ TLS/SSL configuration for HTTPS support.
 [server]
 port = 8443
 
-[scoutquest.tls]
+[tls]
 enabled = true
 cert_dir = "./certs"
 auto_generate = true
@@ -259,7 +259,7 @@ verify_peer = false  # Disable for development
 [server]
 port = 443
 
-[scoutquest.tls]
+[tls]
 enabled = true
 auto_generate = false
 cert_path = "/etc/ssl/certs/scoutquest.crt"
@@ -273,18 +273,18 @@ http_port = 80
 
 ```bash
 # Enable TLS
-SCOUTQUEST_SCOUTQUEST_TLS_ENABLED=true
-SCOUTQUEST_SCOUTQUEST_TLS_CERT_DIR=/etc/certs
-SCOUTQUEST_SCOUTQUEST_TLS_AUTO_GENERATE=true
+SCOUTQUEST_TLS_ENABLED=true
+SCOUTQUEST_TLS_CERT_DIR=/etc/certs
+SCOUTQUEST_TLS_AUTO_GENERATE=true
 
 # Custom certificates
-SCOUTQUEST_SCOUTQUEST_TLS_CERT_PATH=/path/to/cert.pem
-SCOUTQUEST_SCOUTQUEST_TLS_KEY_PATH=/path/to/key.pem
+SCOUTQUEST_TLS_CERT_PATH=/path/to/cert.pem
+SCOUTQUEST_TLS_KEY_PATH=/path/to/key.pem
 
 # Security settings
-SCOUTQUEST_SCOUTQUEST_TLS_VERIFY_PEER=true
-SCOUTQUEST_SCOUTQUEST_TLS_MIN_VERSION=1.2
-SCOUTQUEST_SCOUTQUEST_TLS_REDIRECT_HTTP=true
+SCOUTQUEST_TLS_VERIFY_PEER=true
+SCOUTQUEST_TLS_MIN_VERSION=1.2
+SCOUTQUEST_TLS_REDIRECT_HTTP=true
 ```
 
 ### TLS Configuration Examples
@@ -331,5 +331,5 @@ cargo run -- --config config/tls-development.toml
 cargo run -- --config config/tls-production.toml
 
 # Enable TLS via environment variable
-SCOUTQUEST_SCOUTQUEST_TLS_ENABLED=true cargo run
+SCOUTQUEST_TLS_ENABLED=true cargo run
 ```

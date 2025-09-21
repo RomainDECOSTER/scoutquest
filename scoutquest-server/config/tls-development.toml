@@ -20,8 +20,8 @@ max_failures = 5
 enable_auth = false
 rate_limit_per_minute = 10000
 
-# ScoutQuest TLS Configuration - Development
-[scoutquest.tls]
+# TLS Configuration - Development
+[tls]
 # Enable TLS/HTTPS support
 enabled = true
 
