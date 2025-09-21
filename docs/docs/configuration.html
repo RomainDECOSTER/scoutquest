@@ -218,6 +218,13 @@ cert_file = "/etc/ssl/certs/scoutquest.crt"
 key_file = "/etc/ssl/private/scoutquest.key"
 ca_file = "/etc/ssl/certs/ca.crt"
 
+[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16", "172.20.0.0/16"]
+denied_cidrs = ["10.42.99.0/24"]
+deny_action = "reject"
+trust_proxy_headers = true
+
 [api]
 rate_limit_per_minute = 10000
 request_timeout = "60s"
@@ -261,10 +268,87 @@ HEALTH_CHECK_INTERVAL=30s
 
 # Metrics
 METRICS_ENABLED=true
-METRICS_ENDPOINT=/metrics</code></pre>
+METRICS_ENDPOINT=/metrics
+
+# Network Security
+SCOUTQUEST_NETWORK_ENABLED=true
+SCOUTQUEST_NETWORK_ALLOWED_CIDRS=10.42.0.0/16,172.20.0.0/16
+SCOUTQUEST_NETWORK_DENY_ACTION=reject</code></pre>
                                 </div>
 
-                                <h3>Docker Compose Configuration</h3>
+                                <h2>Network Security</h2>
+                                <div class="docs-section">
+                                    <p>ScoutQuest supports network access restrictions using CIDR ranges to enhance
+                                        security in production environments.</p>
+
+                                    <h3>Basic Network Configuration</h3>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+# Enable network access restrictions
+enabled = true
+
+# Allowed CIDR ranges (whitelist)
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes internal network
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for testing
+]
+
+# Explicitly denied CIDR ranges (optional blacklist)
+denied_cidrs = [
+    "192.168.1.0/24"   # Block specific subnets
+]
+
+# Action when IP is not allowed
+deny_action = "reject"  # Options: "reject" or "log_only"
+
+# Trust proxy headers (X-Forwarded-For, X-Real-IP)
+trust_proxy_headers = true</code></pre>
+                                    </div>
+
+                                    <h3>Deployment Examples</h3>
+
+                                    <h4>Kubernetes</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16"]  # Only cluster pods
+deny_action = "reject"</code></pre>
+                                    </div>
+
+                                    <h4>Development</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = ["0.0.0.0/0"]  # Allow all
+deny_action = "log_only"       # Just log, don't block</code></pre>
+                                    </div>
+
+                                    <h4>High Security Production</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes cluster
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for health checks
+]
+denied_cidrs = [
+    "10.42.99.0/24"    # Block specific suspicious subnet
+]
+deny_action = "reject"
+trust_proxy_headers = true</code></pre>
+                                    </div>
+
+                                    <div class="warning">
+                                        <strong>⚠️ Important:</strong> Network restrictions are disabled by default to
+                                        maintain backward compatibility.
+                                        Always test your CIDR configuration in a development environment before
+                                        deploying to production.
+                                    </div>
+                                </div>
+
+                                <h2>Docker Compose Configuration</h2>
                                 <div class="code-block">
                                     <pre><code># docker-compose.yml
 version: '3.8'

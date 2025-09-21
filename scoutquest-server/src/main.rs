@@ -7,17 +7,22 @@ use axum::{
 use clap::Parser;
 use config::{Config, Environment, File};
 use serde::{Deserialize, Serialize};
-use std::{net::SocketAddr, sync::Arc};
+use std::sync::Arc;
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 mod api;
 mod health_checker;
+pub mod middleware;
 mod models;
 mod registry;
+mod tls;
 
 use health_checker::HealthChecker;
+use middleware::ip_restriction::{ip_restriction_layer, IpRestrictionMiddleware};
+pub use models::*;
 use registry::ServiceRegistry;
+use tls::start_server;
 
 /// SquoutQuest server configuration
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -26,6 +31,8 @@ pub struct AppConfig {
     pub logging: LoggingConfig,
     pub health_check: HealthCheckConfig,
     pub security: SecurityConfig,
+    pub network: Option<NetworkConfig>,
+    pub tls: Option<ScoutQuestTlsConfig>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -56,6 +63,15 @@ pub struct SecurityConfig {
     pub rate_limit_per_minute: u32,
 }
 
+#[derive(Debug, Deserialize, Clone, Serialize)]
+pub struct NetworkConfig {
+    pub enabled: bool,
+    pub allowed_cidrs: Vec<String>,
+    pub denied_cidrs: Option<Vec<String>>,
+    pub deny_action: String,
+    pub trust_proxy_headers: bool,
+}
+
 impl Default for AppConfig {
     fn default() -> Self {
         Self {
@@ -79,6 +95,8 @@ impl Default for AppConfig {
                 api_key: None,
                 rate_limit_per_minute: 1000,
             },
+            network: None,
+            tls: None,
         }
     }
 }
@@ -115,7 +133,12 @@ pub struct AppState {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
+    let mut args = Args::parse();
+
+    // Override config file with CONFIG_FILE environment variable if set
+    if let Ok(config_file) = std::env::var("CONFIG_FILE") {
+        args.config = config_file;
+    }
 
     let config = load_config(&args)?;
 
@@ -135,6 +158,36 @@ async fn main() -> anyhow::Result<()> {
         registry,
         health_checker,
         config: config.clone(),
+    };
+
+    // Create IP restriction middleware if enabled
+    let ip_restriction_middleware = if let Some(network_config) = &config.network {
+        match IpRestrictionMiddleware::new(network_config) {
+            Ok(middleware) => {
+                if network_config.enabled {
+                    tracing::info!("🛡️ Network IP restrictions enabled");
+                    tracing::info!("   Allowed CIDRs: {:?}", network_config.allowed_cidrs);
+                    if let Some(denied) = &network_config.denied_cidrs {
+                        tracing::info!("   Denied CIDRs: {:?}", denied);
+                    }
+                    tracing::info!("   Action: {}", network_config.deny_action);
+                    tracing::info!(
+                        "   Trust proxy headers: {}",
+                        network_config.trust_proxy_headers
+                    );
+                } else {
+                    tracing::info!("🛡️ Network IP restrictions disabled");
+                }
+                Some(Arc::new(middleware))
+            }
+            Err(e) => {
+                tracing::error!("❌ Failed to initialize IP restriction middleware: {}", e);
+                return Err(e);
+            }
+        }
+    } else {
+        tracing::info!("🛡️ Network IP restrictions not configured (disabled)");
+        None
     };
 
     let cors = if config.server.enable_cors {
@@ -168,27 +221,65 @@ async fn main() -> anyhow::Result<()> {
         CorsLayer::new()
     };
 
-    let app = Router::new()
+    let mut app = Router::new()
         .nest("/api", api_routes())
         .route("/health", get(health_endpoint))
         .route("/metrics", get(metrics_endpoint))
         .route("/dashboard", get(dashboard))
         .route("/info", get(info_endpoint))
         .route("/ws", get(websocket_handler))
-        .layer(TraceLayer::new_for_http())
-        .layer(cors)
-        .with_state(app_state);
+        .layer(TraceLayer::new_for_http());
 
-    let host = args.host.as_deref().unwrap_or(&config.server.host);
-    let port = args.port.unwrap_or(config.server.port);
-    let addr = SocketAddr::from((host.parse::<std::net::IpAddr>()?, port));
+    // Add IP restriction middleware if configured
+    if let Some(ip_middleware) = ip_restriction_middleware {
+        app = app.layer(axum::middleware::from_fn_with_state(
+            ip_middleware,
+            ip_restriction_layer,
+        ));
+    }
 
-    tracing::info!("🚀 SquoutQuest Server started on http://{}", addr);
-    tracing::info!("📊 Dashboard available at http://{}/dashboard", addr);
-    tracing::info!("🔍 API documentation at http://{}/api/v1", addr);
+    let app = app.layer(cors).with_state(app_state);
 
-    let listener = tokio::net::TcpListener::bind(addr).await?;
-    axum::serve(listener, app).await?;
+    // Apply command-line overrides to server config
+    let mut final_config = config.clone();
+    if let Some(port) = args.port {
+        final_config.server.port = port;
+    }
+    if let Some(host) = &args.host {
+        final_config.server.host = host.clone();
+    }
+
+    // Log server startup information
+    let protocol = if final_config
+        .tls
+        .as_ref()
+        .map(|tls| tls.enabled)
+        .unwrap_or(false)
+    {
+        "https"
+    } else {
+        "http"
+    };
+
+    tracing::info!(
+        "🚀 Starting ScoutQuest Server v{}",
+        env!("CARGO_PKG_VERSION")
+    );
+    tracing::info!(
+        "📊 Dashboard available at {}://{}:{}/dashboard",
+        protocol,
+        final_config.server.host,
+        final_config.server.port
+    );
+    tracing::info!(
+        "🔍 API documentation at {}://{}:{}/api/v1",
+        protocol,
+        final_config.server.host,
+        final_config.server.port
+    );
+
+    // Start the server (HTTP or HTTPS based on configuration)
+    start_server(app, &final_config).await?;
 
     Ok(())
 }
@@ -214,16 +305,11 @@ fn load_config(args: &Args) -> anyhow::Result<AppConfig> {
             .try_parsing(true),
     );
 
-    let mut config: AppConfig = config_builder.build()?.try_deserialize()?;
+    let config: AppConfig = config_builder.build()?.try_deserialize()?;
 
-    if let Some(port) = args.port {
-        config.server.port = port;
-    }
-    if let Some(host) = &args.host {
-        config.server.host = host.clone();
-    }
+    // Log level override is handled separately in setup_logging
     if let Some(log_level) = &args.log_level {
-        config.logging.level = log_level.clone();
+        tracing::info!("🔧 Log level overridden to: {}", log_level);
     }
 
     Ok(config)

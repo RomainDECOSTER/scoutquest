@@ -66,6 +66,17 @@ Security configuration.
 | `api_key` | `""` | API key for authentication |
 | `rate_limit_per_minute` | `1000` | Rate limiting per IP |
 
+### [network]
+Network access restrictions by CIDR ranges.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `enabled` | `false` | Enable network access restrictions |
+| `allowed_cidrs` | `["0.0.0.0/0"]` | Whitelist CIDR ranges (IPv4/IPv6) |
+| `denied_cidrs` | `[]` | Blacklist CIDR ranges (takes priority) |
+| `deny_action` | `"reject"` | Action for denied IPs: "reject" or "log_only" |
+| `trust_proxy_headers` | `true` | Trust X-Forwarded-For and X-Real-IP headers |
+
 ## Environment Variables
 
 You can override configuration using environment variables:
@@ -116,6 +127,48 @@ Settings are loaded in this order (later overrides earlier):
 3. **Environment variables** (prefixed with `SCOUTQUEST_`)
 4. **Command line arguments** (highest priority)
 
+## Network Security Examples
+
+### Kubernetes Deployment
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16"]  # Only cluster pods
+deny_action = "reject"
+```
+
+### Docker Compose
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["172.17.0.0/16", "172.20.0.0/16"]  # Docker networks
+deny_action = "reject"
+```
+
+### Development Mode
+```toml
+[network]
+enabled = true
+allowed_cidrs = ["0.0.0.0/0"]  # Allow all
+deny_action = "log_only"       # Just log, don't block
+```
+
+### High Security Production
+```toml
+[network]
+enabled = true
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes cluster
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for health checks
+]
+denied_cidrs = [
+    "10.42.99.0/24"    # Block specific suspicious subnet
+]
+deny_action = "reject"
+trust_proxy_headers = true
+```
+
 ## Production Configuration
 
 For production environments, consider:
@@ -124,6 +177,8 @@ For production environments, consider:
    - Set `enable_auth = true`
    - Use a strong `api_key`
    - Restrict `cors_origins` to specific domains
+   - **Enable network restrictions** with `[network]` section
+   - Use specific CIDR ranges, avoid `0.0.0.0/0`
 
 2. **Performance**:
    - Use `format = "json"` for better log aggregation
@@ -133,6 +188,13 @@ For production environments, consider:
 3. **Monitoring**:
    - Set `level = "warn"` or `"error"` to reduce log noise
    - Use structured logging with `format = "json"`
+   - Monitor network access logs for security
+
+4. **Network Security**:
+   - Always enable network restrictions in production
+   - Use specific CIDR ranges for your infrastructure
+   - Consider using `deny_action = "reject"` for strict security
+   - Set `trust_proxy_headers = true` if behind a load balancer
 
 ## Example Production Configuration
 
@@ -156,4 +218,118 @@ max_failures = 2
 enable_auth = true
 api_key = "your-secure-api-key-here"
 rate_limit_per_minute = 500
+```
+
+## 🔒 TLS/HTTPS Support (NEW!)
+
+ScoutQuest Server now supports native TLS/HTTPS with automatic certificate generation and management.
+
+### [tls]
+TLS/SSL configuration for HTTPS support.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `enabled` | `false` | Enable TLS/HTTPS support |
+| `cert_dir` | `"/etc/certs"` | Certificate directory |
+| `auto_generate` | `true` | Auto-generate self-signed certificates |
+| `verify_peer` | `true` | Verify client certificates |
+| `cert_path` | `None` | Custom certificate file path |
+| `key_path` | `None` | Custom private key file path |
+| `min_version` | `"1.2"` | Minimum TLS version |
+| `max_version` | `"1.3"` | Maximum TLS version |
+| `redirect_http` | `false` | Redirect HTTP to HTTPS |
+| `http_port` | `3001` | HTTP redirect server port |
+
+### Zero-Configuration TLS (Development)
+
+```toml
+[server]
+port = 8443
+
+[tls]
+enabled = true
+cert_dir = "./certs"
+auto_generate = true
+verify_peer = false  # Disable for development
+```
+
+### Production TLS with Custom Certificates
+
+```toml
+[server]
+port = 443
+
+[tls]
+enabled = true
+auto_generate = false
+cert_path = "/etc/ssl/certs/scoutquest.crt"
+key_path = "/etc/ssl/private/scoutquest.key"
+verify_peer = true
+redirect_http = true
+http_port = 80
+```
+
+### TLS Environment Variables
+
+```bash
+# Enable TLS
+SCOUTQUEST_TLS_ENABLED=true
+SCOUTQUEST_TLS_CERT_DIR=/etc/certs
+SCOUTQUEST_TLS_AUTO_GENERATE=true
+
+# Custom certificates
+SCOUTQUEST_TLS_CERT_PATH=/path/to/cert.pem
+SCOUTQUEST_TLS_KEY_PATH=/path/to/key.pem
+
+# Security settings
+SCOUTQUEST_TLS_VERIFY_PEER=true
+SCOUTQUEST_TLS_MIN_VERSION=1.2
+SCOUTQUEST_TLS_REDIRECT_HTTP=true
+```
+
+### TLS Configuration Examples
+
+The following TLS configuration files are available:
+
+- **`tls-auto.toml`** - Zero-config TLS with auto-generation
+- **`tls-development.toml`** - Development-friendly TLS setup
+- **`tls-production.toml`** - Production TLS with custom certificates
+
+### Certificate Management
+
+#### Automatic Certificate Generation
+ScoutQuest automatically generates self-signed certificates when `auto_generate = true`:
+
+```bash
+# Certificates are created in cert_dir
+./certs/
+├── scoutquest.crt  # Self-signed certificate
+└── scoutquest.key  # Private key (600 permissions)
+```
+
+#### Manual Certificate Setup
+```bash
+# Generate development certificates
+openssl req -x509 -newkey rsa:4096 -keyout scoutquest.key -out scoutquest.crt \
+    -days 365 -nodes -subj "/CN=localhost"
+
+# Set proper permissions
+chmod 600 scoutquest.key
+chmod 644 scoutquest.crt
+```
+
+### TLS Usage Examples
+
+```bash
+# Start with auto-generated TLS
+cargo run -- --config config/tls-auto.toml
+
+# Development with TLS
+cargo run -- --config config/tls-development.toml
+
+# Production with custom certificates
+cargo run -- --config config/tls-production.toml
+
+# Enable TLS via environment variable
+SCOUTQUEST_TLS_ENABLED=true cargo run
 ```
