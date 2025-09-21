@@ -18,6 +18,54 @@ pub struct ServiceInstance {
     pub last_status_change: DateTime<Utc>,
 }
 
+/// ScoutQuest-specific configuration section
+#[derive(Debug, Deserialize, Clone, Serialize)]
+pub struct ScoutQuestConfig {
+    pub tls: Option<ScoutQuestTlsConfig>,
+}
+
+/// TLS configuration for ScoutQuest server
+#[derive(Debug, Deserialize, Clone, Serialize)]
+pub struct ScoutQuestTlsConfig {
+    /// Enable TLS/HTTPS support
+    pub enabled: bool,
+    /// Certificate directory (ScoutQuest manages certificates here)
+    pub cert_dir: String,
+    /// Auto-generate self-signed certificates if none exist
+    pub auto_generate: bool,
+    /// Verify peer certificates (for client authentication)
+    pub verify_peer: bool,
+    /// Optional: Custom certificate path (overrides auto-generation)
+    pub cert_path: Option<String>,
+    /// Optional: Custom private key path (overrides auto-generation)
+    pub key_path: Option<String>,
+    /// TLS minimum version (1.2, 1.3)
+    pub min_version: Option<String>,
+    /// TLS maximum version (1.2, 1.3)
+    pub max_version: Option<String>,
+    /// HTTPS redirect (redirect HTTP to HTTPS)
+    pub redirect_http: Option<bool>,
+    /// Port for HTTP redirect server
+    pub http_port: Option<u16>,
+}
+
+impl Default for ScoutQuestTlsConfig {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            cert_dir: "/etc/certs".to_string(),
+            auto_generate: true,
+            verify_peer: true,
+            cert_path: None,
+            key_path: None,
+            min_version: Some("1.2".to_string()),
+            max_version: Some("1.3".to_string()),
+            redirect_http: Some(false),
+            http_port: Some(3001),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum InstanceStatus {
     Up,

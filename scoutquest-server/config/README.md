@@ -219,3 +219,117 @@ enable_auth = true
 api_key = "your-secure-api-key-here"
 rate_limit_per_minute = 500
 ```
+
+## 🔒 TLS/HTTPS Support (NEW!)
+
+ScoutQuest Server now supports native TLS/HTTPS with automatic certificate generation and management.
+
+### [scoutquest.tls]
+TLS/SSL configuration for HTTPS support.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `enabled` | `false` | Enable TLS/HTTPS support |
+| `cert_dir` | `"/etc/certs"` | Certificate directory |
+| `auto_generate` | `true` | Auto-generate self-signed certificates |
+| `verify_peer` | `true` | Verify client certificates |
+| `cert_path` | `None` | Custom certificate file path |
+| `key_path` | `None` | Custom private key file path |
+| `min_version` | `"1.2"` | Minimum TLS version |
+| `max_version` | `"1.3"` | Maximum TLS version |
+| `redirect_http` | `false` | Redirect HTTP to HTTPS |
+| `http_port` | `3001` | HTTP redirect server port |
+
+### Zero-Configuration TLS (Development)
+
+```toml
+[server]
+port = 8443
+
+[scoutquest.tls]
+enabled = true
+cert_dir = "./certs"
+auto_generate = true
+verify_peer = false  # Disable for development
+```
+
+### Production TLS with Custom Certificates
+
+```toml
+[server]
+port = 443
+
+[scoutquest.tls]
+enabled = true
+auto_generate = false
+cert_path = "/etc/ssl/certs/scoutquest.crt"
+key_path = "/etc/ssl/private/scoutquest.key"
+verify_peer = true
+redirect_http = true
+http_port = 80
+```
+
+### TLS Environment Variables
+
+```bash
+# Enable TLS
+SCOUTQUEST_SCOUTQUEST_TLS_ENABLED=true
+SCOUTQUEST_SCOUTQUEST_TLS_CERT_DIR=/etc/certs
+SCOUTQUEST_SCOUTQUEST_TLS_AUTO_GENERATE=true
+
+# Custom certificates
+SCOUTQUEST_SCOUTQUEST_TLS_CERT_PATH=/path/to/cert.pem
+SCOUTQUEST_SCOUTQUEST_TLS_KEY_PATH=/path/to/key.pem
+
+# Security settings
+SCOUTQUEST_SCOUTQUEST_TLS_VERIFY_PEER=true
+SCOUTQUEST_SCOUTQUEST_TLS_MIN_VERSION=1.2
+SCOUTQUEST_SCOUTQUEST_TLS_REDIRECT_HTTP=true
+```
+
+### TLS Configuration Examples
+
+The following TLS configuration files are available:
+
+- **`tls-auto.toml`** - Zero-config TLS with auto-generation
+- **`tls-development.toml`** - Development-friendly TLS setup
+- **`tls-production.toml`** - Production TLS with custom certificates
+
+### Certificate Management
+
+#### Automatic Certificate Generation
+ScoutQuest automatically generates self-signed certificates when `auto_generate = true`:
+
+```bash
+# Certificates are created in cert_dir
+./certs/
+├── scoutquest.crt  # Self-signed certificate
+└── scoutquest.key  # Private key (600 permissions)
+```
+
+#### Manual Certificate Setup
+```bash
+# Generate development certificates
+openssl req -x509 -newkey rsa:4096 -keyout scoutquest.key -out scoutquest.crt \
+    -days 365 -nodes -subj "/CN=localhost"
+
+# Set proper permissions
+chmod 600 scoutquest.key
+chmod 644 scoutquest.crt
+```
+
+### TLS Usage Examples
+
+```bash
+# Start with auto-generated TLS
+cargo run -- --config config/tls-auto.toml
+
+# Development with TLS
+cargo run -- --config config/tls-development.toml
+
+# Production with custom certificates
+cargo run -- --config config/tls-production.toml
+
+# Enable TLS via environment variable
+SCOUTQUEST_SCOUTQUEST_TLS_ENABLED=true cargo run
+```

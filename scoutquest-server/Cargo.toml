@@ -28,3 +28,20 @@ config = "0.15.13"
 clap = { version = "4.0", features = ["derive"] }
 rand = "0.9.2"
 ipnet = "2.9"
+
+# TLS support
+axum-server = { version = "0.6", features = ["tls-rustls"] }
+rustls = "0.21"
+rustls-pemfile = "1.0"
+tokio-rustls = "0.24"
+
+# Auto certificate generation
+rcgen = "0.11"
+ring = "0.16"
+time = "0.3"
+
+# Certificate parsing and validation
+x509-parser = "0.15"
+
+[dev-dependencies]
+tempfile = "3.8"
