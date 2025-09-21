@@ -30,3 +30,5 @@ node_modules/
 Logs/
 
 .DS_Store
+
+**/*certs*/**
