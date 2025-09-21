@@ -7,7 +7,7 @@ use axum::{
 use clap::Parser;
 use config::{Config, Environment, File};
 use serde::{Deserialize, Serialize};
-use std::{net::SocketAddr, sync::Arc};
+use std::sync::Arc;
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
@@ -16,11 +16,13 @@ mod health_checker;
 pub mod middleware;
 mod models;
 mod registry;
+mod tls;
 
 use health_checker::HealthChecker;
 use middleware::ip_restriction::{ip_restriction_layer, IpRestrictionMiddleware};
 pub use models::*;
 use registry::ServiceRegistry;
+use tls::start_server;
 
 /// SquoutQuest server configuration
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -30,6 +32,7 @@ pub struct AppConfig {
     pub health_check: HealthCheckConfig,
     pub security: SecurityConfig,
     pub network: Option<NetworkConfig>,
+    pub tls: Option<ScoutQuestTlsConfig>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -93,6 +96,7 @@ impl Default for AppConfig {
                 rate_limit_per_minute: 1000,
             },
             network: None,
+            tls: None,
         }
     }
 }
@@ -129,7 +133,12 @@ pub struct AppState {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
+    let mut args = Args::parse();
+
+    // Override config file with CONFIG_FILE environment variable if set
+    if let Ok(config_file) = std::env::var("CONFIG_FILE") {
+        args.config = config_file;
+    }
 
     let config = load_config(&args)?;
 
@@ -231,16 +240,46 @@ async fn main() -> anyhow::Result<()> {
 
     let app = app.layer(cors).with_state(app_state);
 
-    let host = args.host.as_deref().unwrap_or(&config.server.host);
-    let port = args.port.unwrap_or(config.server.port);
-    let addr = SocketAddr::from((host.parse::<std::net::IpAddr>()?, port));
+    // Apply command-line overrides to server config
+    let mut final_config = config.clone();
+    if let Some(port) = args.port {
+        final_config.server.port = port;
+    }
+    if let Some(host) = &args.host {
+        final_config.server.host = host.clone();
+    }
 
-    tracing::info!("🚀 SquoutQuest Server started on http://{}", addr);
-    tracing::info!("📊 Dashboard available at http://{}/dashboard", addr);
-    tracing::info!("🔍 API documentation at http://{}/api/v1", addr);
+    // Log server startup information
+    let protocol = if final_config
+        .tls
+        .as_ref()
+        .map(|tls| tls.enabled)
+        .unwrap_or(false)
+    {
+        "https"
+    } else {
+        "http"
+    };
 
-    let listener = tokio::net::TcpListener::bind(addr).await?;
-    axum::serve(listener, app).await?;
+    tracing::info!(
+        "🚀 Starting ScoutQuest Server v{}",
+        env!("CARGO_PKG_VERSION")
+    );
+    tracing::info!(
+        "📊 Dashboard available at {}://{}:{}/dashboard",
+        protocol,
+        final_config.server.host,
+        final_config.server.port
+    );
+    tracing::info!(
+        "🔍 API documentation at {}://{}:{}/api/v1",
+        protocol,
+        final_config.server.host,
+        final_config.server.port
+    );
+
+    // Start the server (HTTP or HTTPS based on configuration)
+    start_server(app, &final_config).await?;
 
     Ok(())
 }
@@ -266,16 +305,11 @@ fn load_config(args: &Args) -> anyhow::Result<AppConfig> {
             .try_parsing(true),
     );
 
-    let mut config: AppConfig = config_builder.build()?.try_deserialize()?;
+    let config: AppConfig = config_builder.build()?.try_deserialize()?;
 
-    if let Some(port) = args.port {
-        config.server.port = port;
-    }
-    if let Some(host) = &args.host {
-        config.server.host = host.clone();
-    }
+    // Log level override is handled separately in setup_logging
     if let Some(log_level) = &args.log_level {
-        config.logging.level = log_level.clone();
+        tracing::info!("🔧 Log level overridden to: {}", log_level);
     }
 
     Ok(config)

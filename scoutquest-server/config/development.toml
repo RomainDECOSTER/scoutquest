@@ -1,0 +1,29 @@
+# Development configuration example
+# Allows all IPs but logs potential denials for testing
+
+[server]
+host = "0.0.0.0"
+port = 8080
+enable_cors = true
+cors_origins = ["*"]
+
+[logging]
+level = "debug"
+format = "pretty"
+
+[health_check]
+interval_seconds = 30
+timeout_seconds = 10
+max_failures = 3
+
+[security]
+enable_auth = false
+api_key = ""
+rate_limit_per_minute = 1000
+
+[network]
+enabled = true
+allowed_cidrs = ["0.0.0.0/0"]  # Allow all for development
+denied_cidrs = []
+deny_action = "log_only"  # Just log, don't block
+trust_proxy_headers = true

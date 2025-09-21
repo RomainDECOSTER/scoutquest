@@ -1,0 +1,48 @@
+# ScoutQuest Server Configuration with Custom TLS Certificates
+# This example shows how to use custom certificate files
+
+[server]
+host = "0.0.0.0"
+port = 443
+enable_cors = true
+cors_origins = ["https://dashboard.example.com", "https://admin.example.com"]
+
+[logging]
+level = "warn"
+format = "json"
+
+[health_check]
+interval_seconds = 15
+timeout_seconds = 5
+max_failures = 2
+
+[security]
+enable_auth = true
+api_key = "your-production-api-key"
+rate_limit_per_minute = 500
+
+# TLS Configuration - Production with Custom Certificates
+[tls]
+# Enable TLS/HTTPS support
+enabled = true
+
+# Certificate directory (for backup certificates)
+cert_dir = "/etc/certs"
+
+# Use custom certificates (disable auto-generation)
+auto_generate = false
+
+# Custom certificate paths
+cert_path = "/etc/ssl/certs/scoutquest.crt"
+key_path = "/etc/ssl/private/scoutquest.key"
+
+# Verify peer certificates (for client authentication)
+verify_peer = true
+
+# TLS protocol versions (production-ready)
+min_version = "1.2"
+max_version = "1.3"
+
+# HTTPS redirect (redirect HTTP to HTTPS)
+redirect_http = true
+http_port = 80
