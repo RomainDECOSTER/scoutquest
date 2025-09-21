@@ -1,0 +1,35 @@
+[server]
+host = "0.0.0.0"
+port = 8080
+enable_cors = true
+cors_origins = [
+    "https://dashboard.mycompany.com",
+    "https://admin.mycompany.com"
+]
+
+[logging]
+level = "warn"
+format = "json"
+
+[health_check]
+interval_seconds = 15
+timeout_seconds = 5
+max_failures = 2
+
+[security]
+enable_auth = true
+api_key = "your-secure-api-key-here"
+rate_limit_per_minute = 500
+
+[network]
+enabled = true
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes cluster
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for health checks
+]
+denied_cidrs = [
+    "10.42.99.0/24"    # Block specific suspicious subnet
+]
+deny_action = "reject"
+trust_proxy_headers = true
