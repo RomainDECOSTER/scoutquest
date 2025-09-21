@@ -1,3 +1,10 @@
+# [1.3.0-beta.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.3...v1.3.0-beta.1) (2025-09-21)
+
+
+### Features
+
+* add network CIDR restriction for enhanced security ([d8a84e4](https://github.com/RomainDECOSTER/scoutquest/commit/d8a84e4948e20f23256297e8b142041b5638eb40)), closes [#9](https://github.com/RomainDECOSTER/scoutquest/issues/9)
+
 ## [1.2.3](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.2...v1.2.3) (2025-09-20)
 
 
