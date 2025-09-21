@@ -1,3 +1,10 @@
+# [1.3.0-beta.2](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0-beta.1...v1.3.0-beta.2) (2025-09-21)
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([c4f55eb](https://github.com/RomainDECOSTER/scoutquest/commit/c4f55eb8b76476350b19c545b80084ff91f26596)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+
 # [1.3.0-beta.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.3...v1.3.0-beta.1) (2025-09-21)
 
 
