@@ -137,11 +137,9 @@ pub async fn start_http_server(app: Router, server_config: &ServerConfig) -> any
 /// Main server startup function that decides between HTTP and HTTPS
 pub async fn start_server(app: Router, config: &AppConfig) -> anyhow::Result<()> {
     // Check if TLS is enabled
-    if let Some(scoutquest_config) = &config.scoutquest {
-        if let Some(tls_config) = &scoutquest_config.tls {
-            if tls_config.enabled {
-                return start_https_server(app, &config.server, tls_config).await;
-            }
+    if let Some(tls_config) = &config.tls {
+        if tls_config.enabled {
+            return start_https_server(app, &config.server, tls_config).await;
         }
     }
 
@@ -152,7 +150,6 @@ pub async fn start_server(app: Router, config: &AppConfig) -> anyhow::Result<()>
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::models::ScoutQuestConfig;
 
     fn create_test_config(tls_enabled: bool) -> AppConfig {
         AppConfig {
@@ -162,13 +159,11 @@ mod tests {
                 enable_cors: true,
                 cors_origins: vec!["*".to_string()],
             },
-            scoutquest: Some(ScoutQuestConfig {
-                tls: Some(ScoutQuestTlsConfig {
-                    enabled: tls_enabled,
-                    cert_dir: "/tmp/test-certs".to_string(),
-                    auto_generate: true,
-                    ..Default::default()
-                }),
+            tls: Some(ScoutQuestTlsConfig {
+                enabled: tls_enabled,
+                cert_dir: "/tmp/test-certs".to_string(),
+                auto_generate: true,
+                ..Default::default()
             }),
             ..Default::default()
         }
@@ -177,9 +172,9 @@ mod tests {
     #[test]
     fn test_config_creation() {
         let config = create_test_config(true);
-        assert!(config.scoutquest.is_some());
+        assert!(config.tls.is_some());
 
-        let tls_config = config.scoutquest.unwrap().tls.unwrap();
+        let tls_config = config.tls.unwrap();
         assert!(tls_config.enabled);
         assert_eq!(tls_config.cert_dir, "/tmp/test-certs");
     }

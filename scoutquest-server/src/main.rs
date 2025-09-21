@@ -32,7 +32,7 @@ pub struct AppConfig {
     pub health_check: HealthCheckConfig,
     pub security: SecurityConfig,
     pub network: Option<NetworkConfig>,
-    pub scoutquest: Option<ScoutQuestConfig>,
+    pub tls: Option<ScoutQuestTlsConfig>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -96,7 +96,7 @@ impl Default for AppConfig {
                 rate_limit_per_minute: 1000,
             },
             network: None,
-            scoutquest: None,
+            tls: None,
         }
     }
 }
@@ -251,9 +251,8 @@ async fn main() -> anyhow::Result<()> {
 
     // Log server startup information
     let protocol = if final_config
-        .scoutquest
+        .tls
         .as_ref()
-        .and_then(|sq| sq.tls.as_ref())
         .map(|tls| tls.enabled)
         .unwrap_or(false)
     {

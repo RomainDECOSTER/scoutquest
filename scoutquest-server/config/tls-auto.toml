@@ -21,8 +21,8 @@ enable_auth = false
 api_key = ""
 rate_limit_per_minute = 1000
 
-# ScoutQuest TLS Configuration - Zero Config TLS
-[scoutquest.tls]
+# TLS Configuration - Zero Config TLS
+[tls]
 # Enable TLS/HTTPS support
 enabled = true
 
