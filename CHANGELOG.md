@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0...v1.4.0) (2025-09-22)
+
+
+### Bug Fixes
+
+* restructure publishing workflow to resolve git clean tree issues ([86e57f3](https://github.com/RomainDECOSTER/scoutquest/commit/86e57f36751128bcc95825cec4794c25d1070fca))
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([5e17259](https://github.com/RomainDECOSTER/scoutquest/commit/5e1725903a10f827540cd37cd6194bfdafa78684)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+
 # [1.4.0-beta.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0...v1.4.0-beta.1) (2025-09-22)
 
 
