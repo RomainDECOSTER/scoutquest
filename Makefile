@@ -1,4 +1,4 @@
-.PHONY: help build test clean docker run-server run-example release-prepare release-publish build-all test-all test-setup docs-build docs-deploy
+.PHONY: help build test clean docker run-server run-example release-prepare release-publish publish-npm publish-cargo publish-docker publish-docs build-all test-all test-setup docs-build docs-deploy
 
 # Version management
 VERSION ?= $(shell cat package.json | grep '"version"' | head -1 | awk -F: '{ print $$2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
@@ -85,7 +85,7 @@ verify-release: ## Verify release prerequisites
 release-publish: ## Publish release artifacts
 	@echo "🚀 Publishing release v$(VERSION)..."
 	@echo "📦 Publishing JavaScript SDK..."
-	cd scoutquest-js && pnpm publish --access public
+	cd scoutquest-js && pnpm publish --access public --no-git-checks
 	@echo "📦 Publishing Rust SDK..."
 	cd scoutquest-rust && cargo publish
 	@echo "🐳 Building and pushing Docker images..."
@@ -94,6 +94,27 @@ release-publish: ## Publish release artifacts
 	@echo "📚 Deploying documentation..."
 	$(MAKE) docs-deploy
 	@echo "✅ Release v$(VERSION) published successfully!"
+
+publish-npm: ## Publish NPM package only
+	@echo "📦 Publishing JavaScript SDK v$(VERSION)..."
+	cd scoutquest-js && pnpm publish --access public --no-git-checks
+	@echo "✅ NPM package published successfully!"
+
+publish-cargo: ## Publish Cargo crate only
+	@echo "📦 Publishing Rust SDK v$(VERSION)..."
+	cd scoutquest-rust && cargo publish
+	@echo "✅ Cargo crate published successfully!"
+
+publish-docker: ## Publish Docker image only
+	@echo "🐳 Publishing Docker image v$(VERSION)..."
+	$(MAKE) docker-build-release
+	$(MAKE) docker-push-release
+	@echo "✅ Docker image published successfully!"
+
+publish-docs: ## Deploy documentation only
+	@echo "📚 Deploying documentation..."
+	$(MAKE) docs-deploy
+	@echo "✅ Documentation deployed successfully!"
 
 build-all: ## Build all components
 	@echo "🔨 Building server..."

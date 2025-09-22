@@ -19,8 +19,7 @@
       "@semantic-release/exec",
       {
         "verifyReleaseCmd": "make verify-release",
-        "prepareCmd": "make release-prepare VERSION=${nextRelease.version}",
-        "publishCmd": "make release-publish VERSION=${nextRelease.version}"
+        "prepareCmd": "make release-prepare VERSION=${nextRelease.version}"
       }
     ],
     [
