@@ -107,6 +107,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Generate Cargo.lock
+        run: |
+          cd scoutquest-server
+          cargo check --locked || cargo update
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
