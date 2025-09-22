@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Discovery Patterns - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container" id="nav">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand-link">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html" class="docs-nav__link">Building
+                                        Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html" class="docs-nav__link">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link">Rust Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link docs-nav__link--active">Docker
+                                        & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <main class="docs-content">
+                    <div class="docs-header">
+                        <h1>Service Discovery Patterns</h1>
+                        <p class="docs-subtitle">
+                            Learn the fundamental patterns and best practices for implementing service discovery
+                            in distributed microservices architectures.
+                        </p>
+                    </div>
+
+                    <section class="docs-section">
+                        <h2>Overview</h2>
+                        <p>
+                            Service discovery is a critical component in microservices architecture that enables
+                            services
+                            to find and communicate with each other dynamically. ScoutQuest implements several proven
+                            patterns to make service discovery reliable, scalable, and easy to manage.
+                        </p>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Client-Side Discovery Pattern</h2>
+                        <p>
+                            In client-side discovery, the service client is responsible for determining the location
+                            of available service instances and load balancing requests across them.
+                        </p>
+
+                        <h3>How it works</h3>
+                        <ol>
+                            <li>Service instances register themselves with the service registry (ScoutQuest server)</li>
+                            <li>Clients query the service registry to get available service instances</li>
+                            <li>Clients handle load balancing and failover logic</li>
+                        </ol>
+
+                        <div class="code-block">
+                            <h4>JavaScript/TypeScript Example</h4>
+                            <pre><code class="language-typescript">import { ScoutQuestClient } from '@scoutquest/sdk';
+
+const client = new ScoutQuestClient('http://localhost:8080');
+
+// Discover available instances
+const instances = await client.discoverService('user-service');
+
+// Client-side load balancing
+const selectedInstance = instances[Math.floor(Math.random() * instances.length)];
+const response = await fetch(`${selectedInstance.getUrl()}/users`);</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Rust Example</h4>
+                            <pre><code class="language-rust">use scoutquest_rust::ServiceDiscoveryClient;
+
+let client = ServiceDiscoveryClient::new("http://localhost:8080", None)?;
+
+// Discover and automatically load balance
+let response: Vec&lt;User&gt; = client.get("user-service", "/users").await?;</code></pre>
+                        </div>
+
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li><strong>Simple architecture:</strong> No additional infrastructure components</li>
+                            <li><strong>Performance:</strong> Direct communication between services</li>
+                            <li><strong>Control:</strong> Clients have full control over load balancing strategies</li>
+                        </ul>
+
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li><strong>Coupling:</strong> Clients are coupled to the service registry</li>
+                            <li><strong>Logic duplication:</strong> Load balancing logic must be implemented in each
+                                client</li>
+                            <li><strong>Complexity:</strong> Each client must handle service discovery logic</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Server-Side Discovery Pattern</h2>
+                        <p>
+                            In server-side discovery, a load balancer or API gateway is responsible for
+                            service discovery and load balancing.
+                        </p>
+
+                        <h3>How it works</h3>
+                        <ol>
+                            <li>Services register with the service registry</li>
+                            <li>Load balancer queries the registry for available instances</li>
+                            <li>Clients make requests to the load balancer</li>
+                            <li>Load balancer routes requests to appropriate service instances</li>
+                        </ol>
+
+                        <div class="code-block">
+                            <h4>Example with API Gateway</h4>
+                            <pre><code class="language-yaml"># API Gateway configuration
+routes:
+  - path: /api/users/*
+    service: user-service
+    discovery:
+      registry: scoutquest
+      strategy: round-robin
+
+  - path: /api/orders/*
+    service: order-service
+    discovery:
+      registry: scoutquest
+      strategy: least-connections</code></pre>
+                        </div>
+
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li><strong>Decoupling:</strong> Clients are decoupled from service discovery</li>
+                            <li><strong>Centralized logic:</strong> Load balancing logic is centralized</li>
+                            <li><strong>Simplified clients:</strong> Clients just make standard HTTP requests</li>
+                        </ul>
+
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li><strong>Additional component:</strong> Requires load balancer or API gateway</li>
+                            <li><strong>Single point of failure:</strong> Load balancer must be highly available</li>
+                            <li><strong>Extra network hop:</strong> Additional latency</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Service Registry Pattern</h2>
+                        <p>
+                            The service registry is a database of available service instances. ScoutQuest
+                            implements this pattern with additional features for health checking and metadata.
+                        </p>
+
+                        <h3>Registration Strategies</h3>
+
+                        <h4>Self-Registration</h4>
+                        <p>Services register themselves when they start up:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">// Service startup
+const client = new ScoutQuestClient('http://localhost:8080');
+
+await client.registerService({
+  serviceName: 'user-service',
+  host: 'localhost',
+  port: 3000,
+  metadata: {
+    version: '1.2.0',
+    environment: 'production'
+  },
+  tags: ['api', 'users'],
+  healthCheck: {
+    path: '/health',
+    interval: 30
+  }
+});</code></pre>
+                        </div>
+
+                        <h4>Third-Party Registration</h4>
+                        <p>External service registrar handles registration:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-bash"># Using Docker with automatic registration
+docker run -d \
+  --name user-service \
+  --label "scoutquest.service=user-service" \
+  --label "scoutquest.port=3000" \
+  --label "scoutquest.health=/health" \
+  my-user-service:latest</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Health Checking Patterns</h2>
+                        <p>
+                            Health checking ensures that only healthy service instances receive traffic.
+                            ScoutQuest supports multiple health checking patterns.
+                        </p>
+
+                        <h3>Active Health Checks</h3>
+                        <p>ScoutQuest actively polls service health endpoints:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "serviceName": "user-service",
+  "healthCheck": {
+    "path": "/health",
+    "interval": 30,
+    "timeout": 5,
+    "retries": 3
+  }
+}</code></pre>
+                        </div>
+
+                        <h3>Passive Health Checks</h3>
+                        <p>Services send heartbeat signals:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">// Send heartbeat every 30 seconds
+setInterval(async () => {
+  await client.heartbeat('user-service-instance-1');
+}, 30000);</code></pre>
+                        </div>
+
+                        <h3>Circuit Breaker Pattern</h3>
+                        <p>Implement circuit breakers to handle failing services gracefully:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">class CircuitBreaker {
+  private failures = 0;
+  private state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+
+  async call(serviceName: string, path: string) {
+    if (this.state === 'OPEN') {
+      throw new Error('Circuit breaker is OPEN');
+    }
+
+    try {
+      const result = await this.client.get(serviceName, path);
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Load Balancing Strategies</h2>
+                        <p>
+                            Different load balancing strategies suit different use cases.
+                            ScoutQuest supports multiple strategies.
+                        </p>
+
+                        <h3>Round Robin</h3>
+                        <p>Distributes requests evenly across all instances:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">const client = new ScoutQuestClient('http://localhost:8080', {
+  loadBalancing: 'round-robin'
+});
+
+// Automatically uses round-robin for all requests
+const users = await client.get('user-service', '/users');</code></pre>
+                        </div>
+
+                        <h3>Least Connections</h3>
+                        <p>Routes to the instance with the fewest active connections.</p>
+
+                        <h3>Weighted Round Robin</h3>
+                        <p>Distributes requests based on instance weights:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">await client.registerService({
+  serviceName: 'user-service',
+  host: 'localhost',
+  port: 3000,
+  metadata: {
+    weight: 10 // Higher weight = more traffic
+  }
+});</code></pre>
+                        </div>
+
+                        <h3>Random</h3>
+                        <p>Selects instances randomly, useful for simple scenarios.</p>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Service Mesh Integration</h2>
+                        <p>
+                            ScoutQuest can integrate with service mesh solutions for advanced traffic management.
+                        </p>
+
+                        <div class="code-block">
+                            <h4>Istio Integration Example</h4>
+                            <pre><code class="language-yaml">apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: user-service
+spec:
+  hosts:
+  - user-service
+  http:
+  - route:
+    - destination:
+        host: user-service
+        subset: v1
+      weight: 90
+    - destination:
+        host: user-service
+        subset: v2
+      weight: 10</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Best Practices</h2>
+
+                        <h3>1. Graceful Shutdown</h3>
+                        <p>Always deregister services during shutdown:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">process.on('SIGTERM', async () => {
+  await client.deregister('user-service-instance-1');
+  process.exit(0);
+});</code></pre>
+                        </div>
+
+                        <h3>2. Service Versioning</h3>
+                        <p>Use metadata for service versioning:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">await client.registerService({
+  serviceName: 'user-service',
+  metadata: {
+    version: '2.1.0',
+    api_version: 'v2'
+  },
+  tags: ['v2', 'stable']
+});</code></pre>
+                        </div>
+
+                        <h3>3. Environment Isolation</h3>
+                        <p>Use different service names or tags for environments:</p>
+
+                        <div class="code-block">
+                            <pre><code class="language-typescript">const serviceName = `user-service-${process.env.ENVIRONMENT}`;
+// Results in: user-service-staging, user-service-production</code></pre>
+                        </div>
+
+                        <h3>4. Monitoring and Alerting</h3>
+                        <p>Monitor service discovery health:</p>
+
+                        <ul>
+                            <li>Service registration/deregistration rates</li>
+                            <li>Health check success rates</li>
+                            <li>Service discovery query latency</li>
+                            <li>Instance availability metrics</li>
+                        </ul>
+
+                        <h3>5. Security Considerations</h3>
+                        <ul>
+                            <li>Use TLS for all service registry communication</li>
+                            <li>Implement authentication for service registration</li>
+                            <li>Network segmentation for service discovery traffic</li>
+                            <li>Regular security audits of registered services</li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Common Patterns Summary</h2>
+
+                        <div class="pattern-comparison">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pattern</th>
+                                        <th>Use Case</th>
+                                        <th>Complexity</th>
+                                        <th>Performance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Client-Side Discovery</td>
+                                        <td>Small to medium microservices</td>
+                                        <td>Medium</td>
+                                        <td>High</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Server-Side Discovery</td>
+                                        <td>Large microservices, polyglot environments</td>
+                                        <td>Low (for clients)</td>
+                                        <td>Medium</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Service Mesh</td>
+                                        <td>Complex distributed systems</td>
+                                        <td>High</td>
+                                        <td>Medium</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <p>Now that you understand service discovery patterns, explore these related topics:</p>
+
+                        <div class="next-steps">
+                            <a href="health-checking.html" class="next-step-card">
+                                <h3>Health Checking</h3>
+                                <p>Learn advanced health checking strategies and implementation patterns</p>
+                            </a>
+
+                            <a href="monitoring.html" class="next-step-card">
+                                <h3>Monitoring & Observability</h3>
+                                <p>Set up comprehensive monitoring for your service discovery infrastructure</p>
+                            </a>
+
+                            <a href="production.html" class="next-step-card">
+                                <h3>Production Deployment</h3>
+                                <p>Deploy ScoutQuest in production with high availability and security</p>
+                            </a>
+                        </div>
+                    </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+</body>
+
+</html>

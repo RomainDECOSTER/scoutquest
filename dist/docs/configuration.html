@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <--inspect --trace-warnings --signal Prism.js CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <a href="../index.html" class="nav__brand">
+                    <img src="../assets/images/logo.svg" alt="ScoutQuest Logo" class="nav__logo">
+                    <h1 class="nav__title">ScoutQuest</h1>
+                </a>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html" class="docs-nav__link">Building
+                                        Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html" class="docs-nav__link">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link">Rust Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link docs-nav__link--active">Docker
+                                        & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <div class="docs-breadcrumb">
+                        <a href="../index.html">ScoutQuest</a>
+                        <span>/</span>
+                        <a href="../index.html#docs">Documentation</a>
+                        <span>/</span>
+                        <span class="current">Configuration</span>
+                    </div>
+
+                    <article class="docs-article">
+                        <header class="docs-header">
+                            <h1>Configuration</h1>
+                            <p class="docs-lead">
+                                Complete guide to configuring ScoutQuest server and client SDKs for all environments.
+                            </p>
+                        </header>
+
+                        <div class="docs-body">
+                            <section class="docs-section">
+                                <h2>Server Configuration</h2>
+
+                                <h3>Configuration File</h3>
+                                <p>ScoutQuest server uses TOML configuration files. Create configuration files in the
+                                    <code>config/</code> directory:
+                                </p>
+
+                                <div class="code-block">
+                                    <pre><code># config/default.toml
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+
+[database]
+url = "postgresql://scoutquest:password@localhost:5432/scoutquest"
+max_connections = 10
+timeout = "30s"
+
+[redis]
+url = "redis://localhost:6379"
+pool_size = 10
+
+[logging]
+level = "info"
+format = "json"
+
+[health_check]
+enabled = true
+interval = "30s"
+timeout = "5s"
+endpoint = "/health"
+
+[metrics]
+enabled = true
+endpoint = "/metrics"
+namespace = "scoutquest"
+
+[api]
+rate_limit_per_minute = 1000
+request_timeout = "30s"
+max_request_size = "1MB"
+
+[security]
+enable_tls = false
+cert_file = ""
+key_file = ""
+ca_file = ""</code></pre>
+                                </div>
+
+                                <h3>Environment-Specific Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code># config/production.toml
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 8
+
+[database]
+url = "postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres:5432/scoutquest"
+max_connections = 20
+timeout = "45s"
+
+[redis]
+url = "redis://redis:6379"
+pool_size = 20
+
+[logging]
+level = "warn"
+format = "json"
+
+[security]
+enable_tls = true
+cert_file = "/etc/ssl/certs/scoutquest.crt"
+key_file = "/etc/ssl/private/scoutquest.key"
+ca_file = "/etc/ssl/certs/ca.crt"
+
+[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16", "172.20.0.0/16"]
+denied_cidrs = ["10.42.99.0/24"]
+deny_action = "reject"
+trust_proxy_headers = true
+
+[api]
+rate_limit_per_minute = 10000
+request_timeout = "60s"
+max_request_size = "10MB"
+
+[metrics]
+enabled = true
+endpoint = "/metrics"
+namespace = "scoutquest_prod"</code></pre>
+                                </div>
+
+                                <h3>Environment Variables</h3>
+                                <div class="code-block">
+                                    <pre><code># .env file
+SCOUTQUEST_ENV=production
+SCOUTQUEST_HOST=0.0.0.0
+SCOUTQUEST_PORT=8080
+SCOUTQUEST_LOG_LEVEL=info
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/scoutquest
+DATABASE_MAX_CONNECTIONS=20
+
+# Redis
+REDIS_URL=redis://localhost:6379
+REDIS_POOL_SIZE=10
+
+# Security
+TLS_ENABLED=true
+TLS_CERT_FILE=/path/to/cert.pem
+TLS_KEY_FILE=/path/to/key.pem
+
+# API Configuration
+API_RATE_LIMIT=1000
+API_TIMEOUT=30s
+API_MAX_REQUEST_SIZE=1MB
+
+# Health Checks
+HEALTH_CHECK_ENABLED=true
+HEALTH_CHECK_INTERVAL=30s
+
+# Metrics
+METRICS_ENABLED=true
+METRICS_ENDPOINT=/metrics
+
+# Network Security
+SCOUTQUEST_NETWORK_ENABLED=true
+SCOUTQUEST_NETWORK_ALLOWED_CIDRS=10.42.0.0/16,172.20.0.0/16
+SCOUTQUEST_NETWORK_DENY_ACTION=reject</code></pre>
+                                </div>
+
+                                <h2>Network Security</h2>
+                                <div class="docs-section">
+                                    <p>ScoutQuest supports network access restrictions using CIDR ranges to enhance
+                                        security in production environments.</p>
+
+                                    <h3>Basic Network Configuration</h3>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+# Enable network access restrictions
+enabled = true
+
+# Allowed CIDR ranges (whitelist)
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes internal network
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for testing
+]
+
+# Explicitly denied CIDR ranges (optional blacklist)
+denied_cidrs = [
+    "192.168.1.0/24"   # Block specific subnets
+]
+
+# Action when IP is not allowed
+deny_action = "reject"  # Options: "reject" or "log_only"
+
+# Trust proxy headers (X-Forwarded-For, X-Real-IP)
+trust_proxy_headers = true</code></pre>
+                                    </div>
+
+                                    <h3>Deployment Examples</h3>
+
+                                    <h4>Kubernetes</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = ["10.42.0.0/16"]  # Only cluster pods
+deny_action = "reject"</code></pre>
+                                    </div>
+
+                                    <h4>Development</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = ["0.0.0.0/0"]  # Allow all
+deny_action = "log_only"       # Just log, don't block</code></pre>
+                                    </div>
+
+                                    <h4>High Security Production</h4>
+                                    <div class="code-block">
+                                        <pre><code>[network]
+enabled = true
+allowed_cidrs = [
+    "10.42.0.0/16",    # Kubernetes cluster
+    "172.20.0.0/16",   # Docker bridge network
+    "127.0.0.1/32"     # Localhost for health checks
+]
+denied_cidrs = [
+    "10.42.99.0/24"    # Block specific suspicious subnet
+]
+deny_action = "reject"
+trust_proxy_headers = true</code></pre>
+                                    </div>
+
+                                    <div class="warning">
+                                        <strong>⚠️ Important:</strong> Network restrictions are disabled by default to
+                                        maintain backward compatibility.
+                                        Always test your CIDR configuration in a development environment before
+                                        deploying to production.
+                                    </div>
+                                </div>
+
+                                <h2>Docker Compose Configuration</h2>
+                                <div class="code-block">
+                                    <pre><code># docker-compose.yml
+version: '3.8'
+
+services:
+  scoutquest:
+    image: scoutquest:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SCOUTQUEST_ENV=production
+      - DATABASE_URL=postgresql://scoutquest:${POSTGRES_PASSWORD}@postgres:5432/scoutquest
+      - REDIS_URL=redis://redis:6379
+      - RUST_LOG=info
+    volumes:
+      - ./config:/app/config:ro
+      - ./ssl:/etc/ssl:ro
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=scoutquest
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=scoutquest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Client Configuration</h2>
+
+                                <h3>JavaScript/TypeScript SDK</h3>
+                                <div class="code-block">
+                                    <pre><code>// config/scoutquest.config.js
+export const scoutquestConfig = {
+  // Server connection
+  serverUrl: process.env.SCOUTQUEST_URL || 'http://localhost:8080',
+
+  // HTTP client settings
+  timeout: 30000,
+  retryCount: 3,
+  retryDelay: 1000,
+
+  // Request configuration
+  headers: {
+    'User-Agent': 'MyApp/1.0.0',
+    'X-Client-Version': '1.0.0'
+  },
+
+  // Service discovery options
+  discovery: {
+    cacheEnabled: true,
+    cacheTtl: 60000, // 60 seconds
+    healthCheckEnabled: true,
+    preferLocalInstances: false
+  },
+
+  // Circuit breaker settings
+  circuitBreaker: {
+    enabled: true,
+    failureThreshold: 5,
+    resetTimeout: 30000,
+    monitoringPeriod: 10000
+  },
+
+  // Logging
+  logging: {
+    level: 'info',
+    enableMetrics: true,
+    enableTracing: false
+  }
+};
+
+// Usage
+import { ScoutQuestClient } from 'scoutquest-js';
+import { scoutquestConfig } from './config/scoutquest.config.js';
+
+const client = new ScoutQuestClient(scoutquestConfig);</code></pre>
+                                </div>
+
+                                <h3>Rust SDK</h3>
+                                <div class="code-block">
+                                    <pre><code>// src/config.rs
+use serde::{Deserialize, Serialize};
+use std::time::Duration;
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct ScoutQuestConfig {
+    pub server_url: String,
+    pub timeout: Duration,
+    pub retry_count: u32,
+    pub retry_delay: Duration,
+    pub connection_pool_size: usize,
+    pub tls: Option<TlsConfig>,
+    pub discovery: DiscoveryConfig,
+    pub circuit_breaker: CircuitBreakerConfig,
+    pub metrics: MetricsConfig,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct TlsConfig {
+    pub cert_file: String,
+    pub key_file: String,
+    pub ca_file: Option<String>,
+    pub verify_hostname: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct DiscoveryConfig {
+    pub cache_enabled: bool,
+    pub cache_ttl: Duration,
+    pub health_check_enabled: bool,
+    pub prefer_local_instances: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct CircuitBreakerConfig {
+    pub enabled: bool,
+    pub failure_threshold: u32,
+    pub reset_timeout: Duration,
+    pub monitoring_period: Duration,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct MetricsConfig {
+    pub enabled: bool,
+    pub endpoint: String,
+    pub namespace: String,
+}
+
+impl Default for ScoutQuestConfig {
+    fn default() -> Self {
+        Self {
+            server_url: "http://localhost:8080".to_string(),
+            timeout: Duration::from_secs(30),
+            retry_count: 3,
+            retry_delay: Duration::from_millis(1000),
+            connection_pool_size: 10,
+            tls: None,
+            discovery: DiscoveryConfig::default(),
+            circuit_breaker: CircuitBreakerConfig::default(),
+            metrics: MetricsConfig::default(),
+        }
+    }
+}
+
+// Load configuration from file
+impl ScoutQuestConfig {
+    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        let content = std::fs::read_to_string(path)?;
+        let config: Self = toml::from_str(&content)?;
+        Ok(config)
+    }
+
+    pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
+        let mut config = Self::default();
+
+        if let Ok(url) = std::env::var("SCOUTQUEST_URL") {
+            config.server_url = url;
+        }
+
+        if let Ok(timeout) = std::env::var("SCOUTQUEST_TIMEOUT") {
+            config.timeout = Duration::from_secs(timeout.parse()?);
+        }
+
+        if let Ok(retry_count) = std::env::var("SCOUTQUEST_RETRY_COUNT") {
+            config.retry_count = retry_count.parse()?;
+        }
+
+        Ok(config)
+    }
+}</code></pre>
+                                </div>
+
+                                <h3>Configuration File for Rust</h3>
+                                <div class="code-block">
+                                    <pre><code># scoutquest-client.toml
+server_url = "http://localhost:8080"
+timeout = "30s"
+retry_count = 3
+retry_delay = "1s"
+connection_pool_size = 10
+
+[tls]
+cert_file = "/path/to/client.crt"
+key_file = "/path/to/client.key"
+ca_file = "/path/to/ca.crt"
+verify_hostname = true
+
+[discovery]
+cache_enabled = true
+cache_ttl = "60s"
+health_check_enabled = true
+prefer_local_instances = false
+
+[circuit_breaker]
+enabled = true
+failure_threshold = 5
+reset_timeout = "30s"
+monitoring_period = "10s"
+
+[metrics]
+enabled = true
+endpoint = "/metrics"
+namespace = "my_service"</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Advanced Configuration</h2>
+
+                                <h3>Load Balancing Strategies</h3>
+                                <div class="code-block">
+                                    <pre><code># Server configuration
+[load_balancing]
+strategy = "round_robin"  # Options: round_robin, least_connections, random, weighted
+health_check_required = true
+sticky_sessions = false
+
+# Client configuration
+[discovery]
+load_balancing_strategy = "round_robin"
+instance_selection_criteria = [
+    { key = "region", value = "us-east-1", weight = 1.0 },
+    { key = "version", value = "^1.0.0", weight = 0.8 },
+    { key = "load", comparison = "less_than", value = "0.8", weight = 1.2 }
+]</code></pre>
+                                </div>
+
+                                <h3>Security Configuration</h3>
+                                <div class="code-block">
+                                    <pre><code>[security]
+# TLS Configuration
+enable_tls = true
+tls_version = "1.3"
+cert_file = "/etc/ssl/certs/scoutquest.crt"
+key_file = "/etc/ssl/private/scoutquest.key"
+ca_file = "/etc/ssl/certs/ca.crt"
+
+# Authentication
+auth_enabled = true
+auth_method = "jwt"  # Options: jwt, api_key, mutual_tls
+jwt_secret = "${JWT_SECRET}"
+jwt_expiration = "24h"
+
+# API Key authentication
+api_key_header = "X-API-Key"
+api_keys = [
+    { key = "${SERVICE_API_KEY}", permissions = ["read", "register"] },
+    { key = "${ADMIN_API_KEY}", permissions = ["read", "register", "admin"] }
+]
+
+# Rate limiting
+rate_limiting = true
+rate_limit_per_minute = 1000
+rate_limit_per_hour = 50000
+rate_limit_burst = 100
+
+# CORS
+cors_enabled = true
+cors_origins = ["https://app.example.com", "https://admin.example.com"]
+cors_methods = ["GET", "POST", "PUT", "DELETE"]
+cors_headers = ["Content-Type", "Authorization", "X-API-Key"]</code></pre>
+                                </div>
+
+                                <h3>Monitoring & Observability</h3>
+                                <div class="code-block">
+                                    <pre><code>[monitoring]
+# Metrics
+metrics_enabled = true
+metrics_endpoint = "/metrics"
+metrics_format = "prometheus"
+custom_metrics = true
+
+# Distributed tracing
+tracing_enabled = true
+tracing_backend = "jaeger"  # Options: jaeger, zipkin, opentelemetry
+jaeger_endpoint = "http://jaeger:14268/api/traces"
+sampling_rate = 0.1  # 10% sampling
+
+# Logging
+[logging]
+level = "info"
+format = "json"  # Options: json, text, structured
+output = "stdout"  # Options: stdout, file, syslog
+file_path = "/var/log/scoutquest.log"
+max_file_size = "100MB"
+max_files = 10
+compress_rotated = true
+
+# Log different components at different levels
+component_levels = [
+    { component = "http", level = "debug" },
+    { component = "database", level = "warn" },
+    { component = "cache", level = "error" }
+]</code></pre>
+                                </div>
+
+                                <h3>Performance Tuning</h3>
+                                <div class="code-block">
+                                    <pre><code>[performance]
+# Server performance
+workers = 8  # Number of worker threads
+max_connections = 10000
+keep_alive_timeout = "75s"
+request_timeout = "60s"
+max_request_size = "10MB"
+
+# Database connection pool
+[database]
+max_connections = 20
+min_connections = 5
+acquire_timeout = "30s"
+idle_timeout = "600s"
+max_lifetime = "3600s"
+
+# Redis connection pool
+[redis]
+pool_size = 20
+min_idle = 5
+max_idle = 10
+connection_timeout = "5s"
+read_timeout = "3s"
+write_timeout = "3s"
+
+# Caching strategy
+[cache]
+enabled = true
+backend = "redis"  # Options: redis, memory, hybrid
+default_ttl = "300s"
+max_memory_size = "512MB"
+eviction_policy = "lru"  # Options: lru, lfu, random, ttl
+
+# Cache specific configurations
+service_discovery_cache_ttl = "60s"
+health_check_cache_ttl = "30s"
+metadata_cache_ttl = "300s"</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Configuration Validation</h2>
+
+                                <h3>Server Configuration Validation</h3>
+                                <div class="code-block">
+                                    <pre><code># Validate configuration before starting
+cargo run -- --validate-config
+
+# Check configuration syntax
+cargo run -- --check-config config/production.toml
+
+# Environment-specific validation
+SCOUTQUEST_ENV=production cargo run -- --validate</code></pre>
+                                </div>
+
+                                <h3>Configuration Schema</h3>
+                                <div class="code-block">
+                                    <pre><code># Generate configuration schema
+cargo run -- --generate-schema > scoutquest-schema.json
+
+# Validate against schema
+jsonschema -i config/production.toml scoutquest-schema.json</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Environment-Specific Examples</h2>
+
+                                <h3>Development Environment</h3>
+                                <div class="code-block">
+                                    <pre><code># config/development.toml
+[server]
+host = "localhost"
+port = 8080
+workers = 2
+
+[database]
+url = "postgresql://dev:dev@localhost:5432/scoutquest_dev"
+max_connections = 5
+
+[redis]
+url = "redis://localhost:6379"
+pool_size = 5
+
+[logging]
+level = "debug"
+format = "text"
+
+[security]
+enable_tls = false
+auth_enabled = false
+
+[api]
+rate_limit_per_minute = 10000</code></pre>
+                                </div>
+
+                                <h3>Testing Environment</h3>
+                                <div class="code-block">
+                                    <pre><code># config/test.toml
+[server]
+host = "localhost"
+port = 0  # Random port for testing
+workers = 1
+
+[database]
+url = "postgresql://test:test@localhost:5432/scoutquest_test"
+max_connections = 2
+
+[logging]
+level = "error"
+output = "null"
+
+[health_check]
+enabled = false
+
+[metrics]
+enabled = false</code></pre>
+                                </div>
+
+                                <h3>Staging Environment</h3>
+                                <div class="code-block">
+                                    <pre><code># config/staging.toml
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+
+[database]
+url = "postgresql://scoutquest:${STAGING_DB_PASSWORD}@staging-db:5432/scoutquest"
+max_connections = 15
+
+[security]
+enable_tls = true
+cert_file = "/etc/ssl/staging/cert.pem"
+key_file = "/etc/ssl/staging/key.pem"
+auth_enabled = true
+
+[api]
+rate_limit_per_minute = 5000
+
+[monitoring]
+tracing_enabled = true
+jaeger_endpoint = "http://jaeger-staging:14268/api/traces"</code></pre>
+                                </div>
+                            </section>
+
+                            <section class="docs-section">
+                                <h2>Configuration Best Practices</h2>
+
+                                <div class="alert alert-info">
+                                    <h3>Security Best Practices</h3>
+                                    <ul>
+                                        <li>Never commit secrets to version control</li>
+                                        <li>Use environment variables for sensitive values</li>
+                                        <li>Enable TLS in production environments</li>
+                                        <li>Implement proper authentication and authorization</li>
+                                        <li>Regular rotation of API keys and certificates</li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <h3>Performance Considerations</h3>
+                                    <ul>
+                                        <li>Tune database connection pools based on load</li>
+                                        <li>Configure appropriate timeouts for your use case</li>
+                                        <li>Enable caching for frequently accessed data</li>
+                                        <li>Monitor and adjust worker thread counts</li>
+                                        <li>Use connection pooling for HTTP clients</li>
+                                    </ul>
+                                </div>
+
+                                <div class="alert alert-success">
+                                    <h3>Operational Excellence</h3>
+                                    <ul>
+                                        <li>Use configuration management tools</li>
+                                        <li>Implement configuration validation in CI/CD</li>
+                                        <li>Document all configuration options</li>
+                                        <li>Use environment-specific configurations</li>
+                                        <li>Regular backup of configuration files</li>
+                                    </ul>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+    <--inspect --trace-warnings --signal Prism.js JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express.js Integration Tutorial - ScoutQuest Documentation</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <img src="../assets/images/logo.svg" alt="ScoutQuest" class="nav__logo">
+                <span class="nav__title">ScoutQuest</span>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="../index.html#features" class="nav__link">Features</a></li>
+                    <li class="nav__item"><a href="../index.html#getting-started" class="nav__link">Get Started</a></li>
+                    <li class="nav__item"><a href="../index.html#docs" class="nav__link">Documentation</a></li>
+                    <li class="nav__item">
+                        <a href="https://github.com/RomainDECOSTER/scoutquest" class="nav__link nav__link--github"
+                            target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <nav class="docs-nav">
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Getting Started</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="installation.html" class="docs-nav__link">Installation</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="first-service.html" class="docs-nav__link">Your First Service</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="configuration.html" class="docs-nav__link">Configuration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="troubleshooting.html" class="docs-nav__link">Troubleshooting</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">API Reference</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="js-sdk.html" class="docs-nav__link">JavaScript SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-sdk.html" class="docs-nav__link">Rust SDK</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="api-reference.html" class="docs-nav__link">REST API</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Guides</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="health-checking.html" class="docs-nav__link">Health Checking</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="service-discovery.html" class="docs-nav__link">Service Discovery</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="monitoring.html" class="docs-nav__link">Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="docs-nav__section">
+                            <h3 class="docs-nav__title">Examples & Tutorials</h3>
+                            <ul class="docs-nav__list">
+                                <li class="docs-nav__item">
+                                    <a href="microservices-tutorial.html" class="docs-nav__link">Building
+                                        Microservices</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="express-tutorial.html"
+                                        class="docs-nav__link docs-nav__link--active">Express.js Integration</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="rust-tutorial.html" class="docs-nav__link">Rust Service Tutorial</a>
+                                </li>
+                                <li class="docs-nav__item">
+                                    <a href="docker-tutorial.html" class="docs-nav__link">Docker & Kubernetes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+
+                <div class="docs-content">
+                    <h1>Express.js Integration with ScoutQuest</h1>
+                    <p class="docs-lead">
+                        Learn how to integrate ScoutQuest service discovery into your Express.js applications
+                        with middleware, automatic registration, and service communication patterns.
+                    </p>
+
+                    <section class="docs-section">
+                        <h2>Quick Start</h2>
+                        <p>Get your Express.js app connected to ScoutQuest in minutes:</p>
+
+                        <div class="code-block">
+                            <h4>Installation</h4>
+                            <pre><code class="language-bash">npm install express scoutquest-js</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <h4>Basic Setup</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+const app = express();
+const port = process.env.PORT || 3000;
+const scout = new ScoutQuestClient('http://localhost:8080');
+
+app.use(express.json());
+
+// Your routes here
+app.get('/', (req, res) => {
+    res.json({ message: 'Hello from Express + ScoutQuest!' });
+});
+
+app.listen(port, async () => {
+    console.log(`Server running on port ${port}`);
+
+    // Register with ScoutQuest
+    await scout.registerService('my-express-app', 'localhost', port, {
+        tags: ['web', 'api'],
+        metadata: { framework: 'express' }
+    });
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>ScoutQuest Express Middleware</h2>
+                        <p>Create reusable middleware for common ScoutQuest operations:</p>
+
+                        <div class="code-block">
+                            <h4>middleware/scoutquest.js</h4>
+                            <pre><code class="language-javascript">const { ScoutQuestClient } = require('scoutquest-js');
+
+class ScoutQuestMiddleware {
+    constructor(scoutUrl, serviceName, options = {}) {
+        this.client = new ScoutQuestClient(scoutUrl);
+        this.serviceName = serviceName;
+        this.options = options;
+    }
+
+    // Auto-register service on startup
+    autoRegister(host, port, serviceOptions = {}) {
+        return async (req, res, next) => {
+            if (!this.registered) {
+                try {
+                    await this.client.registerService(this.serviceName, host, port, {
+                        ...this.options,
+                        ...serviceOptions
+                    });
+                    this.registered = true;
+                    console.log(`✅ ${this.serviceName} registered with ScoutQuest`);
+                } catch (error) {
+                    console.error('❌ Failed to register:', error);
+                }
+            }
+            next();
+        };
+    }
+
+    // Add ScoutQuest client to request object
+    injectClient() {
+        return (req, res, next) => {
+            req.scout = this.client;
+            next();
+        };
+    }
+
+    // Service discovery helper
+    serviceProxy(targetService, pathPrefix = '') {
+        return async (req, res, next) => {
+            try {
+                const method = req.method.toLowerCase();
+                const path = req.path.replace(pathPrefix, '');
+
+                const response = await this.client[method](targetService, path, req.body);
+                res.json(response);
+            } catch (error) {
+                res.status(error.response?.status || 500).json({
+                    error: 'Service unavailable',
+                    service: targetService
+                });
+            }
+        };
+    }
+
+    // Health check middleware
+    healthCheck(customChecks = []) {
+        return async (req, res) => {
+            const health = {
+                status: 'healthy',
+                service: this.serviceName,
+                timestamp: new Date().toISOString(),
+                checks: {}
+            };
+
+            // Run custom health checks
+            for (const check of customChecks) {
+                try {
+                    health.checks[check.name] = await check.fn();
+                } catch (error) {
+                    health.checks[check.name] = { status: 'unhealthy', error: error.message };
+                    health.status = 'unhealthy';
+                }
+            }
+
+            res.status(health.status === 'healthy' ? 200 : 503).json(health);
+        };
+    }
+}
+
+module.exports = ScoutQuestMiddleware;</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Complete Express App Example</h2>
+                        <p>Here's a full example using the middleware:</p>
+
+                        <div class="code-block">
+                            <h4>app.js</h4>
+                            <pre><code class="language-javascript">const express = require('express');
+const ScoutQuestMiddleware = require('./middleware/scoutquest');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Initialize ScoutQuest middleware
+const scout = new ScoutQuestMiddleware(
+    process.env.SCOUT_URL || 'http://localhost:8080',
+    'user-api',
+    {
+        tags: ['api', 'users', 'express'],
+        metadata: {
+            version: '1.0.0',
+            framework: 'express'
+        }
+    }
+);
+
+app.use(express.json());
+
+// Apply ScoutQuest middleware
+app.use(scout.injectClient());
+app.use(scout.autoRegister('localhost', port, {
+    healthCheck: {
+        path: '/health',
+        interval: 30
+    }
+}));
+
+// Health check endpoint
+app.get('/health', scout.healthCheck([
+    {
+        name: 'database',
+        fn: async () => {
+            // Check database connection
+            return { status: 'connected' };
+        }
+    },
+    {
+        name: 'external_api',
+        fn: async () => {
+            // Check external API
+            return { status: 'reachable' };
+        }
+    }
+]));
+
+// Sample data
+const users = [
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+];
+
+// User routes
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+app.get('/users/:id', (req, res) => {
+    const user = users.find(u => u.id === parseInt(req.params.id));
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+});
+
+app.post('/users', (req, res) => {
+    const newUser = {
+        id: users.length + 1,
+        name: req.body.name,
+        email: req.body.email
+    };
+    users.push(newUser);
+    res.status(201).json(newUser);
+});
+
+// Service communication example
+app.get('/users/:id/orders', async (req, res) => {
+    try {
+        // Use injected ScoutQuest client
+        const orders = await req.scout.get('order-service', `/orders/user/${req.params.id}`);
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch user orders' });
+    }
+});
+
+// Proxy to other services
+app.use('/api/products', scout.serviceProxy('product-service', '/api/products'));
+app.use('/api/orders', scout.serviceProxy('order-service', '/api/orders'));
+
+// Service discovery endpoint
+app.get('/services', async (req, res) => {
+    try {
+        const services = await req.scout.listServices();
+        res.json(services);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch services' });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`🚀 Express server running on port ${port}`);
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Advanced Patterns</h2>
+
+                        <h3>Circuit Breaker Pattern</h3>
+                        <p>Implement circuit breakers for resilient service communication:</p>
+
+                        <div class="code-block">
+                            <h4>middleware/circuit-breaker.js</h4>
+                            <pre><code class="language-javascript">class CircuitBreaker {
+    constructor(serviceName, options = {}) {
+        this.serviceName = serviceName;
+        this.failureThreshold = options.failureThreshold || 5;
+        this.timeout = options.timeout || 60000;
+        this.resetTimeout = options.resetTimeout || 30000;
+
+        this.failures = 0;
+        this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+        this.nextAttempt = Date.now();
+    }
+
+    async call(fn) {
+        if (this.state === 'OPEN') {
+            if (Date.now() < this.nextAttempt) {
+                throw new Error(`Circuit breaker is OPEN for ${this.serviceName}`);
+            }
+            this.state = 'HALF_OPEN';
+        }
+
+        try {
+            const result = await Promise.race([
+                fn(),
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout')), this.timeout)
+                )
+            ]);
+
+            this.onSuccess();
+            return result;
+        } catch (error) {
+            this.onFailure();
+            throw error;
+        }
+    }
+
+    onSuccess() {
+        this.failures = 0;
+        this.state = 'CLOSED';
+    }
+
+    onFailure() {
+        this.failures++;
+        if (this.failures >= this.failureThreshold) {
+            this.state = 'OPEN';
+            this.nextAttempt = Date.now() + this.resetTimeout;
+        }
+    }
+}
+
+// Usage in Express middleware
+const serviceBreakers = new Map();
+
+function withCircuitBreaker(serviceName, options = {}) {
+    return (req, res, next) => {
+        if (!serviceBreakers.has(serviceName)) {
+            serviceBreakers.set(serviceName, new CircuitBreaker(serviceName, options));
+        }
+
+        req.circuitBreaker = serviceBreakers.get(serviceName);
+        next();
+    };
+}
+
+module.exports = { CircuitBreaker, withCircuitBreaker };</code></pre>
+                        </div>
+
+                        <h3>Rate Limiting with Service Discovery</h3>
+                        <div class="code-block">
+                            <h4>Rate limiting based on service capacity</h4>
+                            <pre><code class="language-javascript">const rateLimit = require('express-rate-limit');
+
+function dynamicRateLimit(scout) {
+    return rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: async (req) => {
+            try {
+                // Get available instances of this service
+                const instances = await scout.discoverService(req.headers['x-service-name'] || 'default');
+                // Scale rate limit based on available instances
+                return Math.max(100, instances.length * 50);
+            } catch {
+                return 100; // fallback
+            }
+        },
+        message: 'Too many requests, please try again later.'
+    });
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Testing Your Express Service</h2>
+                        <p>Test your Express service with ScoutQuest integration:</p>
+
+                        <div class="code-block">
+                            <h4>test/integration.test.js</h4>
+                            <pre><code class="language-javascript">const request = require('supertest');
+const express = require('express');
+const { ScoutQuestClient } = require('scoutquest-js');
+
+describe('Express + ScoutQuest Integration', () => {
+    let app;
+    let scout;
+
+    beforeAll(async () => {
+        app = express();
+        scout = new ScoutQuestClient('http://localhost:8080');
+
+        app.use(express.json());
+        app.get('/health', (req, res) => {
+            res.json({ status: 'healthy' });
+        });
+
+        // Register test service
+        await scout.registerService('test-service', 'localhost', 3001, {
+            tags: ['test'],
+            healthCheck: { path: '/health' }
+        });
+    });
+
+    afterAll(async () => {
+        await scout.deregisterService('test-service');
+    });
+
+    test('should register with ScoutQuest', async () => {
+        const services = await scout.listServices();
+        expect(services.some(s => s.name === 'test-service')).toBe(true);
+    });
+
+    test('health check should work', async () => {
+        const response = await request(app).get('/health');
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('healthy');
+    });
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Production Considerations</h2>
+                        <ul>
+                            <li><strong>Environment Variables:</strong> Use environment variables for configuration</li>
+                            <li><strong>Graceful Shutdown:</strong> Properly deregister services on shutdown</li>
+                            <li><strong>Error Handling:</strong> Handle service discovery failures gracefully</li>
+                            <li><strong>Monitoring:</strong> Add metrics for service discovery operations</li>
+                            <li><strong>Security:</strong> Secure service-to-service communication</li>
+                        </ul>
+
+                        <div class="code-block">
+                            <h4>Graceful shutdown example</h4>
+                            <pre><code class="language-javascript">process.on('SIGTERM', async () => {
+    console.log('🛑 Received SIGTERM, shutting down gracefully');
+
+    try {
+        await scout.deregisterService('my-service');
+        console.log('✅ Deregistered from ScoutQuest');
+    } catch (error) {
+        console.error('❌ Failed to deregister:', error);
+    }
+
+    process.exit(0);
+});</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <ul>
+                            <li>Explore the <a href="microservices-tutorial.html">full microservices tutorial</a></li>
+                            <li>Learn about <a href="rust-tutorial.html">Rust service integration</a></li>
+                            <li>Set up <a href="docker-tutorial.html">Docker containerization</a></li>
+                            <li>Implement <a href="monitoring.html">monitoring and observability</a></li>
+                        </ul>
+
+                        <div class="docs-navigation">
+                            <a href="microservices-tutorial.html" class="btn btn--secondary">← Previous: Building
+                                Microservices</a>
+                            <a href="rust-tutorial.html" class="btn btn--primary">Next: Rust Service Tutorial →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/docs.js"></script>
+</body>
+
+</html>
