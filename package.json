@@ -1,6 +1,6 @@
 {
   "name": "scoutquest",
-  "version": "1.3.0",
+  "version": "1.4.0-beta.1",
   "description": "Fast and reliable service discovery for microservices",
   "private": true,
   "scripts": {
