@@ -1,0 +1,32 @@
+# .github/workflows/dependabot-auto-merge.yml
+#
+# Auto-merge les PRs Dependabot minor/patch une fois la CI passée.
+# Pré-requis :
+#   - Auto-merge activé dans Settings > General > Pull Requests
+#   - Branch protection sur main avec required status checks (ta pipeline CI)
+
+name: Auto-merge Dependabot
+
+on: pull_request
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        uses: dependabot/fetch-metadata@v2
+        id: metadata
+
+      - name: Auto-merge minor and patch updates
+        if: >
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
