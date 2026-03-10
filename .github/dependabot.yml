@@ -7,7 +7,7 @@ version: 2
 updates:
   # Rust / Cargo - Serveur ScoutQuest
   - package-ecosystem: "cargo"
-    directory: "/sqoutquest-server"
+    directory: "/scoutquest-server"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -38,7 +38,7 @@ updates:
 
   # Rust / Cargo - SDK Rust
   - package-ecosystem: "cargo"
-    directory: "/sdks/sqoutquest-rust"
+    directory: "/scoutquest-rust"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -56,7 +56,7 @@ updates:
 
   # npm - SDK Node.js
   - package-ecosystem: "npm"
-    directory: "/sdks/sqoutquest-nodejs"
+    directory: "/scoutquest-js"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -72,27 +72,9 @@ updates:
     commit-message:
       prefix: "chore(deps-sdk-nodejs):"
 
-  # pip - SDK Python
-  - package-ecosystem: "pip"
-    directory: "/sdks/sqoutquest-python"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "Europe/Madrid"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "RomainDECOSTER"
-    labels:
-      - "dependencies"
-      - "python"
-      - "sdk"
-    commit-message:
-      prefix: "chore(deps-sdk-python):"
-
   # Docker
   - package-ecosystem: "docker"
-    directory: "/sqoutquest-server"
+    directory: "/scoutquest-server"
     schedule:
       interval: "weekly"
       day: "monday"
