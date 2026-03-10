@@ -1,0 +1,123 @@
+# .github/dependabot.yml
+# Configuration Dependabot pour ScoutQuest
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+updates:
+  # Rust / Cargo - Serveur ScoutQuest
+  - package-ecosystem: "cargo"
+    directory: "/sqoutquest-server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "rust"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+    # Grouper les mises à jour mineures/patch ensemble
+    groups:
+      rust-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      rust-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+
+  # Rust / Cargo - SDK Rust
+  - package-ecosystem: "cargo"
+    directory: "/sdks/sqoutquest-rust"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "rust"
+      - "sdk"
+    commit-message:
+      prefix: "chore(deps-sdk-rust):"
+
+  # npm - SDK Node.js
+  - package-ecosystem: "npm"
+    directory: "/sdks/sqoutquest-nodejs"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "nodejs"
+      - "sdk"
+    commit-message:
+      prefix: "chore(deps-sdk-nodejs):"
+
+  # pip - SDK Python
+  - package-ecosystem: "pip"
+    directory: "/sdks/sqoutquest-python"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "python"
+      - "sdk"
+    commit-message:
+      prefix: "chore(deps-sdk-python):"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/sqoutquest-server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(deps-docker):"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Madrid"
+    reviewers:
+      - "RomainDECOSTER"
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "chore(deps-ci):"
