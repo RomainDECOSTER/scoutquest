@@ -1,3 +1,49 @@
+# [1.4.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0...v1.4.0) (2025-09-22)
+
+
+### Bug Fixes
+
+* restructure publishing workflow to resolve git clean tree issues ([86e57f3](https://github.com/RomainDECOSTER/scoutquest/commit/86e57f36751128bcc95825cec4794c25d1070fca))
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([5e17259](https://github.com/RomainDECOSTER/scoutquest/commit/5e1725903a10f827540cd37cd6194bfdafa78684)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+
+# [1.4.0-beta.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0...v1.4.0-beta.1) (2025-09-22)
+
+
+### Bug Fixes
+
+* restructure publishing workflow to resolve git clean tree issues ([86e57f3](https://github.com/RomainDECOSTER/scoutquest/commit/86e57f36751128bcc95825cec4794c25d1070fca))
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([5e17259](https://github.com/RomainDECOSTER/scoutquest/commit/5e1725903a10f827540cd37cd6194bfdafa78684)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+
+# [1.3.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.3...v1.3.0) (2025-09-21)
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([c4f55eb](https://github.com/RomainDECOSTER/scoutquest/commit/c4f55eb8b76476350b19c545b80084ff91f26596)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+* add network CIDR restriction for enhanced security ([d8a84e4](https://github.com/RomainDECOSTER/scoutquest/commit/d8a84e4948e20f23256297e8b142041b5638eb40)), closes [#9](https://github.com/RomainDECOSTER/scoutquest/issues/9)
+
+# [1.3.0-beta.2](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0-beta.1...v1.3.0-beta.2) (2025-09-21)
+
+
+### Features
+
+* Add native TLS/HTTPS support with automatic certificate generation ([c4f55eb](https://github.com/RomainDECOSTER/scoutquest/commit/c4f55eb8b76476350b19c545b80084ff91f26596)), closes [#8](https://github.com/RomainDECOSTER/scoutquest/issues/8)
+
+# [1.3.0-beta.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.3...v1.3.0-beta.1) (2025-09-21)
+
+
+### Features
+
+* add network CIDR restriction for enhanced security ([d8a84e4](https://github.com/RomainDECOSTER/scoutquest/commit/d8a84e4948e20f23256297e8b142041b5638eb40)), closes [#9](https://github.com/RomainDECOSTER/scoutquest/issues/9)
+
 ## [1.2.3](https://github.com/RomainDECOSTER/scoutquest/compare/v1.2.2...v1.2.3) (2025-09-20)
 
 
