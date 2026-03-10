@@ -53,7 +53,7 @@ pub async fn start_https_server(
 
     // Start HTTPS server
     let listener = std::net::TcpListener::bind(addr)?;
-    axum_server::from_tcp_rustls(listener, rustls_config)
+    axum_server::from_tcp_rustls(listener, rustls_config)?
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await?;
 
