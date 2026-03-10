@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/RomainDECOSTER/scoutquest/compare/v1.4.0...v1.4.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* **deps:** update TLS dependencies and configuration ([e631bca](https://github.com/RomainDECOSTER/scoutquest/commit/e631bcae3aab9850609697a4f0c0fd075061dced))
+
 # [1.4.0](https://github.com/RomainDECOSTER/scoutquest/compare/v1.3.0...v1.4.0) (2025-09-22)
 
 
