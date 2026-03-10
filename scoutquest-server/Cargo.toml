@@ -34,7 +34,7 @@ axum-server = { version = "0.8", features = ["tls-rustls"] }
 rustls = "0.23"
 
 # Auto certificate generation
-rcgen = "0.11"
+rcgen = "0.14"
 time = "0.3"
 
 [dev-dependencies]
