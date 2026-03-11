@@ -1,7 +1,7 @@
 //! Automatic certificate generation for ScoutQuest Server
 
 use super::{certificates_exist, ensure_cert_directory, TlsError};
-use rcgen::{Certificate, CertificateParams, DistinguishedName, DnType};
+use rcgen::{CertificateParams, DistinguishedName, DnType};
 use std::path::Path;
 use tokio::fs;
 
@@ -22,7 +22,8 @@ pub async fn generate_self_signed_cert(cert_path: &Path, key_path: &Path) -> Res
         "127.0.0.1".to_string(),
         "scoutquest".to_string(),
         "scoutquest-server".to_string(),
-    ]);
+    ])
+    .map_err(|e| TlsError::CertificateGeneration(e.to_string()))?;
 
     // Set certificate distinguished name
     params.distinguished_name = DistinguishedName::new();
@@ -40,15 +41,16 @@ pub async fn generate_self_signed_cert(cert_path: &Path, key_path: &Path) -> Res
     params.not_before = not_before;
     params.not_after = not_after;
 
-    // Generate the certificate
-    let cert = Certificate::from_params(params)
+    // Generate the self-signed certificate
+    let key_pair =
+        rcgen::KeyPair::generate().map_err(|e| TlsError::CertificateGeneration(e.to_string()))?;
+    let cert = params
+        .self_signed(&key_pair)
         .map_err(|e| TlsError::CertificateGeneration(e.to_string()))?;
 
     // Serialize certificate and private key
-    let cert_pem = cert
-        .serialize_pem()
-        .map_err(|e| TlsError::CertificateGeneration(e.to_string()))?;
-    let key_pem = cert.serialize_private_key_pem();
+    let cert_pem = cert.pem();
+    let key_pem = key_pair.serialize_pem();
 
     // Write certificate file
     fs::write(cert_path, cert_pem).await?;
