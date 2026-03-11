@@ -1,0 +1,34 @@
+# .github/workflows/dependabot-auto-rebase.yml
+#
+# À chaque push sur main, demande à Dependabot de rebase
+# toutes ses PRs ouvertes pour qu'elles restent à jour.
+
+name: Auto-rebase Dependabot PRs
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  pull-requests: write
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rebase all open Dependabot PRs
+        run: |
+          PR_NUMBERS=$(gh pr list \
+            --author "app/dependabot" \
+            --state open \
+            --json number \
+            --jq '.[].number')
+
+          for PR in $PR_NUMBERS; do
+            echo "Rebasing PR #$PR..."
+            gh pr comment "$PR" --body "@dependabot rebase"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
