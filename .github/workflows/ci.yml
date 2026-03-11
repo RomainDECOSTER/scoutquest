@@ -18,14 +18,12 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
+        uses: pnpm/action-setup@v4
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -65,7 +63,7 @@ jobs:
         run: make build-all
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: success()
         with:
           name: build-artifacts-${{ github.sha }}
