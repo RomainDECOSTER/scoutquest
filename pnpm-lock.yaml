@@ -101,8 +101,8 @@ importers:
         specifier: ^5.0.0
         version: 5.5.4(eslint-config-prettier@9.1.2(eslint@9.36.0))(eslint@9.36.0)(prettier@3.6.2)
       globals:
-        specifier: ^15.0.0
-        version: 15.15.0
+        specifier: ^17.4.0
+        version: 17.4.0
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@20.19.17)
@@ -1826,8 +1826,8 @@ packages:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
 
-  globals@15.15.0:
-    resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
+  globals@17.4.0:
+    resolution: {integrity: sha512-hjrNztw/VajQwOLsMNT1cbJiH2muO3OROCHnbehc8eY5JyD2gqz4AcMHPqgaOR59DjgUjYAYLeH699g/eWi2jw==}
     engines: {node: '>=18'}
 
   globby@14.1.0:
@@ -5349,7 +5349,7 @@ snapshots:
 
   globals@14.0.0: {}
 
-  globals@15.15.0: {}
+  globals@17.4.0: {}
 
   globby@14.1.0:
     dependencies:
