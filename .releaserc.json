@@ -7,7 +7,16 @@
     }
   ],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "releaseRules": [
+          { "type": "chore", "scope": "deps", "release": "patch" },
+          { "type": "chore", "scope": "deps-sdk-rust", "release": "patch" },
+          { "type": "chore", "scope": "deps-sdk-nodejs", "release": "patch" }
+        ]
+      }
+    ],
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/changelog",

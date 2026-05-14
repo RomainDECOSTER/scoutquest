@@ -53,6 +53,18 @@ updates:
       - "sdk"
     commit-message:
       prefix: "chore(deps-sdk-rust):"
+    groups:
+      rust-sdk-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      rust-sdk-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
 
   # npm - SDK Node.js
   - package-ecosystem: "npm"
@@ -71,6 +83,18 @@ updates:
       - "sdk"
     commit-message:
       prefix: "chore(deps-sdk-nodejs):"
+    groups:
+      npm-sdk-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      npm-sdk-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
 
   # Docker
   - package-ecosystem: "docker"
@@ -87,6 +111,10 @@ updates:
       - "docker"
     commit-message:
       prefix: "chore(deps-docker):"
+    groups:
+      docker-all:
+        patterns:
+          - "*"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -103,3 +131,7 @@ updates:
       - "ci"
     commit-message:
       prefix: "chore(deps-ci):"
+    groups:
+      actions-all:
+        patterns:
+          - "*"
